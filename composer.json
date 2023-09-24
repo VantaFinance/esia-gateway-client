@@ -1,0 +1,53 @@
+{
+    "name": "vanta/esia-gateway-client",
+    "description": "Pure client for ESIA gateway",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Valentin Nazarov",
+            "email": "v.nazarov@pos-credit.ru"
+        },
+        {
+            "name": "Vanta Team",
+            "email": "info@vanta.ru"
+        }
+    ],
+    "keywords": [
+        "esia"
+    ],
+    "autoload": {
+        "psr-4": {
+            "Vanta\\Integration\\EsiaGateway\\": "src/"
+        }
+    },
+    "require": {
+        "php": "^7.4|^8.0",
+        "yiisoft/http": "^1.0",
+        "psr/http-client": "^1.0",
+        "guzzlehttp/psr7": "^2.0",
+        "symfony/uid": "^5.4|^6.0",
+        "symfony/serializer": "^5.4|^6.0",
+        "symfony/property-access": "^5.4|^6.0",
+        "phpstan/phpdoc-parser": "^1.0",
+        "phpdocumentor/reflection-docblock": "^5.0",
+        "doctrine/annotations": "^1.0|^2.0",
+        "myclabs/php-enum": "^1.0",
+        "brick/phonenumber": "^0.5.0"
+    },
+    "suggest": {
+        "psr/http-client-implementation": "Psr http client implementation"
+    },
+    "require-dev": {
+        "symfony/var-dumper": "^5.4|^6.0",
+        "friendsofphp/php-cs-fixer": "^3.17",
+        "vimeo/psalm": "^5.12",
+        "psalm/plugin-symfony": "^5.0",
+        "guzzlehttp/guzzle": "^7.7",
+        "symfony/http-client": "5.4|^6.0"
+    },
+    "config": {
+        "allow-plugins": {
+            "php-http/discovery": true
+        }
+    }
+}
