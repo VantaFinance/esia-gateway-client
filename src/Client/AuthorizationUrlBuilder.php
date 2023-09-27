@@ -33,9 +33,9 @@ final class AuthorizationUrlBuilder
         $this->baseUri  = $baseUri;
         $this->clientId = $clientId;
         $this->redirectUri = $redirectUri;
-        $this->scope = $scope ?? new Scope([ScopePermission::OPEN_ID()]);
+        $this->scope = $scope ?? new Scope([ScopePermission::OPEN_ID]);
         $this->state = $state ?? Uuid::v4();
-        $this->provider = $provider ?? Provider::ESIA_OAUTH();
+        $this->provider = $provider ?? Provider::ESIA_OAUTH;
     }
 
     public static function create(
@@ -117,7 +117,7 @@ final class AuthorizationUrlBuilder
             'redirect_uri'  => $this->redirectUri,
             'scope'         => $this->scope->__toString(),
             'state'         => $this->state->toRfc4122(),
-            'provider'      => $this->provider->getValue(),
+            'provider'      => $this->provider->value,
         ]);
 
         return sprintf('%s/auth/authorize?%s', $this->baseUri, $query);
