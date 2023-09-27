@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Vanta\Integration\EsiaGateway\Model;
+namespace Vanta\Integration\EsiaGateway\Struct;
 
 use Webmozart\Assert\Assert;
 
-final class SnilsNumber
+final class RussianPassportSeries
 {
     private string $value;
 
     public function __construct(
         string $value
     ) {
-        Assert::regex($value, '/^\d{3}-\d{3}-\d{3} \d{2}$/', 'Неверный формат данных, ожидаемый формат: XXX-XXX-XXX XX');
+        Assert::regex($value, '/^\d{4}$/', 'Неверный формат серии документа, ожидается 4 цифры');
 
         $this->value = $value;
     }

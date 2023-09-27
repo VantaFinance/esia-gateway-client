@@ -16,7 +16,7 @@ final class Scope
     /**
      * @param string|list<ScopePermission>|null $value
      */
-    public function __construct($value = null)
+    public function __construct(string|array|null $value = null)
     {
         if (is_string($value)) {
             $this->permissions = array_map(

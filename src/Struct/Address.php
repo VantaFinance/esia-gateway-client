@@ -2,20 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Vanta\Integration\EsiaGateway\Model;
+namespace Vanta\Integration\EsiaGateway\Struct;
 
 use Symfony\Component\Serializer\Annotation\SerializedPath;
 use Symfony\Component\Uid\Uuid;
 
 final class Address
 {
-    private int $id;
-
-    private AddressType $type;
-
-    /**
-     * @SerializedPath("[countryId]")
-     */
+    #[SerializedPath('[countryId]')]
     private CountryIso $countryIso;
 
     private ?string $region = null;
@@ -49,14 +43,9 @@ final class Address
 
     private ?Uuid $fiasCode = null;
 
-    /**
-     * @SerializedPath("[fiasCodeLevel]")
-     */
-    private ?string $fiasLevel = null;
+    private ?string $fiasCodeLevel = null;
 
     /**
-     * @param int $id
-     * @param AddressType $type
      * @param CountryIso $countryIso
      * @param string|null $region
      * @param string|null $city
@@ -72,12 +61,10 @@ final class Address
      * @param string|null $room
      * @param string|null $zipCode
      * @param Uuid|null $fiasCode
-     * @param string|null $fiasLevel
+     * @param string|null $fiasCodeLevel
      */
-    public function __construct(int $id, AddressType $type, CountryIso $countryIso, ?string $region, ?string $city, ?string $district, ?string $area, ?string $settlement, ?string $additionArea, ?string $additionAreaStreet, ?string $street, ?string $house, ?string $frame, ?string $flat, ?string $room, ?string $zipCode, ?Uuid $fiasCode, ?string $fiasLevel)
+    public function __construct(CountryIso $countryIso, ?string $region, ?string $city, ?string $district, ?string $area, ?string $settlement, ?string $additionArea, ?string $additionAreaStreet, ?string $street, ?string $house, ?string $frame, ?string $flat, ?string $room, ?string $zipCode, ?Uuid $fiasCode, ?string $fiasCodeLevel)
     {
-        $this->id                 = $id;
-        $this->type               = $type;
         $this->countryIso         = $countryIso;
         $this->region             = $region;
         $this->city               = $city;
@@ -93,17 +80,7 @@ final class Address
         $this->room               = $room;
         $this->zipCode            = $zipCode;
         $this->fiasCode           = $fiasCode;
-        $this->fiasLevel          = $fiasLevel;
-    }
-
-    public function getId(): int
-    {
-        return $this->id;
-    }
-
-    public function getType(): AddressType
-    {
-        return $this->type;
+        $this->fiasCodeLevel      = $fiasCodeLevel;
     }
 
     public function getCountryIso(): CountryIso
@@ -181,8 +158,8 @@ final class Address
         return $this->fiasCode;
     }
 
-    public function getFiasLevel(): ?string
+    public function getFiasCodeLevel(): ?string
     {
-        return $this->fiasLevel;
+        return $this->fiasCodeLevel;
     }
 }

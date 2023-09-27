@@ -10,7 +10,7 @@ use Symfony\Component\Serializer\Exception\NotNormalizableValueException;
 use Symfony\Component\Serializer\Exception\UnexpectedValueException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface as Denormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface as Normalizer;
-use Vanta\Integration\EsiaGateway\Model\SnilsNumber;
+use Vanta\Integration\EsiaGateway\Struct\SnilsNumber;
 use Webmozart\Assert\Assert;
 
 final class SnilsNumberNormalizer implements Normalizer, Denormalizer

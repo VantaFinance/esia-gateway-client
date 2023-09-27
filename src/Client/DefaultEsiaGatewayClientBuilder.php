@@ -12,7 +12,6 @@ use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Mapping\ClassDiscriminatorFromClassMetadata;
 use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactory;
 use Symfony\Component\Serializer\Mapping\Loader\AnnotationLoader;
-use Symfony\Component\Serializer\NameConverter\CamelCaseToSnakeCaseNameConverter;
 use Symfony\Component\Serializer\NameConverter\MetadataAwareNameConverter;
 use Symfony\Component\Serializer\Normalizer\ArrayDenormalizer;
 use Symfony\Component\Serializer\Normalizer\BackedEnumNormalizer;
@@ -96,10 +95,7 @@ final class DefaultEsiaGatewayClientBuilder
         $normalizers = [
             new UnwrappingDenormalizer(),
             new BackedEnumNormalizer(),
-            new GenderNormalizer(),
             new UidNormalizer(),
-            new AccountStatusNormalizer(),
-            new AddressTypeNormalizer(),
             new RussianPassportNumberNormalizer(),
             new RussianPassportSeriesNormalizer(),
             new RussianPassportDivisionCodeNormalizer(),
@@ -176,10 +172,11 @@ final class DefaultEsiaGatewayClientBuilder
 
     /**
      * @param non-empty-string $url
+     * @param non-empty-string $redirectUri
      */
-    public function createEsiaGatewayClient(string $url = 'https://demo.gate.esia.pro'): EsiaGatewayClient
+    public function createEsiaGatewayClient(string $url, string $redirectUri): EsiaGatewayClient
     {
-        $configuration = new ConfigurationClient($this->clientId, $this->clientSecret, $url);
+        $configuration = new ConfigurationClient($this->clientId, $this->clientSecret, $url, $redirectUri);
         return new DefaultEsiaGatewayClient(
             $this->serializer,
             new HttpClient(

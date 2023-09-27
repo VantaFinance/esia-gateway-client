@@ -4,22 +4,22 @@ declare(strict_types=1);
 
 namespace Vanta\Integration\EsiaGateway\Client;
 
-use MyCLabs\Enum\Enum;
-
-final class ScopePermission extends Enum
+enum ScopePermission: string
 {
-    private const OPEN_ID = 'openid';
-    private const FULL_NAME = 'fullname';
-    private const BIRTHDATE = 'birthdate';
-    private const GENDER = 'gender';
-    private const EMAIL = 'email';
-    private const MOBILE = 'mobile';
-    private const ID_DOC = 'id_doc';
-    private const FOREIGN_PASSPORT_DOC = 'foreign_passport_doc';
-    private const DRIVERS_LICENSE_DOC = 'drivers_licence_doc';
-    private const SNILS = 'snils';
-    private const INN = 'inn';
-    // TODO: Does not work for some reason, errors with "invalid scope", this field is available anyway
-//    private const CITIZENSHIP = 'citizenship';
-    private const ADDRESSES = 'addresses';
+    case OPEN_ID = 'openid';
+    case FULL_NAME = 'fullname';
+    case BIRTHDATE = 'birthdate';
+    case GENDER = 'gender';
+    case EMAIL = 'email';
+    case MOBILE = 'mobile';
+    case ID_DOC = 'id_doc';
+    case FOREIGN_PASSPORT_DOC = 'foreign_passport_doc';
+    case DRIVERS_LICENSE_DOC = 'drivers_licence_doc';
+    // TODO: Scope is accepted, but not listed in most recent guide (v3.36)
+    case DEATH_CERTIFICATE_DOC = 'death_cert_doc';
+    case SNILS = 'snils';
+    case INN = 'inn';
+    // TODO: Errors with "invalid scope", but this field is present in the response anyway
+    //case CITIZENSHIP = 'citizenship';
+    case ADDRESSES = 'addresses';
 }

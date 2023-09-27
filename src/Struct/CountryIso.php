@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Vanta\Integration\EsiaGateway\Model;
+namespace Vanta\Integration\EsiaGateway\Struct;
 
 use InvalidArgumentException;
 

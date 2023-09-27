@@ -2,11 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Vanta\Integration\EsiaGateway\Model;
+namespace Vanta\Integration\EsiaGateway\Struct;
 
 use Brick\PhoneNumber\PhoneNumber;
 use DateTimeImmutable;
-use Symfony\Component\Serializer\Annotation\SerializedPath;
 
 final class UserInfo
 {
@@ -14,6 +13,11 @@ final class UserInfo
      * @var numeric-string
      */
     private string $uid;
+
+    /**
+     * @var numeric-string
+     */
+    private string $oid;
 
     private string $firstName;
 
@@ -27,28 +31,19 @@ final class UserInfo
 
     private bool $trusted;
 
-    private bool $verifying;
-
     private string $email;
 
-    private PhoneNumber $mobile;
-
-    /**
-     * @SerializedPath("[rIdDoc]")
-     */
-    private int $primaryDocumentId;
+    private PhoneNumber $mobilePhone;
 
     private CountryIso $citizenship;
-
-    private AccountStatus $status;
 
     private SnilsNumber $snils;
 
     private InnNumber $inn;
 
-    private AddressList $addresses;
+    private Address $registrationAddress;
 
-    private DocumentList $documents;
+    private Address $homeAddress;
 
     /**
      * @param string $uid
@@ -58,18 +53,15 @@ final class UserInfo
      * @param DateTimeImmutable $birthDate
      * @param Gender $gender
      * @param bool $trusted
-     * @param bool $verifying
      * @param string $email
-     * @param PhoneNumber $mobile
-     * @param int $primaryDocumentId
+     * @param PhoneNumber $mobilePhone
      * @param CountryIso $citizenship
-     * @param AccountStatus $status
      * @param SnilsNumber $snils
      * @param InnNumber $inn
-     * @param AddressList $addresses
-     * @param DocumentList $documents
+     * @param Address $registrationAddress
+     * @param Address $homeAddress
      */
-    public function __construct(string $uid, string $firstName, string $middleName, string $lastName, DateTimeImmutable $birthDate, Gender $gender, bool $trusted, bool $verifying, string $email, PhoneNumber $mobile, int $primaryDocumentId, CountryIso $citizenship, AccountStatus $status, SnilsNumber $snils, InnNumber $inn, AddressList $addresses, DocumentList $documents)
+    public function __construct(string $uid, string $firstName, string $middleName, string $lastName, DateTimeImmutable $birthDate, Gender $gender, bool $trusted, string $email, PhoneNumber $mobilePhone, CountryIso $citizenship, SnilsNumber $snils, InnNumber $inn, Address $registrationAddress, Address $homeAddress)
     {
         $this->uid         = $uid;
         $this->firstName   = $firstName;
@@ -78,21 +70,23 @@ final class UserInfo
         $this->birthDate   = $birthDate;
         $this->gender      = $gender;
         $this->trusted     = $trusted;
-        $this->verifying   = $verifying;
         $this->email       = $email;
-        $this->mobile      = $mobile;
-        $this->primaryDocumentId = $primaryDocumentId;
+        $this->mobilePhone = $mobilePhone;
         $this->citizenship = $citizenship;
-        $this->status      = $status;
         $this->snils       = $snils;
         $this->inn         = $inn;
-        $this->addresses   = $addresses;
-        $this->documents   = $documents;
+        $this->registrationAddress = $registrationAddress;
+        $this->homeAddress = $homeAddress;
     }
 
     public function getUid(): string
     {
         return $this->uid;
+    }
+
+    public function getOid(): string
+    {
+        return $this->oid;
     }
 
     public function getFirstName(): string
@@ -125,11 +119,6 @@ final class UserInfo
         return $this->trusted;
     }
 
-    public function isVerifying(): bool
-    {
-        return $this->verifying;
-    }
-
     public function getEmail(): string
     {
         return $this->email;
@@ -140,19 +129,9 @@ final class UserInfo
         return $this->citizenship;
     }
 
-    public function getMobile(): PhoneNumber
+    public function getMobilePhone(): PhoneNumber
     {
-        return $this->mobile;
-    }
-
-    public function getPrimaryDocumentId(): int
-    {
-        return $this->primaryDocumentId;
-    }
-
-    public function getStatus(): AccountStatus
-    {
-        return $this->status;
+        return $this->mobilePhone;
     }
 
     public function getSnils(): SnilsNumber
@@ -165,13 +144,13 @@ final class UserInfo
         return $this->inn;
     }
 
-    public function getAddresses(): AddressList
+    public function getRegistrationAddress(): Address
     {
-        return $this->addresses;
+        return $this->registrationAddress;
     }
 
-    public function getDocuments(): DocumentList
+    public function getHomeAddress(): Address
     {
-        return $this->documents;
+        return $this->homeAddress;
     }
 }

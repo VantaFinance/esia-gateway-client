@@ -4,20 +4,20 @@ declare(strict_types=1);
 
 namespace Vanta\Integration\EsiaGateway\Client;
 
-use Vanta\Integration\EsiaGateway\Model\UserInfo;
+use Vanta\Integration\EsiaGateway\Struct\UserInfo;
 
 interface EsiaGatewayClient
 {
-    public function createAuthorizationUrlBuilder(string $redirectUri): AuthorizationUrlBuilder;
+    public function createAuthorizationUrlBuilder(): AuthorizationUrlBuilder;
 
-    public function getAccessTokenByAuthorizationCode(string $code, string $redirectUri): AccessToken;
+    public function getAccessTokenByAuthorizationCode(string $code): AccessToken;
 
     /**
      * @param string|AccessToken $refreshToken
      *
      * @return AccessToken
      */
-    public function getAccessTokenByRefreshToken($refreshToken, string $redirectUri): AccessToken;
+    public function getAccessTokenByRefreshToken($refreshToken): AccessToken;
 
     /**
      * @param string|AccessToken $accessToken

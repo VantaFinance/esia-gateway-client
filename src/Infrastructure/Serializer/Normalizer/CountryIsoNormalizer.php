@@ -10,7 +10,7 @@ use Symfony\Component\Serializer\Exception\NotNormalizableValueException;
 use Symfony\Component\Serializer\Exception\UnexpectedValueException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface as Denormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface as Normalizer;
-use Vanta\Integration\EsiaGateway\Model\CountryIso;
+use Vanta\Integration\EsiaGateway\Struct\CountryIso;
 use function is_string;
 
 final class CountryIsoNormalizer implements Normalizer, Denormalizer

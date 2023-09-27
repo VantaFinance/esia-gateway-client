@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 use Symfony\Component\Serializer\Normalizer\UnwrappingDenormalizer;
 use Symfony\Component\Serializer\SerializerInterface as Serializer;
 use Vanta\Integration\EsiaGateway\Infrastructure\HttpClient\ConfigurationClient;
-use Vanta\Integration\EsiaGateway\Model\UserInfo;
+use Vanta\Integration\EsiaGateway\Struct\UserInfo;
 
 final class DefaultEsiaGatewayClient implements EsiaGatewayClient
 {
@@ -29,20 +29,20 @@ final class DefaultEsiaGatewayClient implements EsiaGatewayClient
         $this->configuration = $configuration;
     }
 
-    public function createAuthorizationUrlBuilder(string $redirectUri): AuthorizationUrlBuilder
+    public function createAuthorizationUrlBuilder(): AuthorizationUrlBuilder
     {
         return new AuthorizationUrlBuilder(
             $this->configuration->getUrl(),
             $this->configuration->getClientId(),
-            $redirectUri,
+            $this->configuration->getRedirectUri(),
         );
     }
 
-    public function getAccessTokenByAuthorizationCode(string $code, string $redirectUri): AccessToken
+    public function getAccessTokenByAuthorizationCode(string $code): AccessToken
     {
         $queryParams = http_build_query([
             'grant_type'    => 'authorization_code',
-            'redirect_uri'  => $redirectUri,
+            'redirect_uri'  => $this->configuration->getRedirectUri(),
             'client_id'     => $this->configuration->getClientId(),
             'code'          => $code,
             'client_secret' => $this->configuration->getClientSecret(),
@@ -58,7 +58,7 @@ final class DefaultEsiaGatewayClient implements EsiaGatewayClient
         return $this->serializer->deserialize($response->getBody()->__toString(), AccessToken::class, 'json');
     }
 
-    public function getAccessTokenByRefreshToken($refreshToken, string $redirectUri): AccessToken
+    public function getAccessTokenByRefreshToken($refreshToken): AccessToken
     {
         if ($refreshToken instanceof AccessToken) {
             $refreshToken = $refreshToken->getRefreshToken();
@@ -70,7 +70,7 @@ final class DefaultEsiaGatewayClient implements EsiaGatewayClient
 
         $queryParams = http_build_query([
             'grant_type'    => 'refresh_token',
-            'redirect_uri'  => $redirectUri,
+            'redirect_uri'  => $this->configuration->getRedirectUri(),
             'client_id'     => $this->configuration->getClientId(),
             'refresh_token' => $refreshToken,
             'client_secret' => $this->configuration->getClientSecret(),

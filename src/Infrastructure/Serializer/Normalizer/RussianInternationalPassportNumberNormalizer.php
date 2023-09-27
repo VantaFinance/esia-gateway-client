@@ -10,7 +10,7 @@ use Symfony\Component\Serializer\Exception\NotNormalizableValueException;
 use Symfony\Component\Serializer\Exception\UnexpectedValueException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface as Denormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface as Normalizer;
-use Vanta\Integration\EsiaGateway\Model\RussianInternationalPassportNumber;
+use Vanta\Integration\EsiaGateway\Struct\RussianInternationalPassportNumber;
 use Webmozart\Assert\Assert;
 
 final class RussianInternationalPassportNumberNormalizer implements Normalizer, Denormalizer

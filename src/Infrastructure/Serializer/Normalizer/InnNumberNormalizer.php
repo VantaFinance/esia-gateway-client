@@ -10,7 +10,7 @@ use Symfony\Component\Serializer\Exception\NotNormalizableValueException;
 use Symfony\Component\Serializer\Exception\UnexpectedValueException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface as Denormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface as Normalizer;
-use Vanta\Integration\EsiaGateway\Model\InnNumber;
+use Vanta\Integration\EsiaGateway\Struct\InnNumber;
 use Webmozart\Assert\Assert;
 
 final class InnNumberNormalizer implements Normalizer, Denormalizer

@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace Vanta\Integration\EsiaGateway\Client;
 
-use MyCLabs\Enum\Enum;
-
-final class Provider extends Enum
+enum Provider: string
 {
-    private const ESIA_OAUTH = 'esia_oauth';
+    case ESIA_OAUTH = 'esia_oauth';
+    case CPG_OAUTH = 'cpg_oauth';
 }
