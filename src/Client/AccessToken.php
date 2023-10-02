@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Vanta\Integration\EsiaGateway\Client;
 
-use DateTimeImmutable;
 use Symfony\Component\Serializer\Annotation\SerializedPath;
 
 final class AccessToken
@@ -97,10 +96,7 @@ final class AccessToken
         return $this->expiresIn;
     }
 
-    /**
-     * @return DateTimeImmutable
-     */
-    public function getCreatedAt(): DateTimeImmutable
+    public function getCreatedAt(): int
     {
         return $this->createdAt;
     }

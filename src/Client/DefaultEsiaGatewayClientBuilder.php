@@ -6,7 +6,9 @@ namespace Vanta\Integration\EsiaGateway\Client;
 
 use Doctrine\Common\Annotations\AnnotationReader;
 use Psr\Http\Client\ClientInterface as PsrHttpClient;
+use Symfony\Component\PropertyInfo\Extractor\PhpDocExtractor;
 use Symfony\Component\PropertyInfo\Extractor\PhpStanExtractor;
+use Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor;
 use Symfony\Component\PropertyInfo\PropertyInfoExtractor;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Mapping\ClassDiscriminatorFromClassMetadata;
@@ -92,6 +94,10 @@ final class DefaultEsiaGatewayClientBuilder
     {
         $classMetadataFactory = new ClassMetadataFactory(new AnnotationLoader(new AnnotationReader()));
 
+        $reflectionExtractor = new ReflectionExtractor();
+        $phpDocExtractor = new PhpDocExtractor();
+        $propertyTypeExtractor = new PropertyInfoExtractor([$reflectionExtractor], [$phpDocExtractor, $reflectionExtractor], [$phpDocExtractor], [$reflectionExtractor], [$reflectionExtractor]);
+
         $normalizers = [
             new UnwrappingDenormalizer(),
             new BackedEnumNormalizer(),
@@ -113,14 +119,7 @@ final class DefaultEsiaGatewayClientBuilder
                 $classMetadataFactory,
                 new MetadataAwareNameConverter($classMetadataFactory),
                 null,
-                // TODO: Alternative is ReflectionExtractor
-                new PropertyInfoExtractor(
-                    [],
-                    [new PhpStanExtractor()],
-                    [],
-                    [],
-                    []
-                ),
+                $propertyTypeExtractor,
                 new ClassDiscriminatorFromClassMetadata($classMetadataFactory),
             ),
             new ArrayDenormalizer(),

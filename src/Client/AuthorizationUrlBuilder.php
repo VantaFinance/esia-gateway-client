@@ -35,7 +35,7 @@ final class AuthorizationUrlBuilder
         $this->redirectUri = $redirectUri;
         $this->scope = $scope ?? new Scope([ScopePermission::OPEN_ID]);
         $this->state = $state ?? Uuid::v4();
-        $this->provider = $provider ?? Provider::ESIA_OAUTH;
+        $this->provider = $provider ?? Provider::CPG_OAUTH;
     }
 
     public static function create(

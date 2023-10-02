@@ -7,16 +7,15 @@ namespace Vanta\Integration\EsiaGateway\Struct;
 use DateTimeImmutable;
 use Symfony\Component\Serializer\Annotation\SerializedPath;
 
-final class RussianInternationalPassport extends Document
+final class DriverLicense extends Document
 {
     public function __construct(
         public readonly string $id,
-        public readonly RussianInternationalPassportSeries $series,
-        public readonly RussianInternationalPassportNumber $number,
+        public readonly DriverLicenseSeries $series,
+        public readonly DriverLicenseNumber $number,
         #[SerializedPath('[issueDate]')]
         public readonly DateTimeImmutable $issuedAt,
-        public readonly ?string $issuedBy,
     ) {
-        parent::__construct(DocumentType::RUSSIAN_INTERNATIONAL_PASSPORT->value);
+        parent::__construct(DocumentType::DRIVER_LICENSE->value);
     }
 }

@@ -25,6 +25,8 @@ final class UserInfo
 
         public readonly SnilsNumber $snils,
         public readonly InnNumber $inn,
+        /** @var Document[] $documents */
+        public array $documents,
 
         public readonly Address $registrationAddress,
         public readonly Address $homeAddress,

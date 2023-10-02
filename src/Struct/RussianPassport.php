@@ -10,7 +10,7 @@ use Symfony\Component\Serializer\Annotation\SerializedPath;
 final class RussianPassport extends Document
 {
     public function __construct(
-        public readonly int $id,
+        public readonly string $id,
         public readonly RussianPassportSeries $series,
         public readonly RussianPassportNumber $number,
         #[SerializedPath('[issueDate]')]
@@ -19,6 +19,6 @@ final class RussianPassport extends Document
         #[SerializedPath('[issueId]')]
         public readonly RussianPassportDivisionCode $divisionCode,
     ) {
-        parent::__construct('RF_PASSPORT');
+        parent::__construct(DocumentType::RUSSIAN_PASSPORT->value);
     }
 }

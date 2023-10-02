@@ -9,8 +9,10 @@ use Symfony\Component\Serializer\Annotation as Serializer;
 #[Serializer\DiscriminatorMap(
     typeProperty: 'type',
     mapping: [
-        'RF_PASSPORT'   => RussianPassport::class,
-        'FRGN_PASSPORT' => RussianInternationalPassport::class,
+        'RF_PASSPORT'        => RussianPassport::class,
+        'FRGN_PASSPORT'      => RussianInternationalPassport::class,
+        'RF_DRIVING_LICENSE' => DriverLicense::class,
+        'INCOME_REFERENCE'   => IncomeReference::class,
     ],
 )]
 abstract class Document

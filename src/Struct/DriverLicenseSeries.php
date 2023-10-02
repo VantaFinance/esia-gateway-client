@@ -6,14 +6,14 @@ namespace Vanta\Integration\EsiaGateway\Struct;
 
 use Webmozart\Assert\Assert;
 
-final class InnNumber
+final class DriverLicenseSeries
 {
     private string $value;
 
     public function __construct(
         string $value
     ) {
-        Assert::regex($value, '/^\d{10}\d{2}?$/', 'Налоговый номер должен быть длиной 10 или 12 символов');
+        Assert::regex($value, '/^\d{4}$/', 'Неверный формат серии документа, ожидается 4 цифры');
 
         $this->value = $value;
     }
