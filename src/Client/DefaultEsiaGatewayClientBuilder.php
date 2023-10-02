@@ -59,12 +59,12 @@ final class DefaultEsiaGatewayClientBuilder
     private string $clientSecret;
 
     /**
-     * @var non-empty-array<int, Middleware>
+     * @var non-empty-list<Middleware>
      */
     private array $middlewares;
 
     /**
-     * @param array<int, Middleware> $middlewares
+     * @param list<Middleware> $middlewares
      * @param non-empty-string       $clientId
      * @param non-empty-string       $clientSecret
      */
@@ -82,7 +82,7 @@ final class DefaultEsiaGatewayClientBuilder
     }
 
     /**
-     * @psalm-suppress MixedArgumentTypeCoercion,TooManyArguments, UndefinedClass, MissingDependency, InvalidArgument
+     * @psalm-suppress MixedArgumentTypeCoercion, TooManyArguments, UndefinedClass, MissingDependency, InvalidArgument
      *
      * @param non-empty-string $clientId
      * @param non-empty-string $clientSecret
@@ -144,7 +144,7 @@ final class DefaultEsiaGatewayClientBuilder
     }
 
     /**
-     * @param non-empty-array<int, Middleware> $middlewares
+     * @param non-empty-list<Middleware> $middlewares
      */
     public function withMiddlewares(array $middlewares): self
     {
