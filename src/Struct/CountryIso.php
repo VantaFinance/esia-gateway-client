@@ -9,7 +9,7 @@ use InvalidArgumentException;
 final class CountryIso
 {
     /**
-     * @param non-empty-string $value
+     * @var non-empty-string $value
      */
     private string $value;
 
@@ -17,7 +17,7 @@ final class CountryIso
      * @param non-empty-string $value
      */
     public function __construct(
-        string $value
+        string $value,
     ) {
         if (!preg_match('/^[a-zA-Z]{3}$/', $value)) {
             throw new InvalidArgumentException('Invalid country ISO code, must be an ISO 3166-1 alpha-3 code');

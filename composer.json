@@ -33,7 +33,9 @@
         "doctrine/annotations": "^1.0|^2.0",
         "myclabs/php-enum": "^1.0",
         "brick/phonenumber": "^0.5.0",
-        "brick/money": "^0.8.1"
+        "brick/money": "^0.8.1",
+        "brick/date-time": "^0.5.3",
+        "brick/math": "^0.11.0"
     },
     "suggest": {
         "psr/http-client-implementation": "Psr http client implementation"

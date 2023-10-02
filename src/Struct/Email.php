@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Vanta\Integration\EsiaGateway\Struct;
 
-use Webmozart\Assert\Assert;
+use InvalidArgumentException;
 
-final class SnilsNumber
+final class Email
 {
     /**
-     * @var non-empty-string $value
+     * @var non-empty-string
      */
-    private readonly string $value;
+    private string $value;
 
     /**
      * @param non-empty-string $value
@@ -19,7 +19,9 @@ final class SnilsNumber
     public function __construct(
         string $value,
     ) {
-        Assert::regex($value, '/^\d{3}-\d{3}-\d{3} \d{2}$/', 'Неверный формат данных, ожидаемый формат: XXX-XXX-XXX XX');
+        if (!filter_var($value, FILTER_VALIDATE_EMAIL)) {
+            throw new InvalidArgumentException(sprintf('Не валидный email: %s', $value));
+        }
 
         $this->value = $value;
     }

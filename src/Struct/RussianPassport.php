@@ -10,6 +10,7 @@ use Symfony\Component\Serializer\Annotation\SerializedPath;
 final class RussianPassport extends Document
 {
     public function __construct(
+        /** @var numeric-string $id */
         public readonly string $id,
         public readonly RussianPassportSeries $series,
         public readonly RussianPassportNumber $number,

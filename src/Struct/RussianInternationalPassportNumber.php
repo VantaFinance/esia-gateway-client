@@ -8,21 +8,33 @@ use Webmozart\Assert\Assert;
 
 final class RussianInternationalPassportNumber
 {
+    /**
+     * @var numeric-string $value
+     */
     private readonly string $value;
 
+    /**
+     * @param numeric-string $value
+     */
     public function __construct(
-        string $value
+        string $value,
     ) {
         Assert::regex($value, '/^\d{7}$/', 'Неверный формат номера документа, ожидается 7 цифр');
 
         $this->value = $value;
     }
 
+    /**
+     * @return numeric-string
+     */
     public function getValue(): string
     {
         return $this->value;
     }
 
+    /**
+     * @return numeric-string
+     */
     public function __toString(): string
     {
         return $this->value;

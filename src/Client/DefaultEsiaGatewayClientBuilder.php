@@ -31,6 +31,7 @@ use Vanta\Integration\EsiaGateway\Infrastructure\HttpClient\Middleware\Middlewar
 use Vanta\Integration\EsiaGateway\Infrastructure\HttpClient\Middleware\PipelineMiddleware;
 use Vanta\Integration\EsiaGateway\Infrastructure\HttpClient\Middleware\UrlMiddleware;
 use Vanta\Integration\EsiaGateway\Infrastructure\Serializer\Normalizer\CountryIsoNormalizer;
+use Vanta\Integration\EsiaGateway\Infrastructure\Serializer\Normalizer\EmailNormalizer;
 use Vanta\Integration\EsiaGateway\Infrastructure\Serializer\Normalizer\InnNumberNormalizer;
 use Vanta\Integration\EsiaGateway\Infrastructure\Serializer\Normalizer\KppNumberNormalizer;
 use Vanta\Integration\EsiaGateway\Infrastructure\Serializer\Normalizer\PhoneNumberNormalizer;
@@ -109,6 +110,7 @@ final class DefaultEsiaGatewayClientBuilder
             new KppNumberNormalizer(),
             new CountryIsoNormalizer(),
             new PhoneNumberNormalizer(),
+            new EmailNormalizer(),
             new ScopeNormalizer(),
             new DateTimeNormalizer([
                 DateTimeNormalizer::FORMAT_KEY => 'd.M.Y',
