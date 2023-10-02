@@ -7,7 +7,6 @@ namespace Vanta\Integration\EsiaGateway\Client;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Psr\Http\Client\ClientInterface as PsrHttpClient;
 use Symfony\Component\PropertyInfo\Extractor\PhpDocExtractor;
-use Symfony\Component\PropertyInfo\Extractor\PhpStanExtractor;
 use Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor;
 use Symfony\Component\PropertyInfo\PropertyInfoExtractor;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
@@ -31,11 +30,9 @@ use Vanta\Integration\EsiaGateway\Infrastructure\HttpClient\Middleware\InternalS
 use Vanta\Integration\EsiaGateway\Infrastructure\HttpClient\Middleware\Middleware;
 use Vanta\Integration\EsiaGateway\Infrastructure\HttpClient\Middleware\PipelineMiddleware;
 use Vanta\Integration\EsiaGateway\Infrastructure\HttpClient\Middleware\UrlMiddleware;
-use Vanta\Integration\EsiaGateway\Infrastructure\Serializer\Normalizer\AccountStatusNormalizer;
-use Vanta\Integration\EsiaGateway\Infrastructure\Serializer\Normalizer\AddressTypeNormalizer;
 use Vanta\Integration\EsiaGateway\Infrastructure\Serializer\Normalizer\CountryIsoNormalizer;
-use Vanta\Integration\EsiaGateway\Infrastructure\Serializer\Normalizer\GenderNormalizer;
 use Vanta\Integration\EsiaGateway\Infrastructure\Serializer\Normalizer\InnNumberNormalizer;
+use Vanta\Integration\EsiaGateway\Infrastructure\Serializer\Normalizer\KppNumberNormalizer;
 use Vanta\Integration\EsiaGateway\Infrastructure\Serializer\Normalizer\PhoneNumberNormalizer;
 use Vanta\Integration\EsiaGateway\Infrastructure\Serializer\Normalizer\RussianInternationalPassportNumberNormalizer;
 use Vanta\Integration\EsiaGateway\Infrastructure\Serializer\Normalizer\RussianInternationalPassportSeriesNormalizer;
@@ -109,6 +106,7 @@ final class DefaultEsiaGatewayClientBuilder
             new RussianInternationalPassportSeriesNormalizer(),
             new InnNumberNormalizer(),
             new SnilsNumberNormalizer(),
+            new KppNumberNormalizer(),
             new CountryIsoNormalizer(),
             new PhoneNumberNormalizer(),
             new ScopeNormalizer(),

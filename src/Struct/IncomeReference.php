@@ -10,9 +10,9 @@ final class IncomeReference extends Document
 {
     public function __construct(
         public readonly Uuid $id,
-        public readonly int $year,
+        public readonly string $year,
         public readonly int $version,
-        /** @var IncomeReferenceDataItem[] $data */
+        /** @var list<IncomeReferenceDataItem> $data */
         public array $data,
     ) {
         parent::__construct(DocumentType::INCOME_REFERENCE->value);

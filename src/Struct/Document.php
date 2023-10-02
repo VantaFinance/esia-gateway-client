@@ -10,7 +10,7 @@ use Symfony\Component\Serializer\Annotation as Serializer;
     typeProperty: 'type',
     mapping: [
         'RF_PASSPORT'        => RussianPassport::class,
-        'FRGN_PASSPORT'      => RussianInternationalPassport::class,
+        'FRGN_PASS'          => RussianInternationalPassport::class,
         'RF_DRIVING_LICENSE' => DriverLicense::class,
         'INCOME_REFERENCE'   => IncomeReference::class,
     ],

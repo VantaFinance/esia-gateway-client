@@ -4,22 +4,16 @@ declare(strict_types=1);
 
 namespace Vanta\Integration\EsiaGateway\Struct;
 
-use InvalidArgumentException;
+use Webmozart\Assert\Assert;
 
-final class RussianPassportDivisionCode
+final class KppNumber
 {
     private readonly string $value;
 
     public function __construct(
         string $value
     ) {
-        if (preg_match('/^\d{6}$/', $value)) {
-            $value = mb_substr($value, 0, 3) . '-' . mb_substr($value, 3, 3);
-        }
-
-        if (!preg_match('/^\d{3}-\d{3}$/m', $value)) {
-            throw new InvalidArgumentException('Неверный формат кода подразделения');
-        }
+        Assert::regex($value, '/^\d{9}$/', 'КПП должен состоять из 9 цифр');
 
         $this->value = $value;
     }
