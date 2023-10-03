@@ -10,7 +10,7 @@ final class AuthorizationUrlBuilder
 {
     private string $baseUri;
 
-    private Provider $provider;
+    private Provider $provider = Provider::CPG_OAUTH;
 
     private string $clientId;
 
@@ -18,35 +18,62 @@ final class AuthorizationUrlBuilder
 
     private string $responseType = 'code';
 
-    private Scope $scope;
+    /** @var non-empty-list<ScopePermission> */
+    private array $permissions;
+
+    /** @var non-empty-list<Purpose> */
+    private array $purposes;
+
+    private Purpose $sysname;
+
+    private int $expire;
+
+    private Actions $actions;
 
     private Uuid $state;
 
+    /**
+     * @param non-empty-list<Purpose> $purposes
+     * @param non-empty-list<ScopePermission> $permissions
+     */
     public function __construct(
         string $baseUri,
         string $clientId,
         string $redirectUri,
-        ?Scope $scope = null,
+        array $purposes,
+        Purpose $sysname,
+        array $permissions = [],
+        int $expire = 5,
+        Actions $actions = Actions::ALL_ACTIONS_TO_DATA,
         ?Uuid $state = null,
-        ?Provider $provider = null
     ) {
         $this->baseUri  = $baseUri;
         $this->clientId = $clientId;
         $this->redirectUri = $redirectUri;
-        $this->scope = $scope ?? new Scope([ScopePermission::OPEN_ID]);
+        $this->purposes = $purposes;
+        $this->sysname = $sysname;
+        $this->permissions = $permissions;
+        $this->expire = $expire;
+        $this->actions = $actions;
         $this->state = $state ?? Uuid::v4();
-        $this->provider = $provider ?? Provider::CPG_OAUTH;
     }
 
+    /**
+     * @param non-empty-list<Purpose> $purposes
+     * @param non-empty-list<ScopePermission> $permissions
+     */
     public static function create(
         string $gatewayHostname,
         string $clientId,
         string $redirectUri,
-        ?Scope $scope = null,
+        array $purposes,
+        Purpose $sysname,
+        array $permissions = [],
+        int $expire = 5,
+        Actions $actions = Actions::ALL_ACTIONS_TO_DATA,
         ?Uuid $state = null,
-        ?Provider $provider = null
     ): self {
-        return new self($gatewayHostname, $clientId, $redirectUri, $scope, $state, $provider);
+        return new self($gatewayHostname, $clientId, $redirectUri, $purposes, $sysname, $permissions, $expire, $actions, $state);
     }
 
     public function withBaseUri(string $baseUri): self
@@ -55,21 +82,12 @@ final class AuthorizationUrlBuilder
             $baseUri,
             $this->clientId,
             $this->redirectUri,
-            $this->scope,
+            $this->purposes,
+            $this->sysname,
+            $this->permissions,
+            $this->expire,
+            $this->actions,
             $this->state,
-            $this->provider,
-        );
-    }
-
-    public function withProvider(Provider $provider): self
-    {
-        return new self(
-            $this->baseUri,
-            $this->clientId,
-            $this->redirectUri,
-            $this->scope,
-            $this->state,
-            $provider,
         );
     }
 
@@ -79,21 +97,102 @@ final class AuthorizationUrlBuilder
             $this->baseUri,
             $clientId,
             $this->redirectUri,
-            $this->scope,
+            $this->purposes,
+            $this->sysname,
+            $this->permissions,
+            $this->expire,
+            $this->actions,
             $this->state,
-            $this->provider,
         );
     }
 
-    public function withScope(Scope $scope): self
+    public function withPermission(ScopePermission $permission): self
     {
         return new self(
             $this->baseUri,
             $this->clientId,
             $this->redirectUri,
-            $scope,
+            $this->purposes,
+            $this->sysname,
+            array_unique(array_merge($this->permissions, [$permission])),
+            $this->expire,
+            $this->actions,
             $this->state,
-            $this->provider,
+        );
+    }
+
+    public function withoutPermission(ScopePermission $permission): self
+    {
+        return new self(
+            $this->baseUri,
+            $this->clientId,
+            $this->redirectUri,
+            $this->purposes,
+            $this->sysname,
+            array_diff($this->permissions, [$permission]),
+            $this->expire,
+            $this->actions,
+            $this->state,
+        );
+    }
+
+    public function withPurpose(Purpose $purpose): self
+    {
+        return new self(
+            $this->baseUri,
+            $this->clientId,
+            $this->redirectUri,
+            array_unique(array_merge($this->purposes, [$purpose])),
+            $this->sysname,
+            $this->permissions,
+            $this->expire,
+            $this->actions,
+            $this->state,
+        );
+    }
+
+    public function withoutPurpose(Purpose $purpose): self
+    {
+        return new self(
+            $this->baseUri,
+            $this->clientId,
+            $this->redirectUri,
+            array_diff($this->purposes, [$purpose]),
+            $this->sysname,
+            $this->permissions,
+            $this->expire,
+            $this->actions,
+            $this->state,
+        );
+    }
+
+    public function withSysname(Purpose $sysname): self
+    {
+        return new self(
+            $this->baseUri,
+            $this->clientId,
+            $this->redirectUri,
+            $this->purposes,
+            $sysname,
+            $this->permissions,
+            $this->expire,
+            $this->actions,
+            $this->state,
+        );
+    }
+
+    public function withExpire(int $expire): self
+    {
+        return new self(
+            $this->baseUri,
+            $this->clientId,
+            $this->redirectUri,
+            $this->purposes,
+            $this->sysname,
+            $this->permissions,
+            $expire,
+            $this->actions,
+            $this->state,
         );
     }
 
@@ -103,20 +202,42 @@ final class AuthorizationUrlBuilder
             $this->baseUri,
             $this->clientId,
             $this->redirectUri,
-            $this->scope,
+            $this->purposes,
+            $this->sysname,
+            $this->permissions,
+            $this->expire,
+            $this->actions,
             $state,
-            $this->provider,
         );
     }
 
     public function build(): string
     {
+        $permissions = array_map(
+            function (ScopePermission $permission) {
+                return $permission->value;
+            },
+            $this->permissions,
+        );
+
+        $purposes = array_map(
+            function (Purpose $purpose) {
+                return $purpose->value;
+            },
+            $this->purposes,
+        );
+
         $query = http_build_query([
             'client_id'     => $this->clientId,
             'response_type' => $this->responseType,
             'redirect_uri'  => $this->redirectUri,
-            'scope'         => $this->scope->__toString(),
+            'scope'         => ScopePermission::OPEN_ID->value,
+            'permissions'   => implode(' ', $permissions),
+            'purposes'      => implode(' ', $purposes),
+            'sysname'       => $this->sysname->value,
             'state'         => $this->state->toRfc4122(),
+            'expire'        => $this->expire,
+            'actions'       => $this->actions->value,
             'provider'      => $this->provider->value,
         ]);
 
