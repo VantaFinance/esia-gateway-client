@@ -8,10 +8,12 @@ use Symfony\Component\Serializer\Annotation\SerializedPath;
 
 final class IncomeReferenceDataItem
 {
+    /**
+     * @param list<IncomeReferenceDateItemIncomeInfo> $incomeInfo
+     */
     public function __construct(
         #[SerializedPath("[orgInfo]")]
         public readonly IncomeReferenceDateItemOrganizationInfo $organizationInfo,
-        /** @var list<IncomeReferenceDateItemIncomeInfo> $incomeInfo */
         #[SerializedPath("[incInfo]")]
         public array $incomeInfo,
     ) {

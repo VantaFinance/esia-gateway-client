@@ -9,8 +9,10 @@ use Symfony\Component\Serializer\Annotation\SerializedPath;
 
 final class DriverLicense extends Document
 {
+    /**
+     * @param numeric-string $id
+     */
     public function __construct(
-        /** @var numeric-string $id */
         public readonly string $id,
         public readonly DriverLicenseSeries $series,
         public readonly DriverLicenseNumber $number,
