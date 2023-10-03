@@ -8,21 +8,33 @@ use Webmozart\Assert\Assert;
 
 final class InnNumber
 {
-    private string $value;
+    /**
+     * @var numeric-string $value
+     */
+    private readonly string $value;
 
+    /**
+     * @param numeric-string $value
+     */
     public function __construct(
         string $value
     ) {
-        Assert::regex($value, '/^\d{12}$/', 'Налоговый номер для физического лица должен быть длиной 12 символов');
+        Assert::regex($value, '/^\d{10}(\d{2})?$/', 'Налоговый номер должен быть длиной 10 или 12 символов');
 
         $this->value = $value;
     }
 
+    /**
+     * @return numeric-string
+     */
     public function getValue(): string
     {
         return $this->value;
     }
 
+    /**
+     * @return numeric-string
+     */
     public function __toString(): string
     {
         return $this->value;

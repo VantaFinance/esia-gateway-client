@@ -6,26 +6,26 @@ namespace Vanta\Integration\EsiaGateway\Struct;
 
 use Webmozart\Assert\Assert;
 
-final class SnilsNumber
+final class DriverLicenseNumber
 {
     /**
-     * @var non-empty-string $value
+     * @var numeric-string $value
      */
     private readonly string $value;
 
     /**
-     * @param non-empty-string $value
+     * @param numeric-string $value
      */
     public function __construct(
         string $value,
     ) {
-        Assert::regex($value, '/^\d{3}-\d{3}-\d{3} \d{2}$/', 'Неверный формат данных, ожидаемый формат: XXX-XXX-XXX XX');
+        Assert::regex($value, '/^\d{6}$/', 'Неверный формат номера документа, ожидается 6 цифр');
 
         $this->value = $value;
     }
 
     /**
-     * @return non-empty-string
+     * @return numeric-string
      */
     public function getValue(): string
     {
@@ -33,7 +33,7 @@ final class SnilsNumber
     }
 
     /**
-     * @return non-empty-string
+     * @return numeric-string
      */
     public function __toString(): string
     {

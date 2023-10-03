@@ -10,13 +10,14 @@ use Symfony\Component\Serializer\Annotation\SerializedPath;
 final class RussianInternationalPassport extends Document
 {
     public function __construct(
-        public readonly int $id,
+        /** @var numeric-string $id */
+        public readonly string $id,
         public readonly RussianInternationalPassportSeries $series,
         public readonly RussianInternationalPassportNumber $number,
         #[SerializedPath('[issueDate]')]
         public readonly DateTimeImmutable $issuedAt,
         public readonly ?string $issuedBy,
     ) {
-        parent::__construct('FRGN_PASSPORT');
+        parent::__construct(DocumentType::RUSSIAN_INTERNATIONAL_PASSPORT->value);
     }
 }

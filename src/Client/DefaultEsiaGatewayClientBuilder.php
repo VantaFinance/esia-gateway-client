@@ -6,7 +6,8 @@ namespace Vanta\Integration\EsiaGateway\Client;
 
 use Doctrine\Common\Annotations\AnnotationReader;
 use Psr\Http\Client\ClientInterface as PsrHttpClient;
-use Symfony\Component\PropertyInfo\Extractor\PhpStanExtractor;
+use Symfony\Component\PropertyInfo\Extractor\PhpDocExtractor;
+use Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor;
 use Symfony\Component\PropertyInfo\PropertyInfoExtractor;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Mapping\ClassDiscriminatorFromClassMetadata;
@@ -29,11 +30,10 @@ use Vanta\Integration\EsiaGateway\Infrastructure\HttpClient\Middleware\InternalS
 use Vanta\Integration\EsiaGateway\Infrastructure\HttpClient\Middleware\Middleware;
 use Vanta\Integration\EsiaGateway\Infrastructure\HttpClient\Middleware\PipelineMiddleware;
 use Vanta\Integration\EsiaGateway\Infrastructure\HttpClient\Middleware\UrlMiddleware;
-use Vanta\Integration\EsiaGateway\Infrastructure\Serializer\Normalizer\AccountStatusNormalizer;
-use Vanta\Integration\EsiaGateway\Infrastructure\Serializer\Normalizer\AddressTypeNormalizer;
 use Vanta\Integration\EsiaGateway\Infrastructure\Serializer\Normalizer\CountryIsoNormalizer;
-use Vanta\Integration\EsiaGateway\Infrastructure\Serializer\Normalizer\GenderNormalizer;
+use Vanta\Integration\EsiaGateway\Infrastructure\Serializer\Normalizer\EmailNormalizer;
 use Vanta\Integration\EsiaGateway\Infrastructure\Serializer\Normalizer\InnNumberNormalizer;
+use Vanta\Integration\EsiaGateway\Infrastructure\Serializer\Normalizer\KppNumberNormalizer;
 use Vanta\Integration\EsiaGateway\Infrastructure\Serializer\Normalizer\PhoneNumberNormalizer;
 use Vanta\Integration\EsiaGateway\Infrastructure\Serializer\Normalizer\RussianInternationalPassportNumberNormalizer;
 use Vanta\Integration\EsiaGateway\Infrastructure\Serializer\Normalizer\RussianInternationalPassportSeriesNormalizer;
@@ -60,12 +60,12 @@ final class DefaultEsiaGatewayClientBuilder
     private string $clientSecret;
 
     /**
-     * @var non-empty-array<int, Middleware>
+     * @var non-empty-list<Middleware>
      */
     private array $middlewares;
 
     /**
-     * @param array<int, Middleware> $middlewares
+     * @param list<Middleware> $middlewares
      * @param non-empty-string       $clientId
      * @param non-empty-string       $clientSecret
      */
@@ -83,7 +83,7 @@ final class DefaultEsiaGatewayClientBuilder
     }
 
     /**
-     * @psalm-suppress MixedArgumentTypeCoercion,TooManyArguments, UndefinedClass, MissingDependency, InvalidArgument
+     * @psalm-suppress MixedArgumentTypeCoercion, TooManyArguments, UndefinedClass, MissingDependency, InvalidArgument
      *
      * @param non-empty-string $clientId
      * @param non-empty-string $clientSecret
@@ -91,6 +91,10 @@ final class DefaultEsiaGatewayClientBuilder
     public static function create(PsrHttpClient $client, string $clientId, string $clientSecret): self
     {
         $classMetadataFactory = new ClassMetadataFactory(new AnnotationLoader(new AnnotationReader()));
+
+        $reflectionExtractor = new ReflectionExtractor();
+        $phpDocExtractor = new PhpDocExtractor();
+        $propertyTypeExtractor = new PropertyInfoExtractor([$reflectionExtractor], [$phpDocExtractor, $reflectionExtractor], [$phpDocExtractor], [$reflectionExtractor], [$reflectionExtractor]);
 
         $normalizers = [
             new UnwrappingDenormalizer(),
@@ -103,8 +107,10 @@ final class DefaultEsiaGatewayClientBuilder
             new RussianInternationalPassportSeriesNormalizer(),
             new InnNumberNormalizer(),
             new SnilsNumberNormalizer(),
+            new KppNumberNormalizer(),
             new CountryIsoNormalizer(),
             new PhoneNumberNormalizer(),
+            new EmailNormalizer(),
             new ScopeNormalizer(),
             new DateTimeNormalizer([
                 DateTimeNormalizer::FORMAT_KEY => 'd.M.Y',
@@ -113,14 +119,7 @@ final class DefaultEsiaGatewayClientBuilder
                 $classMetadataFactory,
                 new MetadataAwareNameConverter($classMetadataFactory),
                 null,
-                // TODO: Alternative is ReflectionExtractor
-                new PropertyInfoExtractor(
-                    [],
-                    [new PhpStanExtractor()],
-                    [],
-                    [],
-                    []
-                ),
+                $propertyTypeExtractor,
                 new ClassDiscriminatorFromClassMetadata($classMetadataFactory),
             ),
             new ArrayDenormalizer(),
@@ -147,7 +146,7 @@ final class DefaultEsiaGatewayClientBuilder
     }
 
     /**
-     * @param non-empty-array<int, Middleware> $middlewares
+     * @param non-empty-list<Middleware> $middlewares
      */
     public function withMiddlewares(array $middlewares): self
     {
