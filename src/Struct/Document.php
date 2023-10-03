@@ -13,6 +13,7 @@ use Symfony\Component\Serializer\Annotation as Serializer;
         'FRGN_PASS'          => RussianInternationalPassport::class,
         'RF_DRIVING_LICENSE' => DriverLicense::class,
         'INCOME_REFERENCE'   => IncomeReference::class,
+        'PASSPORT_HISTORY'   => PassportHistory::class,
     ],
 )]
 abstract class Document

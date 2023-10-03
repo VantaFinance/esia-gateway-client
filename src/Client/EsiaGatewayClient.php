@@ -12,17 +12,7 @@ interface EsiaGatewayClient
 
     public function getAccessTokenByAuthorizationCode(string $code): AccessToken;
 
-    /**
-     * @param string|AccessToken $refreshToken
-     *
-     * @return AccessToken
-     */
-    public function getAccessTokenByRefreshToken($refreshToken): AccessToken;
+    public function getAccessTokenByRefreshToken(AccessToken|string $refreshToken): AccessToken;
 
-    /**
-     * @param string|AccessToken $accessToken
-     *
-     * @return UserInfo
-     */
-    public function getUserInfo($accessToken): UserInfo;
+    public function getUserInfo(AccessToken|string $accessToken): UserInfo;
 }
