@@ -58,7 +58,7 @@ final class DefaultEsiaGatewayClient implements EsiaGatewayClient
         return $this->serializer->deserialize($response->getBody()->__toString(), AccessToken::class, 'json');
     }
 
-    public function getAccessTokenByRefreshToken($refreshToken): AccessToken
+    public function getAccessTokenByRefreshToken(AccessToken|string $refreshToken): AccessToken
     {
         if ($refreshToken instanceof AccessToken) {
             $refreshToken = $refreshToken->getRefreshToken();
@@ -91,7 +91,7 @@ final class DefaultEsiaGatewayClient implements EsiaGatewayClient
      *
      * @throws ClientExceptionInterface
      */
-    public function getUserInfo($accessToken): UserInfo
+    public function getUserInfo(AccessToken|string $accessToken): UserInfo
     {
         if ($accessToken instanceof AccessToken) {
             $accessToken = $accessToken->getAccessToken();
@@ -110,8 +110,9 @@ final class DefaultEsiaGatewayClient implements EsiaGatewayClient
         );
 
         $response = $this->client->sendRequest($request);
+        $contents = $response->getBody()->__toString();
 
-        return $this->serializer->deserialize($response->getBody()->__toString(), UserInfo::class, 'json', [
+        return $this->serializer->deserialize($contents, UserInfo::class, 'json', [
             UnwrappingDenormalizer::UNWRAP_PATH => '[info]',
         ]);
     }
