@@ -22,7 +22,6 @@ final class UserInfo
     public function __construct(
         public readonly string $uid,
         public readonly bool $trusted,
-
         public readonly string $firstName,
         public readonly string $middleName,
         public readonly string $lastName,

@@ -122,13 +122,17 @@ final class AuthorizationUrlBuilder
 
     public function withPermission(ScopePermission $permission): self
     {
+        if (in_array($permission, $this->permissions, true)) {
+            return $this;
+        }
+
         return new self(
             $this->baseUri,
             $this->clientId,
             $this->redirectUri,
             $this->purposes,
             $this->sysname,
-            array_unique(array_merge($this->permissions, [$permission])),
+            array_merge($this->permissions, [$permission]),
             $this->expire,
             $this->actions,
             $this->state,
@@ -152,11 +156,15 @@ final class AuthorizationUrlBuilder
 
     public function withPurpose(Purpose $purpose): self
     {
+        if (in_array($purpose, $this->purposes, true)) {
+            return $this;
+        }
+
         return new self(
             $this->baseUri,
             $this->clientId,
             $this->redirectUri,
-            array_unique(array_merge($this->purposes, [$purpose])),
+            array_merge($this->purposes, [$purpose]),
             $this->sysname,
             $this->permissions,
             $this->expire,
