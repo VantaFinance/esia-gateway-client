@@ -20,14 +20,21 @@ final class AuthorizationUrlBuilder
 
     private string $clientId;
 
+    /**
+     * @var non-empty-string $redirectUri
+     */
     private string $redirectUri;
 
     private string $responseType = 'code';
 
-    /** @var non-empty-list<ScopePermission> */
+    /**
+     * @var non-empty-list<ScopePermission>
+     */
     private array $permissions;
 
-    /** @var non-empty-list<Purpose> */
+    /**
+     * @var non-empty-list<Purpose>
+     */
     private array $purposes;
 
     private Purpose $sysname;
@@ -41,6 +48,7 @@ final class AuthorizationUrlBuilder
     /**
      * @param non-empty-list<Purpose> $purposes
      * @param non-empty-list<ScopePermission> $permissions
+     * @param non-empty-string $redirectUri
      */
     public function __construct(
         string $baseUri,
@@ -230,6 +238,24 @@ final class AuthorizationUrlBuilder
             $this->expire,
             $this->actions,
             $state,
+        );
+    }
+
+    /**
+     * @param non-empty-string $redirectUri
+     */
+    public function withRedirectUri(string $redirectUri): self
+    {
+        return new self(
+            $this->baseUri,
+            $this->clientId,
+            $redirectUri,
+            $this->purposes,
+            $this->sysname,
+            $this->permissions,
+            $this->expire,
+            $this->actions,
+            $this->state,
         );
     }
 
