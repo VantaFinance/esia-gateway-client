@@ -15,7 +15,6 @@ use Psr\Http\Client\ClientInterface as PsrHttpClient;
 use Symfony\Component\PropertyInfo\Extractor\PhpDocExtractor;
 use Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor;
 use Symfony\Component\PropertyInfo\PropertyInfoExtractor;
-use Symfony\Component\Serializer\Encoder\DecoderInterface as Decoder;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Mapping\ClassDiscriminatorFromClassMetadata;
 use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactory;
@@ -24,7 +23,6 @@ use Symfony\Component\Serializer\NameConverter\MetadataAwareNameConverter;
 use Symfony\Component\Serializer\Normalizer\ArrayDenormalizer;
 use Symfony\Component\Serializer\Normalizer\BackedEnumNormalizer;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
-use Symfony\Component\Serializer\Normalizer\DenormalizerInterface as Denormalizer;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Normalizer\UidNormalizer;
 use Symfony\Component\Serializer\Normalizer\UnwrappingDenormalizer;
@@ -39,6 +37,7 @@ use Vanta\Integration\EsiaGateway\Infrastructure\HttpClient\Middleware\Middlewar
 use Vanta\Integration\EsiaGateway\Infrastructure\HttpClient\Middleware\PipelineMiddleware;
 use Vanta\Integration\EsiaGateway\Infrastructure\HttpClient\Middleware\UrlMiddleware;
 use Vanta\Integration\EsiaGateway\Infrastructure\Serializer\Normalizer\CountryIsoNormalizer;
+use Vanta\Integration\EsiaGateway\Infrastructure\Serializer\Normalizer\DiscriminatorDefaultNormalizer;
 use Vanta\Integration\EsiaGateway\Infrastructure\Serializer\Normalizer\EmailNormalizer;
 use Vanta\Integration\EsiaGateway\Infrastructure\Serializer\Normalizer\InnNumberNormalizer;
 use Vanta\Integration\EsiaGateway\Infrastructure\Serializer\Normalizer\KppNumberNormalizer;
@@ -56,10 +55,6 @@ final class DefaultEsiaGatewayClientBuilder
     private PsrHttpClient $client;
 
     private Serializer $serializer;
-
-    private Denormalizer $denormalizer;
-
-    private Decoder $decoder;
 
     /**
      * @var non-empty-string
@@ -81,12 +76,10 @@ final class DefaultEsiaGatewayClientBuilder
      * @param non-empty-string       $clientId
      * @param non-empty-string       $clientSecret
      */
-    private function __construct(PsrHttpClient $client, Serializer $serializer, Denormalizer $denormalizer, Decoder $decoder, string $clientId, string $clientSecret, array $middlewares = [])
+    private function __construct(PsrHttpClient $client, Serializer $serializer, string $clientId, string $clientSecret, array $middlewares = [])
     {
         $this->client       = $client;
         $this->serializer   = $serializer;
-        $this->denormalizer = $denormalizer;
-        $this->decoder      = $decoder;
         $this->clientId     = $clientId;
         $this->clientSecret = $clientSecret;
         $this->middlewares  = array_merge($middlewares, [
@@ -110,6 +103,14 @@ final class DefaultEsiaGatewayClientBuilder
         $phpDocExtractor = new PhpDocExtractor();
         $propertyTypeExtractor = new PropertyInfoExtractor([$reflectionExtractor], [$phpDocExtractor, $reflectionExtractor], [$phpDocExtractor], [$reflectionExtractor], [$reflectionExtractor]);
 
+        $objectNormalizer = new ObjectNormalizer(
+            $classMetadataFactory,
+            new MetadataAwareNameConverter($classMetadataFactory),
+            null,
+            $propertyTypeExtractor,
+            new ClassDiscriminatorFromClassMetadata($classMetadataFactory),
+        );
+
         $normalizers = [
             new UnwrappingDenormalizer(),
             new BackedEnumNormalizer(),
@@ -129,13 +130,11 @@ final class DefaultEsiaGatewayClientBuilder
             new DateTimeNormalizer([
                 DateTimeNormalizer::FORMAT_KEY => 'd.M.Y',
             ]),
-            new ObjectNormalizer(
+            new DiscriminatorDefaultNormalizer(
                 $classMetadataFactory,
-                new MetadataAwareNameConverter($classMetadataFactory),
-                null,
-                $propertyTypeExtractor,
-                new ClassDiscriminatorFromClassMetadata($classMetadataFactory),
+                $objectNormalizer,
             ),
+            $objectNormalizer,
             new ArrayDenormalizer(),
         ];
 
@@ -145,7 +144,7 @@ final class DefaultEsiaGatewayClientBuilder
 
         $serializer = new SymfonySerializer($normalizers, $encoders);
 
-        return new self($client, $serializer, $serializer, $serializer, $clientId, $clientSecret);
+        return new self($client, $serializer, $clientId, $clientSecret);
     }
 
     public function addMiddleware(Middleware $middleware): self
@@ -153,8 +152,6 @@ final class DefaultEsiaGatewayClientBuilder
         return new self(
             $this->client,
             $this->serializer,
-            $this->denormalizer,
-            $this->decoder,
             $this->clientId,
             $this->clientSecret,
             array_merge($this->middlewares, [$middleware])
@@ -169,22 +166,20 @@ final class DefaultEsiaGatewayClientBuilder
         return new self(
             $this->client,
             $this->serializer,
-            $this->denormalizer,
-            $this->decoder,
             $this->clientId,
             $this->clientSecret,
             $middlewares
         );
     }
 
-    public function withSerializer(Serializer & Denormalizer & Decoder $serializer): self
+    public function withSerializer(Serializer $serializer): self
     {
-        return new self($this->client, $serializer, $serializer, $serializer, $this->clientId, $this->clientSecret);
+        return new self($this->client, $serializer, $this->clientId, $this->clientSecret);
     }
 
     public function withClient(PsrHttpClient $client): self
     {
-        return new self($client, $this->serializer, $this->denormalizer, $this->decoder, $this->clientId, $this->clientSecret);
+        return new self($client, $this->serializer, $this->clientId, $this->clientSecret);
     }
 
     /**
@@ -196,8 +191,6 @@ final class DefaultEsiaGatewayClientBuilder
         $configuration = new ConfigurationClient($this->clientId, $this->clientSecret, $url, $redirectUri);
         return new DefaultEsiaGatewayClient(
             $this->serializer,
-            $this->denormalizer,
-            $this->decoder,
             new HttpClient(
                 $configuration,
                 new PipelineMiddleware($this->middlewares, $this->client),

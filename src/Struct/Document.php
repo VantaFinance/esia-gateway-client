@@ -11,7 +11,9 @@ declare(strict_types=1);
 namespace Vanta\Integration\EsiaGateway\Struct;
 
 use Symfony\Component\Serializer\Annotation as Serializer;
+use Vanta\Integration\EsiaGateway\Infrastructure\Serializer\Attributes\DiscriminatorDefault;
 
+#[DiscriminatorDefault(UnknownDocument::class)]
 #[Serializer\DiscriminatorMap(
     typeProperty: 'type',
     mapping: [
@@ -24,7 +26,7 @@ use Symfony\Component\Serializer\Annotation as Serializer;
 )]
 abstract class Document
 {
-    protected string $type;
+    protected readonly string $type;
 
     public function __construct(string $type)
     {

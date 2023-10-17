@@ -24,19 +24,15 @@ use Vanta\Integration\EsiaGateway\Struct\UserInfo;
 
 final class DefaultEsiaGatewayClient implements EsiaGatewayClient
 {
-    private Denormalizer $denormalizer;
-    private Decoder $decoder;
     private Serializer $serializer;
 
     private HttpClient $client;
 
     private ConfigurationClient $configuration;
 
-    public function __construct(Serializer $serializer, Denormalizer $denormalizer, Decoder $decoder, HttpClient $client, ConfigurationClient $configuration)
+    public function __construct(Serializer $serializer, HttpClient $client, ConfigurationClient $configuration)
     {
         $this->serializer    = $serializer;
-        $this->denormalizer  = $denormalizer;
-        $this->decoder       = $decoder;
         $this->client        = $client;
         $this->configuration = $configuration;
     }
@@ -121,18 +117,11 @@ final class DefaultEsiaGatewayClient implements EsiaGatewayClient
             ],
         );
 
-        $response = $this->client->sendRequest($request);
-        $contents = $response->getBody()->__toString();
-        /** @var array{info: array{documents: list<array>}} $data */
-        $data     = $this->decoder->decode($contents, 'json');
+//        $response = $this->client->sendRequest($request);
+//        $contents = $response->getBody()->__toString();
+        $contents = file_get_contents(dirname(__DIR__, 2) . '/test7.evgeniya.json');
 
-        // Temporary workaround: CPG sometimes returns document ID only; this mostly happens with previous passports
-        $data['info']['documents'] = array_values(array_filter(
-            $data['info']['documents'],
-            static fn (array $item) => array_key_exists('type', $item),
-        ));
-
-        return $this->denormalizer->denormalize($data, UserInfo::class, 'json', [
+        return $this->serializer->deserialize($contents, UserInfo::class, 'json', [
             UnwrappingDenormalizer::UNWRAP_PATH => '[info]',
         ]);
     }

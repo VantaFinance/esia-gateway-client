@@ -19,7 +19,9 @@ final class IncomeReferenceDataItem
      */
     public function __construct(
         #[SerializedPath("[orgInfo]")]
-        public readonly IncomeReferenceDateItemOrganizationInfo $organizationInfo,
+        public readonly ?IncomeReferenceDateItemOrganizationInfo $organizationInfo,
+        #[SerializedPath("[personInfo]")]
+        public readonly ?IncomeReferenceDateItemPersonInfo $personInfo,
         #[SerializedPath("[incInfo]")]
         public array $incomeInfo,
     ) {

@@ -27,7 +27,7 @@ final class RussianPassport extends Document
         public readonly ?string $issuedBy,
         #[SerializedPath('[issueId]')]
         public readonly RussianPassportDivisionCode $divisionCode,
-        public readonly string $birthPlace,
+        public readonly ?string $birthPlace,
     ) {
         parent::__construct(DocumentType::RUSSIAN_PASSPORT->value);
     }
