@@ -15,8 +15,6 @@ use InvalidArgumentException;
 use Psr\Http\Client\ClientExceptionInterface;
 use Psr\Http\Client\ClientInterface as HttpClient;
 use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
-use Symfony\Component\Serializer\Encoder\DecoderInterface as Decoder;
-use Symfony\Component\Serializer\Normalizer\DenormalizerInterface as Denormalizer;
 use Symfony\Component\Serializer\Normalizer\UnwrappingDenormalizer;
 use Symfony\Component\Serializer\SerializerInterface as Serializer;
 use Vanta\Integration\EsiaGateway\Infrastructure\HttpClient\ConfigurationClient;
