@@ -117,9 +117,8 @@ final class DefaultEsiaGatewayClient implements EsiaGatewayClient
             ],
         );
 
-//        $response = $this->client->sendRequest($request);
-//        $contents = $response->getBody()->__toString();
-        $contents = file_get_contents(dirname(__DIR__, 2) . '/test7.evgeniya.json');
+        $response = $this->client->sendRequest($request);
+        $contents = $response->getBody()->__toString();
 
         return $this->serializer->deserialize($contents, UserInfo::class, 'json', [
             UnwrappingDenormalizer::UNWRAP_PATH => '[info]',
