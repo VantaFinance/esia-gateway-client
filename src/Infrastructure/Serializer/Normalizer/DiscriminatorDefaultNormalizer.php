@@ -26,12 +26,12 @@ final class DiscriminatorDefaultNormalizer implements Denormalizer
     ) {
     }
 
-    public function denormalize(mixed $data, string $type, string $format = null, array $context = []):mixed
+    public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        $mapping = $this->metadataFactory->getMetadataFor($type);
+        $mapping         = $this->metadataFactory->getMetadataFor($type);
         $reflectionClass = $mapping->getReflectionClass();
-        $discriminator = $mapping->getClassDiscriminatorMapping();
-        if ($discriminator === null) {
+        $discriminator   = $mapping->getClassDiscriminatorMapping();
+        if (null === $discriminator) {
             return $this->objectNormalizer->denormalize($data, $type, $format, $context);
         }
 
@@ -52,7 +52,7 @@ final class DiscriminatorDefaultNormalizer implements Denormalizer
         return $this->objectNormalizer->denormalize($data, $default->class, $format, $context);
     }
 
-    public function supportsDenormalization(mixed $data, string $type, string $format = null, array $context = []): bool
+    public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
         try {
             if (!$this->metadataFactory->hasMetadataFor($type)) {
@@ -69,10 +69,10 @@ final class DiscriminatorDefaultNormalizer implements Denormalizer
         }
     }
 
-    private function hasDefaultAttribute(string $class):bool
+    private function hasDefaultAttribute(string $class): bool
     {
-        $reflectionClass =  $this->metadataFactory->getMetadataFor($class)->getReflectionClass();
-        $attributes = $reflectionClass->getAttributes(DiscriminatorDefault::class);
+        $reflectionClass = $this->metadataFactory->getMetadataFor($class)->getReflectionClass();
+        $attributes      = $reflectionClass->getAttributes(DiscriminatorDefault::class);
 
         return 0 != count($attributes);
     }

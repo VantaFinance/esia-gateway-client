@@ -11,7 +11,6 @@ declare(strict_types=1);
 namespace Vanta\Integration\EsiaGateway\Client;
 
 use GuzzleHttp\Psr7\Request;
-use InvalidArgumentException;
 use Psr\Http\Client\ClientExceptionInterface;
 use Psr\Http\Client\ClientInterface as HttpClient;
 use Symfony\Component\HttpFoundation\Request as SymfonyRequest;

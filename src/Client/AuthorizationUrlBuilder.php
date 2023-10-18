@@ -21,7 +21,7 @@ final class AuthorizationUrlBuilder
     private string $clientId;
 
     /**
-     * @var non-empty-string $redirectUri
+     * @var non-empty-string
      */
     private string $redirectUri;
 
@@ -46,9 +46,9 @@ final class AuthorizationUrlBuilder
     private Uuid $state;
 
     /**
-     * @param non-empty-list<Purpose> $purposes
+     * @param non-empty-list<Purpose>         $purposes
      * @param non-empty-list<ScopePermission> $permissions
-     * @param non-empty-string $redirectUri
+     * @param non-empty-string                $redirectUri
      */
     public function __construct(
         string $baseUri,
@@ -69,21 +69,21 @@ final class AuthorizationUrlBuilder
         Actions $actions = Actions::ALL_ACTIONS_TO_DATA,
         ?Uuid $state = null,
     ) {
-        $this->baseUri  = $baseUri;
-        $this->clientId = $clientId;
+        $this->baseUri     = $baseUri;
+        $this->clientId    = $clientId;
         $this->redirectUri = $redirectUri;
-        $this->purposes = $purposes;
-        $this->sysname = $sysname;
+        $this->purposes    = $purposes;
+        $this->sysname     = $sysname;
         $this->permissions = $permissions;
-        $this->expire = $expire;
-        $this->actions = $actions;
-        $this->state = $state ?? Uuid::v4();
+        $this->expire      = $expire;
+        $this->actions     = $actions;
+        $this->state       = $state ?? Uuid::v4();
     }
 
     /**
-     * @param non-empty-list<Purpose> $purposes
+     * @param non-empty-list<Purpose>         $purposes
      * @param non-empty-list<ScopePermission> $permissions
-     * @param non-empty-string $redirectUri
+     * @param non-empty-string                $redirectUri
      */
     public static function create(
         string $gatewayHostname,
@@ -187,6 +187,7 @@ final class AuthorizationUrlBuilder
 
         /**
          * @var non-empty-list<Purpose> $purposes
+         *
          * @phpstan-ignore-next-line False positive on dead code because of `in_array` above
          */
         $purposes = array_merge($this->purposes, [$purpose]);
@@ -288,16 +289,12 @@ final class AuthorizationUrlBuilder
     public function build(): string
     {
         $permissions = array_map(
-            function (ScopePermission $permission) {
-                return $permission->value;
-            },
+            fn (ScopePermission $permission) => $permission->value,
             $this->permissions,
         );
 
         $purposes = array_map(
-            function (Purpose $purpose) {
-                return $purpose->value;
-            },
+            fn (Purpose $purpose) => $purpose->value,
             $this->purposes,
         );
 

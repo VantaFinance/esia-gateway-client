@@ -22,7 +22,7 @@ return (new PhpCsFixer\Config())
         'concat_space'                  => ['spacing' => 'one'],
         'ordered_imports'               => true,
         'global_namespace_import'       => [
-            'import_classes'   => false,
+            'import_classes'   => true,
             'import_constants' => false,
             'import_functions' => false,
         ],
@@ -38,6 +38,8 @@ return (new PhpCsFixer\Config())
         'logical_operators'             => true,
         'class_definition'               => false,
         'binary_operator_spaces'        => ['operators' => ['=>' => 'align_single_space_minimal', '=' => 'align_single_space_minimal']],
+        'nullable_type_declaration_for_default_null_value' => true,
+        'nullable_type_declaration'                        => ['syntax' => 'question_mark'],
         '@PHP74Migration'               => true,
         '@PHP74Migration:risky'         => true,
     ])

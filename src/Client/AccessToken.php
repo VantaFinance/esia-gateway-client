@@ -61,11 +61,10 @@ final class AccessToken
     /**
      * @param non-empty-string $accessToken
      * @param non-empty-string $tokenType
-     * @param positive-int $expiresIn
-     * @param positive-int $createdAt
+     * @param positive-int     $expiresIn
+     * @param positive-int     $createdAt
      * @param non-empty-string $refreshToken
      * @param non-empty-string $idToken
-     * @param Scope $scope
      */
     public function __construct(string $accessToken, string $tokenType, int $expiresIn, int $createdAt, string $refreshToken, string $idToken, Scope $scope)
     {

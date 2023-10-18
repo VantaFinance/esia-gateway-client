@@ -17,7 +17,6 @@ use Symfony\Component\Serializer\Exception\UnexpectedValueException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface as Denormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface as Normalizer;
 use Vanta\Integration\EsiaGateway\Struct\CountryIso;
-use function is_string;
 
 final class CountryIsoNormalizer implements Normalizer, Denormalizer
 {
@@ -31,7 +30,7 @@ final class CountryIsoNormalizer implements Normalizer, Denormalizer
 
     public function denormalize($data, string $type, ?string $format = null, array $context = []): CountryIso
     {
-        if (!is_string($data)) {
+        if (!\is_string($data)) {
             throw NotNormalizableValueException::createForUnexpectedDataType(
                 sprintf('Ожидали строку, получили:%s.', get_debug_type($data)),
                 $data,

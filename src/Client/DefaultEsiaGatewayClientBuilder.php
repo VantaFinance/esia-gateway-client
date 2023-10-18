@@ -28,7 +28,6 @@ use Symfony\Component\Serializer\Normalizer\UidNormalizer;
 use Symfony\Component\Serializer\Normalizer\UnwrappingDenormalizer;
 use Symfony\Component\Serializer\Serializer as SymfonySerializer;
 use Symfony\Component\Serializer\SerializerInterface as Serializer;
-
 use Vanta\Integration\EsiaGateway\Infrastructure\HttpClient\ConfigurationClient;
 use Vanta\Integration\EsiaGateway\Infrastructure\HttpClient\HttpClient;
 use Vanta\Integration\EsiaGateway\Infrastructure\HttpClient\Middleware\ClientErrorMiddleware;
@@ -73,8 +72,8 @@ final class DefaultEsiaGatewayClientBuilder
 
     /**
      * @param list<Middleware> $middlewares
-     * @param non-empty-string       $clientId
-     * @param non-empty-string       $clientSecret
+     * @param non-empty-string $clientId
+     * @param non-empty-string $clientSecret
      */
     private function __construct(PsrHttpClient $client, Serializer $serializer, string $clientId, string $clientSecret, array $middlewares = [])
     {
@@ -99,8 +98,8 @@ final class DefaultEsiaGatewayClientBuilder
     {
         $classMetadataFactory = new ClassMetadataFactory(new AnnotationLoader(new AnnotationReader()));
 
-        $reflectionExtractor = new ReflectionExtractor();
-        $phpDocExtractor = new PhpDocExtractor();
+        $reflectionExtractor   = new ReflectionExtractor();
+        $phpDocExtractor       = new PhpDocExtractor();
         $propertyTypeExtractor = new PropertyInfoExtractor([$reflectionExtractor], [$phpDocExtractor, $reflectionExtractor], [$phpDocExtractor], [$reflectionExtractor], [$reflectionExtractor]);
 
         $objectNormalizer = new ObjectNormalizer(
@@ -189,6 +188,7 @@ final class DefaultEsiaGatewayClientBuilder
     public function createEsiaGatewayClient(string $url, string $redirectUri): EsiaGatewayClient
     {
         $configuration = new ConfigurationClient($this->clientId, $this->clientSecret, $url, $redirectUri);
+
         return new DefaultEsiaGatewayClient(
             $this->serializer,
             new HttpClient(

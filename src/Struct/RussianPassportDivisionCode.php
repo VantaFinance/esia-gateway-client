@@ -15,7 +15,7 @@ use InvalidArgumentException;
 final class RussianPassportDivisionCode
 {
     /**
-     * @var non-empty-string $value
+     * @var non-empty-string
      */
     private readonly string $value;
 

@@ -15,7 +15,7 @@ use Webmozart\Assert\Assert;
 final class DriverLicenseSeries
 {
     /**
-     * @var numeric-string $value
+     * @var numeric-string
      */
     private readonly string $value;
 

@@ -15,14 +15,14 @@ use Webmozart\Assert\Assert;
 final class Scope
 {
     /**
-     * @var list<ScopePermission> $permissions
+     * @var list<ScopePermission>
      */
     private array $permissions = [];
 
     /**
      * @param string|list<ScopePermission>|null $value
      */
-    public function __construct(string|array|null $value = null)
+    public function __construct(string|array|null $value)
     {
         if (is_string($value)) {
             $this->permissions = array_map(
@@ -44,9 +44,7 @@ final class Scope
         $value = implode(
             ' ',
             array_map(
-                function (ScopePermission $permission): string {
-                    return $permission->value;
-                },
+                fn (ScopePermission $permission): string => $permission->value,
                 $this->permissions
             ),
         );

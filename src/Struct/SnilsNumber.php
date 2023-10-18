@@ -15,7 +15,7 @@ use Webmozart\Assert\Assert;
 final class SnilsNumber
 {
     /**
-     * @var non-empty-string $value
+     * @var non-empty-string
      */
     private readonly string $value;
 

@@ -18,11 +18,11 @@ final class IncomeReferenceDataItem
      * @param list<IncomeReferenceDateItemIncomeInfo> $incomeInfo
      */
     public function __construct(
-        #[SerializedPath("[orgInfo]")]
+        #[SerializedPath('[orgInfo]')]
         public readonly ?IncomeReferenceDateItemOrganizationInfo $organizationInfo,
-        #[SerializedPath("[personInfo]")]
+        #[SerializedPath('[personInfo]')]
         public readonly ?IncomeReferenceDateItemPersonInfo $personInfo,
-        #[SerializedPath("[incInfo]")]
+        #[SerializedPath('[incInfo]')]
         public array $incomeInfo,
     ) {
     }
