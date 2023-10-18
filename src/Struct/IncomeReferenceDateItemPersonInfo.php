@@ -13,8 +13,8 @@ namespace Vanta\Integration\EsiaGateway\Struct;
 final class IncomeReferenceDateItemPersonInfo
 {
     /**
-     * @param non-empty-string $firstName
-     * @param non-empty-string $lastName
+     * @param non-empty-string  $firstName
+     * @param non-empty-string  $lastName
      * @param ?non-empty-string $middleName
      */
     public function __construct(
