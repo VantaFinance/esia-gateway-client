@@ -83,14 +83,23 @@ final class AuthorizationUrlBuilder
     /**
      * @param non-empty-list<Purpose> $purposes
      * @param non-empty-list<ScopePermission> $permissions
+     * @param non-empty-string $redirectUri
      */
     public static function create(
         string $gatewayHostname,
         string $clientId,
         string $redirectUri,
-        array $purposes,
-        Purpose $sysname,
-        array $permissions = [],
+        array $purposes = [
+            Purpose::CREDIT,
+        ],
+        Purpose $sysname = Purpose::CREDIT,
+        array $permissions = [
+            ScopePermission::FULL_NAME,
+            ScopePermission::GENDER,
+            ScopePermission::BIRTHDATE,
+            ScopePermission::MOBILE,
+            ScopePermission::EMAIL,
+        ],
         int $expire = 5,
         Actions $actions = Actions::ALL_ACTIONS_TO_DATA,
         ?Uuid $state = null,
@@ -134,13 +143,18 @@ final class AuthorizationUrlBuilder
             return $this;
         }
 
+        /**
+         * @var non-empty-list<ScopePermission> $permissions
+         */
+        $permissions = array_merge($this->permissions, [$permission]);
+
         return new self(
             $this->baseUri,
             $this->clientId,
             $this->redirectUri,
             $this->purposes,
             $this->sysname,
-            array_merge($this->permissions, [$permission]),
+            $permissions,
             $this->expire,
             $this->actions,
             $this->state,
@@ -149,13 +163,16 @@ final class AuthorizationUrlBuilder
 
     public function withoutPermission(ScopePermission $permission): self
     {
+        /** @var non-empty-list<ScopePermission> $permissions */
+        $permissions = array_diff($this->permissions, [$permission]);
+
         return new self(
             $this->baseUri,
             $this->clientId,
             $this->redirectUri,
             $this->purposes,
             $this->sysname,
-            array_diff($this->permissions, [$permission]),
+            $permissions,
             $this->expire,
             $this->actions,
             $this->state,
@@ -168,11 +185,17 @@ final class AuthorizationUrlBuilder
             return $this;
         }
 
+        /**
+         * @var non-empty-list<Purpose> $purposes
+         * @phpstan-ignore-next-line False positive on dead code because of `in_array` above
+         */
+        $purposes = array_merge($this->purposes, [$purpose]);
+
         return new self(
             $this->baseUri,
             $this->clientId,
             $this->redirectUri,
-            array_merge($this->purposes, [$purpose]),
+            $purposes,
             $this->sysname,
             $this->permissions,
             $this->expire,
@@ -183,11 +206,14 @@ final class AuthorizationUrlBuilder
 
     public function withoutPurpose(Purpose $purpose): self
     {
+        /** @var non-empty-list<Purpose> $purposes */
+        $purposes = array_diff($this->purposes, [$purpose]);
+
         return new self(
             $this->baseUri,
             $this->clientId,
             $this->redirectUri,
-            array_diff($this->purposes, [$purpose]),
+            $purposes,
             $this->sysname,
             $this->permissions,
             $this->expire,

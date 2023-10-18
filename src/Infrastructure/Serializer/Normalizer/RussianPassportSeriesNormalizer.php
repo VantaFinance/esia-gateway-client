@@ -59,7 +59,7 @@ final class RussianPassportSeriesNormalizer implements Normalizer, Denormalizer
      */
     public function normalize($object, ?string $format = null, array $context = []): string
     {
-        if (!$object instanceof RussianPassportSeries || '' == $object->getValue()) {
+        if (!$object instanceof RussianPassportSeries) {
             throw new UnexpectedValueException(sprintf('Allowed type: %s', RussianPassportSeries::class));
         }
 

@@ -62,7 +62,7 @@ final class AccessToken
      * @param non-empty-string $accessToken
      * @param non-empty-string $tokenType
      * @param positive-int $expiresIn
-     * @param int $createdAt
+     * @param positive-int $createdAt
      * @param non-empty-string $refreshToken
      * @param non-empty-string $idToken
      * @param Scope $scope

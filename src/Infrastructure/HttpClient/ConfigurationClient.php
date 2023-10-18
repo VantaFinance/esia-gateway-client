@@ -33,10 +33,10 @@ final class ConfigurationClient
     private string $redirectUri;
 
     /**
-     * @param string $clientId
-     * @param string $clientSecret
-     * @param string $url
-     * @param string $url
+     * @param non-empty-string $clientId
+     * @param non-empty-string $clientSecret
+     * @param non-empty-string $url
+     * @param non-empty-string $redirectUri
      */
     public function __construct(string $clientId, string $clientSecret, string $url, string $redirectUri)
     {
@@ -47,7 +47,7 @@ final class ConfigurationClient
     }
 
     /**
-     * @return string
+     * @return non-empty-string
      */
     public function getClientId(): string
     {
@@ -55,7 +55,7 @@ final class ConfigurationClient
     }
 
     /**
-     * @return string
+     * @return non-empty-string
      */
     public function getClientSecret(): string
     {
@@ -63,7 +63,7 @@ final class ConfigurationClient
     }
 
     /**
-     * @return string
+     * @return non-empty-string
      */
     public function getUrl(): string
     {
@@ -71,7 +71,7 @@ final class ConfigurationClient
     }
 
     /**
-     * @return string
+     * @return non-empty-string
      */
     public function getRedirectUri(): string
     {

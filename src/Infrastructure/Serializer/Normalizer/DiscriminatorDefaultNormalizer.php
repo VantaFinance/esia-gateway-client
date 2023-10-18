@@ -41,7 +41,7 @@ final class DiscriminatorDefaultNormalizer implements Denormalizer
             $key = $discriminator->getTypeProperty();
         }
 
-        if (array_key_exists($key, $data) && array_key_exists($data[$key], $discriminator->getTypesMapping()) ){
+        if (array_key_exists($key, $data) && array_key_exists($data[$key], $discriminator->getTypesMapping())) {
             return $this->objectNormalizer->denormalize($data, $type, $format, $context);
         }
 

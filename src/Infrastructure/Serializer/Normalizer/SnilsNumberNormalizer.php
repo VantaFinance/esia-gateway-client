@@ -59,7 +59,7 @@ final class SnilsNumberNormalizer implements Normalizer, Denormalizer
      */
     public function normalize($object, ?string $format = null, array $context = []): string
     {
-        if (!$object instanceof SnilsNumber || '' == $object->getValue()) {
+        if (!$object instanceof SnilsNumber) {
             throw new UnexpectedValueException(sprintf('Allowed type: %s', SnilsNumber::class));
         }
 

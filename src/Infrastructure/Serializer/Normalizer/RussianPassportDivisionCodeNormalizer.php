@@ -59,7 +59,7 @@ final class RussianPassportDivisionCodeNormalizer implements Normalizer, Denorma
      */
     public function normalize($object, ?string $format = null, array $context = []): string
     {
-        if (!$object instanceof RussianPassportDivisionCode || '' == $object->getValue()) {
+        if (!$object instanceof RussianPassportDivisionCode) {
             throw new UnexpectedValueException(sprintf('Allowed type: %s', RussianPassportDivisionCode::class));
         }
 

@@ -46,7 +46,8 @@
         "vimeo/psalm": "^5.12",
         "psalm/plugin-symfony": "^5.0",
         "guzzlehttp/guzzle": "^7.7",
-        "symfony/http-client": "5.4|^6.0"
+        "symfony/http-client": "5.4|^6.0",
+        "phpstan/phpstan": "^1.10"
     },
     "config": {
         "allow-plugins": {

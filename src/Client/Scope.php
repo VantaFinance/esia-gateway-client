@@ -35,15 +35,23 @@ final class Scope
         }
     }
 
-    public function __toString()
+    /**
+     * @return non-empty-string
+     */
+    public function __toString(): string
     {
-        return implode(
+        /** @var non-empty-string $value */
+        $value = implode(
             ' ',
             array_map(
-                function (ScopePermission $permission) { return $permission->getValue(); },
+                function (ScopePermission $permission): string {
+                    return $permission->value;
+                },
                 $this->permissions
             ),
         );
+
+        return $value;
     }
 
     public function withPermission(ScopePermission $permission): self
@@ -52,9 +60,10 @@ final class Scope
             return $this;
         }
 
-        return new self(
-            array_merge($this->permissions, [$permission]),
-        );
+        /** @var list<ScopePermission> $permissions */
+        $permissions = array_merge($this->permissions, [$permission]);
+
+        return new self($permissions);
     }
 
     public function withoutPermission(ScopePermission $permission): self
@@ -63,8 +72,9 @@ final class Scope
             return $this;
         }
 
-        return new self(
-            array_diff($this->permissions, [$permission]),
-        );
+        /** @var list<ScopePermission> $permissions */
+        $permissions = array_diff($this->permissions, [$permission]);
+
+        return new self($permissions);
     }
 }

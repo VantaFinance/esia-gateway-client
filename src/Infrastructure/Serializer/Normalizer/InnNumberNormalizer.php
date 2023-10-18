@@ -59,7 +59,7 @@ final class InnNumberNormalizer implements Normalizer, Denormalizer
      */
     public function normalize($object, ?string $format = null, array $context = []): string
     {
-        if (!$object instanceof InnNumber || '' == $object->getValue()) {
+        if (!$object instanceof InnNumber) {
             throw new UnexpectedValueException(sprintf('Allowed type: %s', InnNumber::class));
         }
 

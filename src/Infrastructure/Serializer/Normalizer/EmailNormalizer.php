@@ -59,7 +59,7 @@ final class EmailNormalizer implements Normalizer, Denormalizer
      */
     public function normalize($object, ?string $format = null, array $context = []): string
     {
-        if (!$object instanceof Email || '' == $object->getValue()) {
+        if (!$object instanceof Email) {
             throw new UnexpectedValueException(sprintf('Allowed type: %s', Email::class));
         }
 
