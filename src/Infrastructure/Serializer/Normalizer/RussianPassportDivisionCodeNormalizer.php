@@ -22,6 +22,8 @@ use Webmozart\Assert\Assert;
 final class RussianPassportDivisionCodeNormalizer implements Normalizer, Denormalizer
 {
     /**
+     * @psalm-suppress MissingParamType
+     *
      * @param array<string, mixed> $context
      */
     public function supportsDenormalization($data, string $type, ?string $format = null, array $context = []): bool
@@ -29,10 +31,15 @@ final class RussianPassportDivisionCodeNormalizer implements Normalizer, Denorma
         return RussianPassportDivisionCode::class == $type;
     }
 
+    /**
+     * @psalm-suppress MissingParamType
+     *
+     * @param array{deserialization_path?: non-empty-string} $context
+     */
     public function denormalize($data, string $type, ?string $format = null, array $context = []): RussianPassportDivisionCode
     {
         try {
-            Assert::string($data);
+            Assert::stringNotEmpty($data);
 
             return new RussianPassportDivisionCode($data);
         } catch (InvalidArgumentException $e) {
@@ -47,6 +54,8 @@ final class RussianPassportDivisionCodeNormalizer implements Normalizer, Denorma
     }
 
     /**
+     * @psalm-suppress MissingParamType
+     *
      * @param array<string, mixed> $context
      */
     public function supportsNormalization($data, ?string $format = null, array $context = []): bool
@@ -55,6 +64,11 @@ final class RussianPassportDivisionCodeNormalizer implements Normalizer, Denorma
     }
 
     /**
+     * @psalm-suppress MoreSpecificImplementedParamType
+     *
+     * @param object               $object
+     * @param array<string, mixed> $context
+     *
      * @return non-empty-string
      */
     public function normalize($object, ?string $format = null, array $context = []): string

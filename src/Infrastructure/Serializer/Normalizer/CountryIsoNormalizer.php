@@ -21,6 +21,8 @@ use Vanta\Integration\EsiaGateway\Struct\CountryIso;
 final class CountryIsoNormalizer implements Normalizer, Denormalizer
 {
     /**
+     * @psalm-suppress MissingParamType
+     *
      * @param array<string, mixed> $context
      */
     public function supportsDenormalization($data, string $type, ?string $format = null, array $context = []): bool
@@ -28,6 +30,11 @@ final class CountryIsoNormalizer implements Normalizer, Denormalizer
         return CountryIso::class == $type;
     }
 
+    /**
+     * @psalm-suppress MissingParamType
+     *
+     * @param array{deserialization_path?: non-empty-string} $context
+     */
     public function denormalize($data, string $type, ?string $format = null, array $context = []): CountryIso
     {
         if (!\is_string($data)) {
@@ -64,6 +71,8 @@ final class CountryIsoNormalizer implements Normalizer, Denormalizer
     }
 
     /**
+     * @psalm-suppress MissingParamType
+     *
      * @param array<string, mixed> $context
      */
     public function supportsNormalization($data, ?string $format = null, array $context = []): bool
@@ -72,6 +81,9 @@ final class CountryIsoNormalizer implements Normalizer, Denormalizer
     }
 
     /**
+     * @psalm-suppress MoreSpecificImplementedParamType
+     *
+     * @param object               $object
      * @param array<string, mixed> $context
      *
      * @return non-empty-string

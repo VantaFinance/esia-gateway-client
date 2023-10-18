@@ -3,7 +3,7 @@ parameters:
     paths:
         - src
     excludePaths:
-        - src/Infrastructure/Serializer/Normalizer
+        - src/Infrastructure/Serializer/Normalizer/DiscriminatorDefaultNormalizer.php
         - vendor
     exceptions:
         implicitThrows: true

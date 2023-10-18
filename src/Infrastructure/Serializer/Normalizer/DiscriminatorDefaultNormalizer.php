@@ -26,6 +26,11 @@ final class DiscriminatorDefaultNormalizer implements Denormalizer
     ) {
     }
 
+    /**
+     * @psalm-suppress MissingParamType
+     *
+     * @param array{deserialization_path?: non-empty-string} $context
+     */
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
         $mapping         = $this->metadataFactory->getMetadataFor($type);
@@ -52,6 +57,11 @@ final class DiscriminatorDefaultNormalizer implements Denormalizer
         return $this->objectNormalizer->denormalize($data, $default->class, $format, $context);
     }
 
+    /**
+     * @psalm-suppress MissingParamType
+     *
+     * @param array<string, mixed> $context
+     */
     public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
         try {

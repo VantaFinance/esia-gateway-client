@@ -12,7 +12,7 @@
         <directory name="src"/>
         <ignoreFiles>
             <directory name="vendor"/>
-            <directory name="src/Infrastructure/Serializer/Normalizer"/>
+            <file name="src/Infrastructure/Serializer/Normalizer/DiscriminatorDefaultNormalizer.php"/>
         </ignoreFiles>
     </projectFiles>
     <plugins>
