@@ -12,6 +12,9 @@ namespace Vanta\Integration\EsiaGateway\Struct;
 
 final class IncomeReferenceDateItemOrganizationInfo
 {
+    /**
+     * @param non-empty-string $fullName
+     */
     public function __construct(
         public readonly string $fullName,
         public readonly InnNumber $inn,

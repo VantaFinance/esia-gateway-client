@@ -289,12 +289,12 @@ final class AuthorizationUrlBuilder
     public function build(): string
     {
         $permissions = array_map(
-            fn (ScopePermission $permission) => $permission->value,
+            static fn (ScopePermission $permission) => $permission->value,
             $this->permissions,
         );
 
         $purposes = array_map(
-            fn (Purpose $purpose) => $purpose->value,
+            static fn (Purpose $purpose) => $purpose->value,
             $this->purposes,
         );
 

@@ -44,7 +44,7 @@ final class Scope
         $value = implode(
             ' ',
             array_map(
-                fn (ScopePermission $permission): string => $permission->value,
+                static fn (ScopePermission $permission): string => $permission->value,
                 $this->permissions
             ),
         );
