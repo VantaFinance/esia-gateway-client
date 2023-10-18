@@ -15,7 +15,7 @@ use InvalidArgumentException;
 final class CountryIso
 {
     /**
-     * @var non-empty-string $value
+     * @var non-empty-string
      */
     private string $value;
 

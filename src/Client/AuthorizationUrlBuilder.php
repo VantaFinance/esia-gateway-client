@@ -20,14 +20,21 @@ final class AuthorizationUrlBuilder
 
     private string $clientId;
 
+    /**
+     * @var non-empty-string
+     */
     private string $redirectUri;
 
     private string $responseType = 'code';
 
-    /** @var non-empty-list<ScopePermission> */
+    /**
+     * @var non-empty-list<ScopePermission>
+     */
     private array $permissions;
 
-    /** @var non-empty-list<Purpose> */
+    /**
+     * @var non-empty-list<Purpose>
+     */
     private array $purposes;
 
     private Purpose $sysname;
@@ -39,8 +46,9 @@ final class AuthorizationUrlBuilder
     private Uuid $state;
 
     /**
-     * @param non-empty-list<Purpose> $purposes
+     * @param non-empty-list<Purpose>         $purposes
      * @param non-empty-list<ScopePermission> $permissions
+     * @param non-empty-string                $redirectUri
      */
     public function __construct(
         string $baseUri,
@@ -61,28 +69,37 @@ final class AuthorizationUrlBuilder
         Actions $actions = Actions::ALL_ACTIONS_TO_DATA,
         ?Uuid $state = null,
     ) {
-        $this->baseUri  = $baseUri;
-        $this->clientId = $clientId;
+        $this->baseUri     = $baseUri;
+        $this->clientId    = $clientId;
         $this->redirectUri = $redirectUri;
-        $this->purposes = $purposes;
-        $this->sysname = $sysname;
+        $this->purposes    = $purposes;
+        $this->sysname     = $sysname;
         $this->permissions = $permissions;
-        $this->expire = $expire;
-        $this->actions = $actions;
-        $this->state = $state ?? Uuid::v4();
+        $this->expire      = $expire;
+        $this->actions     = $actions;
+        $this->state       = $state ?? Uuid::v4();
     }
 
     /**
-     * @param non-empty-list<Purpose> $purposes
+     * @param non-empty-list<Purpose>         $purposes
      * @param non-empty-list<ScopePermission> $permissions
+     * @param non-empty-string                $redirectUri
      */
     public static function create(
         string $gatewayHostname,
         string $clientId,
         string $redirectUri,
-        array $purposes,
-        Purpose $sysname,
-        array $permissions = [],
+        array $purposes = [
+            Purpose::CREDIT,
+        ],
+        Purpose $sysname = Purpose::CREDIT,
+        array $permissions = [
+            ScopePermission::FULL_NAME,
+            ScopePermission::GENDER,
+            ScopePermission::BIRTHDATE,
+            ScopePermission::MOBILE,
+            ScopePermission::EMAIL,
+        ],
         int $expire = 5,
         Actions $actions = Actions::ALL_ACTIONS_TO_DATA,
         ?Uuid $state = null,
@@ -122,13 +139,22 @@ final class AuthorizationUrlBuilder
 
     public function withPermission(ScopePermission $permission): self
     {
+        if (in_array($permission, $this->permissions, true)) {
+            return $this;
+        }
+
+        /**
+         * @var non-empty-list<ScopePermission> $permissions
+         */
+        $permissions = array_merge($this->permissions, [$permission]);
+
         return new self(
             $this->baseUri,
             $this->clientId,
             $this->redirectUri,
             $this->purposes,
             $this->sysname,
-            array_unique(array_merge($this->permissions, [$permission])),
+            $permissions,
             $this->expire,
             $this->actions,
             $this->state,
@@ -137,13 +163,16 @@ final class AuthorizationUrlBuilder
 
     public function withoutPermission(ScopePermission $permission): self
     {
+        /** @var non-empty-list<ScopePermission> $permissions */
+        $permissions = array_diff($this->permissions, [$permission]);
+
         return new self(
             $this->baseUri,
             $this->clientId,
             $this->redirectUri,
             $this->purposes,
             $this->sysname,
-            array_diff($this->permissions, [$permission]),
+            $permissions,
             $this->expire,
             $this->actions,
             $this->state,
@@ -152,11 +181,22 @@ final class AuthorizationUrlBuilder
 
     public function withPurpose(Purpose $purpose): self
     {
+        if (in_array($purpose, $this->purposes, true)) {
+            return $this;
+        }
+
+        /**
+         * @var non-empty-list<Purpose> $purposes
+         *
+         * @phpstan-ignore-next-line False positive on dead code because of `in_array` above
+         */
+        $purposes = array_merge($this->purposes, [$purpose]);
+
         return new self(
             $this->baseUri,
             $this->clientId,
             $this->redirectUri,
-            array_unique(array_merge($this->purposes, [$purpose])),
+            $purposes,
             $this->sysname,
             $this->permissions,
             $this->expire,
@@ -167,11 +207,14 @@ final class AuthorizationUrlBuilder
 
     public function withoutPurpose(Purpose $purpose): self
     {
+        /** @var non-empty-list<Purpose> $purposes */
+        $purposes = array_diff($this->purposes, [$purpose]);
+
         return new self(
             $this->baseUri,
             $this->clientId,
             $this->redirectUri,
-            array_diff($this->purposes, [$purpose]),
+            $purposes,
             $this->sysname,
             $this->permissions,
             $this->expire,
@@ -225,19 +268,33 @@ final class AuthorizationUrlBuilder
         );
     }
 
+    /**
+     * @param non-empty-string $redirectUri
+     */
+    public function withRedirectUri(string $redirectUri): self
+    {
+        return new self(
+            $this->baseUri,
+            $this->clientId,
+            $redirectUri,
+            $this->purposes,
+            $this->sysname,
+            $this->permissions,
+            $this->expire,
+            $this->actions,
+            $this->state,
+        );
+    }
+
     public function build(): string
     {
         $permissions = array_map(
-            function (ScopePermission $permission) {
-                return $permission->value;
-            },
+            static fn (ScopePermission $permission) => $permission->value,
             $this->permissions,
         );
 
         $purposes = array_map(
-            function (Purpose $purpose) {
-                return $purpose->value;
-            },
+            static fn (Purpose $purpose) => $purpose->value,
             $this->purposes,
         );
 

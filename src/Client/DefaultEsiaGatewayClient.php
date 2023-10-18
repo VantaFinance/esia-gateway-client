@@ -11,7 +11,6 @@ declare(strict_types=1);
 namespace Vanta\Integration\EsiaGateway\Client;
 
 use GuzzleHttp\Psr7\Request;
-use InvalidArgumentException;
 use Psr\Http\Client\ClientExceptionInterface;
 use Psr\Http\Client\ClientInterface as HttpClient;
 use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
@@ -70,10 +69,6 @@ final class DefaultEsiaGatewayClient implements EsiaGatewayClient
             $refreshToken = $refreshToken->getRefreshToken();
         }
 
-        if (!is_string($refreshToken)) {
-            throw new InvalidArgumentException('Argument `$refreshToken` must be a string or an instance of ' . AccessToken::class);
-        }
-
         $queryParams = http_build_query([
             'grant_type'    => 'refresh_token',
             'redirect_uri'  => $this->configuration->getRedirectUri(),
@@ -101,10 +96,6 @@ final class DefaultEsiaGatewayClient implements EsiaGatewayClient
     {
         if ($accessToken instanceof AccessToken) {
             $accessToken = $accessToken->getAccessToken();
-        }
-
-        if (!is_string($accessToken)) {
-            throw new InvalidArgumentException('Argument `$accessToken` must be a string or an instance of ' . AccessToken::class);
         }
 
         $request = new Request(

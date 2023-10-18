@@ -17,11 +17,12 @@ use Symfony\Component\Serializer\Exception\UnexpectedValueException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface as Denormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface as Normalizer;
 use Vanta\Integration\EsiaGateway\Struct\CountryIso;
-use function is_string;
 
 final class CountryIsoNormalizer implements Normalizer, Denormalizer
 {
     /**
+     * @psalm-suppress MissingParamType
+     *
      * @param array<string, mixed> $context
      */
     public function supportsDenormalization($data, string $type, ?string $format = null, array $context = []): bool
@@ -29,9 +30,14 @@ final class CountryIsoNormalizer implements Normalizer, Denormalizer
         return CountryIso::class == $type;
     }
 
+    /**
+     * @psalm-suppress MissingParamType
+     *
+     * @param array{deserialization_path?: non-empty-string} $context
+     */
     public function denormalize($data, string $type, ?string $format = null, array $context = []): CountryIso
     {
-        if (!is_string($data)) {
+        if (!\is_string($data)) {
             throw NotNormalizableValueException::createForUnexpectedDataType(
                 sprintf('Ожидали строку, получили:%s.', get_debug_type($data)),
                 $data,
@@ -65,6 +71,8 @@ final class CountryIsoNormalizer implements Normalizer, Denormalizer
     }
 
     /**
+     * @psalm-suppress MissingParamType
+     *
      * @param array<string, mixed> $context
      */
     public function supportsNormalization($data, ?string $format = null, array $context = []): bool
@@ -73,6 +81,9 @@ final class CountryIsoNormalizer implements Normalizer, Denormalizer
     }
 
     /**
+     * @psalm-suppress MoreSpecificImplementedParamType
+     *
+     * @param object               $object
      * @param array<string, mixed> $context
      *
      * @return non-empty-string

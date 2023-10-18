@@ -22,6 +22,8 @@ use Webmozart\Assert\Assert;
 final class SnilsNumberNormalizer implements Normalizer, Denormalizer
 {
     /**
+     * @psalm-suppress MissingParamType
+     *
      * @param array<string, mixed> $context
      */
     public function supportsDenormalization($data, string $type, ?string $format = null, array $context = []): bool
@@ -29,10 +31,15 @@ final class SnilsNumberNormalizer implements Normalizer, Denormalizer
         return SnilsNumber::class == $type;
     }
 
+    /**
+     * @psalm-suppress MissingParamType
+     *
+     * @param array{deserialization_path?: non-empty-string} $context
+     */
     public function denormalize($data, string $type, ?string $format = null, array $context = []): SnilsNumber
     {
         try {
-            Assert::string($data);
+            Assert::stringNotEmpty($data);
 
             return new SnilsNumber($data);
         } catch (InvalidArgumentException $e) {
@@ -47,6 +54,8 @@ final class SnilsNumberNormalizer implements Normalizer, Denormalizer
     }
 
     /**
+     * @psalm-suppress MissingParamType
+     *
      * @param array<string, mixed> $context
      */
     public function supportsNormalization($data, ?string $format = null, array $context = []): bool
@@ -55,11 +64,16 @@ final class SnilsNumberNormalizer implements Normalizer, Denormalizer
     }
 
     /**
+     * @psalm-suppress MoreSpecificImplementedParamType
+     *
+     * @param object               $object
+     * @param array<string, mixed> $context
+     *
      * @return non-empty-string
      */
     public function normalize($object, ?string $format = null, array $context = []): string
     {
-        if (!$object instanceof SnilsNumber || '' == $object->getValue()) {
+        if (!$object instanceof SnilsNumber) {
             throw new UnexpectedValueException(sprintf('Allowed type: %s', SnilsNumber::class));
         }
 

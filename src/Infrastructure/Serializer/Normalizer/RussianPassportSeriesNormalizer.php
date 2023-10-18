@@ -22,6 +22,8 @@ use Webmozart\Assert\Assert;
 final class RussianPassportSeriesNormalizer implements Normalizer, Denormalizer
 {
     /**
+     * @psalm-suppress MissingParamType
+     *
      * @param array<string, mixed> $context
      */
     public function supportsDenormalization($data, string $type, ?string $format = null, array $context = []): bool
@@ -29,9 +31,15 @@ final class RussianPassportSeriesNormalizer implements Normalizer, Denormalizer
         return RussianPassportSeries::class == $type;
     }
 
+    /**
+     * @psalm-suppress MissingParamType
+     *
+     * @param array{deserialization_path?: non-empty-string} $context
+     */
     public function denormalize($data, string $type, ?string $format = null, array $context = []): RussianPassportSeries
     {
         try {
+            Assert::numeric($data);
             Assert::string($data);
 
             return new RussianPassportSeries($data);
@@ -47,6 +55,8 @@ final class RussianPassportSeriesNormalizer implements Normalizer, Denormalizer
     }
 
     /**
+     * @psalm-suppress MissingParamType
+     *
      * @param array<string, mixed> $context
      */
     public function supportsNormalization($data, ?string $format = null, array $context = []): bool
@@ -55,11 +65,16 @@ final class RussianPassportSeriesNormalizer implements Normalizer, Denormalizer
     }
 
     /**
+     * @psalm-suppress MoreSpecificImplementedParamType
+     *
+     * @param object               $object
+     * @param array<string, mixed> $context
+     *
      * @return non-empty-string
      */
     public function normalize($object, ?string $format = null, array $context = []): string
     {
-        if (!$object instanceof RussianPassportSeries || '' == $object->getValue()) {
+        if (!$object instanceof RussianPassportSeries) {
             throw new UnexpectedValueException(sprintf('Allowed type: %s', RussianPassportSeries::class));
         }
 

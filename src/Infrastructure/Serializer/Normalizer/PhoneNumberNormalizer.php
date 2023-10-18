@@ -33,7 +33,9 @@ final class PhoneNumberNormalizer implements Denormalizer, Normalizer
     }
 
     /**
-     * @param array<string, string> $context
+     * @psalm-suppress MissingParamType
+     *
+     * @param array<string, mixed> $context
      */
     public function supportsDenormalization($data, ?string $type = null, ?string $format = null, array $context = []): bool
     {
@@ -41,8 +43,10 @@ final class PhoneNumberNormalizer implements Denormalizer, Normalizer
     }
 
     /**
-     * @param PhoneNumber   $object
-     * @param array<string> $context
+     * @psalm-suppress MoreSpecificImplementedParamType
+     *
+     * @param PhoneNumber          $object
+     * @param array<string, mixed> $context
      */
     public function normalize($object, ?string $format = null, array $context = []): string
     {
@@ -50,7 +54,9 @@ final class PhoneNumberNormalizer implements Denormalizer, Normalizer
     }
 
     /**
-     * @param array<string, string> $context
+     * @psalm-suppress MissingParamType
+     *
+     * @param array<string, mixed> $context
      */
     public function supportsNormalization($data, ?string $format = null, array $context = []): bool
     {

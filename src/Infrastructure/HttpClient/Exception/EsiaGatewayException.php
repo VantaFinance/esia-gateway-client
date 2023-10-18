@@ -10,11 +10,13 @@ declare(strict_types=1);
 
 namespace Vanta\Integration\EsiaGateway\Infrastructure\HttpClient\Exception;
 
+use Exception;
 use Psr\Http\Client\ClientExceptionInterface as ClientException;
 use Psr\Http\Message\RequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
+use Throwable;
 
-abstract class EsiaGatewayException extends \Exception implements ClientException
+abstract class EsiaGatewayException extends Exception implements ClientException
 {
     private Response $response;
 
@@ -25,7 +27,7 @@ abstract class EsiaGatewayException extends \Exception implements ClientExceptio
         Request $request,
         string $message = '',
         int $code = 0,
-        \Throwable $previous = null
+        ?Throwable $previous = null
     ) {
         $this->response = $response;
         $this->request  = $request;

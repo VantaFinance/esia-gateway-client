@@ -10,8 +10,10 @@ declare(strict_types=1);
 
 namespace Vanta\Integration\EsiaGateway\Struct;
 
-enum AccountStatus: string
+final class UnknownDocument extends Document
 {
-    case REGISTERED = 'REGISTERED';
-    case DELETED    = 'DELETED';
+    public function __construct()
+    {
+        parent::__construct(DocumentType::UNKNOWN->value);
+    }
 }

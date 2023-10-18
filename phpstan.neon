@@ -1,0 +1,14 @@
+parameters:
+    level: 9
+    paths:
+        - src
+    excludePaths:
+        - src/Infrastructure/Serializer/Normalizer/DiscriminatorDefaultNormalizer.php
+        - vendor
+    exceptions:
+        implicitThrows: true
+        check:
+            tooWideThrowType: true
+
+    parallel:
+        maximumNumberOfProcesses: 4

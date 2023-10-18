@@ -22,5 +22,11 @@ use Symfony\Component\Serializer\Annotation as Serializer;
 abstract class PreviousDocument extends Document
 {
     #[Serializer\SerializedPath('[passportType]')]
-    protected string $type;
+    protected readonly string $type;
+
+    /** @noinspection PhpMissingParentConstructorInspection */
+    public function __construct(string $type)
+    {
+        $this->type = $type;
+    }
 }
