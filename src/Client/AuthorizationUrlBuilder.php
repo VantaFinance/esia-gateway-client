@@ -286,6 +286,9 @@ final class AuthorizationUrlBuilder
         );
     }
 
+    /**
+     * @return non-empty-string
+     */
     public function build(): string
     {
         $permissions = array_map(

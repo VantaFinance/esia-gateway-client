@@ -37,6 +37,8 @@ use Vanta\Integration\EsiaGateway\Infrastructure\HttpClient\Middleware\PipelineM
 use Vanta\Integration\EsiaGateway\Infrastructure\HttpClient\Middleware\UrlMiddleware;
 use Vanta\Integration\EsiaGateway\Infrastructure\Serializer\Normalizer\CountryIsoNormalizer;
 use Vanta\Integration\EsiaGateway\Infrastructure\Serializer\Normalizer\DiscriminatorDefaultNormalizer;
+use Vanta\Integration\EsiaGateway\Infrastructure\Serializer\Normalizer\DriverLicenseNumberNormalizer;
+use Vanta\Integration\EsiaGateway\Infrastructure\Serializer\Normalizer\DriverLicenseSeriesNormalizer;
 use Vanta\Integration\EsiaGateway\Infrastructure\Serializer\Normalizer\EmailNormalizer;
 use Vanta\Integration\EsiaGateway\Infrastructure\Serializer\Normalizer\InnNumberNormalizer;
 use Vanta\Integration\EsiaGateway\Infrastructure\Serializer\Normalizer\KppNumberNormalizer;
@@ -119,6 +121,8 @@ final class DefaultEsiaGatewayClientBuilder
             new RussianPassportDivisionCodeNormalizer(),
             new RussianInternationalPassportNumberNormalizer(),
             new RussianInternationalPassportSeriesNormalizer(),
+            new DriverLicenseNumberNormalizer(),
+            new DriverLicenseSeriesNormalizer(),
             new InnNumberNormalizer(),
             new SnilsNumberNormalizer(),
             new KppNumberNormalizer(),
