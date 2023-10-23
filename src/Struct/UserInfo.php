@@ -34,7 +34,8 @@ final class UserInfo
         public readonly InnNumber $inn,
         public array $documents,
         public readonly Address $registrationAddress,
-        public readonly Address $homeAddress,
+        public readonly ?Address $homeAddress,
+        public readonly ?Address $temporaryAddress,
     ) {
     }
 }
