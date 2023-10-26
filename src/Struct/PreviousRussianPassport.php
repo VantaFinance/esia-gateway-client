@@ -22,7 +22,7 @@ final class PreviousRussianPassport extends PreviousDocument
         public readonly DateTimeImmutable $issuedAt,
         public readonly ?string $issuedBy,
         #[SerializedPath('[issueId]')]
-        public readonly RussianPassportDivisionCode $divisionCode,
+        public readonly ?RussianPassportDivisionCode $divisionCode,
     ) {
         parent::__construct(DocumentType::RUSSIAN_PASSPORT->value);
     }
