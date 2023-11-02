@@ -1,2 +1,5 @@
-vendor/
+app.php
 composer.lock
+vendor
+.idea
+/.phpunit.result.cache
