@@ -13,11 +13,11 @@ namespace Vanta\Integration\EsiaGateway\Client;
 use GuzzleHttp\Psr7\Request;
 use Psr\Http\Client\ClientExceptionInterface;
 use Psr\Http\Client\ClientInterface as HttpClient;
-use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 use Symfony\Component\Serializer\Normalizer\UnwrappingDenormalizer;
 use Symfony\Component\Serializer\SerializerInterface as Serializer;
 use Vanta\Integration\EsiaGateway\Infrastructure\HttpClient\ConfigurationClient;
 use Vanta\Integration\EsiaGateway\Struct\UserInfo;
+use Yiisoft\Http\Method;
 
 final class DefaultEsiaGatewayClient implements EsiaGatewayClient
 {
@@ -54,7 +54,7 @@ final class DefaultEsiaGatewayClient implements EsiaGatewayClient
         ]);
 
         $request = new Request(
-            SymfonyRequest::METHOD_POST,
+            Method::POST,
             sprintf('/auth/token?%s', $queryParams),
         );
 
@@ -78,7 +78,7 @@ final class DefaultEsiaGatewayClient implements EsiaGatewayClient
         ]);
 
         $request = new Request(
-            SymfonyRequest::METHOD_POST,
+            Method::POST,
             sprintf('/auth/token?%s', $queryParams),
         );
 
@@ -99,7 +99,7 @@ final class DefaultEsiaGatewayClient implements EsiaGatewayClient
         }
 
         $request = new Request(
-            SymfonyRequest::METHOD_POST,
+            Method::POST,
             '/auth/userinfo',
             [
                 'Authorization' => sprintf('Bearer %s', $accessToken),
