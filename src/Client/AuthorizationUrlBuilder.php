@@ -55,9 +55,9 @@ final class AuthorizationUrlBuilder
         string $clientId,
         string $redirectUri,
         array $purposes = [
-            Purpose::CREDIT,
+            Purpose::FIN_AGREEMENT,
         ],
-        Purpose $sysname = Purpose::CREDIT,
+        Purpose $sysname = Purpose::FIN_AGREEMENT,
         array $permissions = [
             ScopePermission::FULL_NAME,
             ScopePermission::GENDER,

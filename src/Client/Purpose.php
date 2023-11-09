@@ -12,5 +12,6 @@ namespace Vanta\Integration\EsiaGateway\Client;
 
 enum Purpose: string
 {
-    case CREDIT = 'CREDIT';
+    case CREDIT        = 'CREDIT';
+    case FIN_AGREEMENT = 'FIN_AGREEMENT';
 }
