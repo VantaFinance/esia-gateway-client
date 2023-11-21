@@ -43,11 +43,11 @@ final class DefaultEsiaGatewayClient implements EsiaGatewayClient
         );
     }
 
-    public function getAccessTokenByAuthorizationCode(string $code): AccessToken
+    public function getAccessTokenByAuthorizationCode(string $code, ?string $redirectUri = null): AccessToken
     {
         $queryParams = http_build_query([
             'grant_type'    => 'authorization_code',
-            'redirect_uri'  => $this->configuration->getRedirectUri(),
+            'redirect_uri'  => $redirectUri ?? $this->configuration->getRedirectUri(),
             'client_id'     => $this->configuration->getClientId(),
             'code'          => $code,
             'client_secret' => $this->configuration->getClientSecret(),
@@ -63,7 +63,7 @@ final class DefaultEsiaGatewayClient implements EsiaGatewayClient
         return $this->serializer->deserialize($response->getBody()->__toString(), AccessToken::class, 'json');
     }
 
-    public function getAccessTokenByRefreshToken(AccessToken|string $refreshToken): AccessToken
+    public function getAccessTokenByRefreshToken(AccessToken|string $refreshToken, ?string $redirectUri = null): AccessToken
     {
         if ($refreshToken instanceof AccessToken) {
             $refreshToken = $refreshToken->getRefreshToken();
@@ -71,7 +71,7 @@ final class DefaultEsiaGatewayClient implements EsiaGatewayClient
 
         $queryParams = http_build_query([
             'grant_type'    => 'refresh_token',
-            'redirect_uri'  => $this->configuration->getRedirectUri(),
+            'redirect_uri'  => $redirectUri ?? $this->configuration->getRedirectUri(),
             'client_id'     => $this->configuration->getClientId(),
             'refresh_token' => $refreshToken,
             'client_secret' => $this->configuration->getClientSecret(),

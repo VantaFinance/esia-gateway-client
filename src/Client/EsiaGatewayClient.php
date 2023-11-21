@@ -16,9 +16,15 @@ interface EsiaGatewayClient
 {
     public function createAuthorizationUrlBuilder(): AuthorizationUrlBuilder;
 
-    public function getAccessTokenByAuthorizationCode(string $code): AccessToken;
+    /**
+     * @param ?non-empty-string $redirectUri
+     */
+    public function getAccessTokenByAuthorizationCode(string $code, ?string $redirectUri = null): AccessToken;
 
-    public function getAccessTokenByRefreshToken(AccessToken|string $refreshToken): AccessToken;
+    /**
+     * @param ?non-empty-string $redirectUri
+     */
+    public function getAccessTokenByRefreshToken(AccessToken|string $refreshToken, ?string $redirectUri = null): AccessToken;
 
     public function getUserInfo(AccessToken|string $accessToken): UserInfo;
 }
