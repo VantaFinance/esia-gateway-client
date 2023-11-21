@@ -185,11 +185,6 @@ final class AuthorizationUrlBuilder
             return $this;
         }
 
-        /**
-         * @var non-empty-list<Purpose> $purposes
-         *
-         * @phpstan-ignore-next-line False positive on dead code because of `in_array` above
-         */
         $purposes = array_merge($this->purposes, [$purpose]);
 
         return new self(
