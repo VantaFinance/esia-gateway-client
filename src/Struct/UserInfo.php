@@ -23,7 +23,7 @@ final class UserInfo
         public readonly string $uid,
         public readonly bool $trusted,
         public readonly string $firstName,
-        public readonly string $middleName,
+        public readonly ?string $middleName,
         public readonly string $lastName,
         public readonly CountryIso $citizenship,
         public readonly DateTimeImmutable $birthDate,
@@ -33,7 +33,7 @@ final class UserInfo
         public readonly SnilsNumber $snils,
         public readonly InnNumber $inn,
         public array $documents,
-        public readonly Address $registrationAddress,
+        public readonly ?Address $registrationAddress,
         public readonly ?Address $homeAddress,
         public readonly ?Address $temporaryAddress,
     ) {
