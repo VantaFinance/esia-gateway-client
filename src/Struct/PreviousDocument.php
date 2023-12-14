@@ -15,8 +15,9 @@ use Symfony\Component\Serializer\Annotation as Serializer;
 #[Serializer\DiscriminatorMap(
     typeProperty: 'passportType',
     mapping: [
-        'rf_passport' => PreviousRussianPassport::class,
-        'frgn_pass'   => PreviousRussianInternationalPassport::class,
+        'rf_passport'   => PreviousRussianPassport::class,
+        'frgn_pass'     => PreviousRussianInternationalPassport::class,
+        'ussr_passport' => PreviousSovietPassport::class,
     ],
 )]
 abstract class PreviousDocument extends Document
