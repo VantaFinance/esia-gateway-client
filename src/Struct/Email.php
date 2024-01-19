@@ -17,7 +17,7 @@ final class Email
     /**
      * @var non-empty-string
      */
-    private string $value;
+    public readonly string $value;
 
     /**
      * @param non-empty-string $value
@@ -30,14 +30,6 @@ final class Email
         }
 
         $this->value = $value;
-    }
-
-    /**
-     * @return non-empty-string
-     */
-    public function getValue(): string
-    {
-        return $this->value;
     }
 
     /**

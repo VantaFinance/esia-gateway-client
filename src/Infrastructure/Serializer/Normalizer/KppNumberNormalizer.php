@@ -78,6 +78,6 @@ final class KppNumberNormalizer implements Normalizer, Denormalizer
             throw new UnexpectedValueException(sprintf('Allowed type: %s', KppNumber::class));
         }
 
-        return $object->getValue();
+        return $object->value;
     }
 }

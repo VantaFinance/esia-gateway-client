@@ -78,6 +78,6 @@ final class RussianPassportSeriesNormalizer implements Normalizer, Denormalizer
             throw new UnexpectedValueException(sprintf('Allowed type: %s', RussianPassportSeries::class));
         }
 
-        return $object->getValue();
+        return $object->value;
     }
 }

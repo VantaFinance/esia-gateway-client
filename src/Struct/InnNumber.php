@@ -17,7 +17,7 @@ final class InnNumber
     /**
      * @var numeric-string
      */
-    private readonly string $value;
+    public readonly string $value;
 
     /**
      * @param numeric-string $value
@@ -28,14 +28,6 @@ final class InnNumber
         Assert::regex($value, '/^\d{10}(\d{2})?$/', 'Налоговый номер должен быть длиной 10 или 12 символов');
 
         $this->value = $value;
-    }
-
-    /**
-     * @return numeric-string
-     */
-    public function getValue(): string
-    {
-        return $this->value;
     }
 
     /**

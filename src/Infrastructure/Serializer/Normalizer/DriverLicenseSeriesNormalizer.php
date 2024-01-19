@@ -78,6 +78,6 @@ final class DriverLicenseSeriesNormalizer implements Normalizer, Denormalizer
             throw new UnexpectedValueException(sprintf('Allowed type: %s', DriverLicenseSeries::class));
         }
 
-        return $object->getValue();
+        return $object->value;
     }
 }

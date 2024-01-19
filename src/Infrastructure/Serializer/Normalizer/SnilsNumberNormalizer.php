@@ -77,6 +77,6 @@ final class SnilsNumberNormalizer implements Normalizer, Denormalizer
             throw new UnexpectedValueException(sprintf('Allowed type: %s', SnilsNumber::class));
         }
 
-        return $object->getValue();
+        return $object->value;
     }
 }
