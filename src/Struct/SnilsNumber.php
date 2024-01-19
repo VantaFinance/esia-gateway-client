@@ -30,7 +30,6 @@ final class SnilsNumber
         $this->value = $value;
     }
 
-
     /**
      * @return non-empty-string
      */

@@ -37,11 +37,11 @@ final class ScopeNormalizer implements Normalizer, Denormalizer
      */
     public function denormalize($data, string $type, ?string $format = null, array $context = []): Scope
     {
-        if (is_string($data)){
+        if (is_string($data)) {
             return Scope::fromRawScope($data);
         }
 
-        if (is_array($data)){
+        if (is_array($data)) {
             return new Scope(array_map(ScopePermission::from(...), $data));
         }
 

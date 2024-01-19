@@ -30,7 +30,6 @@ final class RussianPassportNumber
         $this->value = $value;
     }
 
-
     /**
      * @return numeric-string
      */

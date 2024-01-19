@@ -36,7 +36,6 @@ final class RussianPassportDivisionCode
         $this->value = $value;
     }
 
-
     /**
      * @return non-empty-string
      */

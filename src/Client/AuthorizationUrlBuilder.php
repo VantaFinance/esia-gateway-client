@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace Vanta\Integration\EsiaGateway\Client;
 
+use LogicException;
 use Symfony\Component\Uid\Uuid;
 
 final class AuthorizationUrlBuilder
@@ -160,8 +161,8 @@ final class AuthorizationUrlBuilder
     {
         $permissions = array_diff($this->permissions, [$permission]);
 
-        if ($permissions == []){
-            throw new \LogicException('Список типов согласий должен быть не пустой');
+        if ([] == $permissions) {
+            throw new LogicException('Список типов согласий должен быть не пустой');
         }
 
         return new self(
@@ -200,8 +201,8 @@ final class AuthorizationUrlBuilder
     {
         $purposes = array_diff($this->purposes, [$purpose]);
 
-        if ($purposes == []){
-            throw new \LogicException('Мнемоника целей должна быть не пустой');
+        if ([] == $purposes) {
+            throw new LogicException('Мнемоника целей должна быть не пустой');
         }
 
         return new self(

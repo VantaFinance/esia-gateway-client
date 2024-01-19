@@ -10,7 +10,10 @@ declare(strict_types=1);
 
 namespace Vanta\Integration\EsiaGateway\Struct;
 
-final class DriverLicenseSeries implements \Stringable
+use InvalidArgumentException;
+use Stringable;
+
+final class DriverLicenseSeries implements Stringable
 {
     /**
      * @var non-empty-string
@@ -23,14 +26,12 @@ final class DriverLicenseSeries implements \Stringable
     public function __construct(
         string $value,
     ) {
-        if (!preg_match('/^\d{4}$/', $value) && !mb_ereg('\d{2}[а-яА-Я]{2}', $value)){
-            throw new \InvalidArgumentException('Ожидаем 4 цифры или 2 цифры и 2 буквы');
+        if (!preg_match('/^\d{4}$/', $value) && !mb_ereg('\d{2}[а-яА-Я]{2}', $value)) {
+            throw new InvalidArgumentException('Ожидаем 4 цифры или 2 цифры и 2 буквы');
         }
-
 
         $this->value = $value;
     }
-
 
     /**
      * @return non-empty-string
