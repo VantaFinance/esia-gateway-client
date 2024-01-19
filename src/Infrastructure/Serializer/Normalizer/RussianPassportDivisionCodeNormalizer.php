@@ -77,6 +77,6 @@ final class RussianPassportDivisionCodeNormalizer implements Normalizer, Denorma
             throw new UnexpectedValueException(sprintf('Allowed type: %s', RussianPassportDivisionCode::class));
         }
 
-        return $object->getValue();
+        return $object->value;
     }
 }

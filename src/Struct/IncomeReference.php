@@ -24,6 +24,6 @@ final class IncomeReference extends Document
         public readonly ?int $version,
         public ?array $data,
     ) {
-        parent::__construct(DocumentType::INCOME_REFERENCE->value);
+        parent::__construct(DocumentType::INCOME_REFERENCE);
     }
 }

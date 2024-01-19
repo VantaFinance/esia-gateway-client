@@ -36,6 +36,7 @@ final class DiscriminatorDefaultNormalizer implements Denormalizer
         $mapping         = $this->metadataFactory->getMetadataFor($type);
         $reflectionClass = $mapping->getReflectionClass();
         $discriminator   = $mapping->getClassDiscriminatorMapping();
+
         if (null === $discriminator) {
             return $this->objectNormalizer->denormalize($data, $type, $format, $context);
         }

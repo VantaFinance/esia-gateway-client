@@ -9,7 +9,7 @@
         },
         {
             "name": "Vanta Team",
-            "email": "info@vanta.ru"
+            "homepage": "https://vanta.ru"
         }
     ],
     "keywords": [
@@ -31,7 +31,6 @@
         "phpstan/phpdoc-parser": "^1.0",
         "phpdocumentor/reflection-docblock": "^5.0",
         "doctrine/annotations": "^1.0|^2.0",
-        "myclabs/php-enum": "^1.0",
         "brick/phonenumber": "^0.4",
         "brick/money": "^0.8.1",
         "brick/date-time": "^0.5.3",
@@ -43,7 +42,6 @@
     "require-dev": {
         "symfony/var-dumper": "^5.4|^6.0",
         "friendsofphp/php-cs-fixer": "^3.17",
-        "vimeo/psalm": "^5.12",
         "psalm/plugin-symfony": "^5.0",
         "guzzlehttp/guzzle": "^7.7",
         "symfony/http-client": "5.4|^6.0",

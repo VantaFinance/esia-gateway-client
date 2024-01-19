@@ -17,7 +17,7 @@ final class RussianInternationalPassportNumber
     /**
      * @var numeric-string
      */
-    private readonly string $value;
+    public readonly string $value;
 
     /**
      * @param numeric-string $value
@@ -28,14 +28,6 @@ final class RussianInternationalPassportNumber
         Assert::regex($value, '/^\d{7}$/', 'Неверный формат номера документа, ожидается 7 цифр');
 
         $this->value = $value;
-    }
-
-    /**
-     * @return numeric-string
-     */
-    public function getValue(): string
-    {
-        return $this->value;
     }
 
     /**

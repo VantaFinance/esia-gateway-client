@@ -22,6 +22,6 @@ final class PassportHistory extends Document
         public int $version,
         public array $history,
     ) {
-        parent::__construct(DocumentType::PASSPORT_HISTORY->value);
+        parent::__construct(DocumentType::PASSPORT_HISTORY);
     }
 }

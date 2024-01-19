@@ -78,6 +78,6 @@ final class RussianInternationalPassportNumberNormalizer implements Normalizer, 
             throw new UnexpectedValueException(sprintf('Allowed type: %s', RussianInternationalPassportNumber::class));
         }
 
-        return $object->getValue();
+        return $object->value;
     }
 }

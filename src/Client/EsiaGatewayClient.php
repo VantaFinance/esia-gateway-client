@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace Vanta\Integration\EsiaGateway\Client;
 
+use Psr\Http\Client\ClientExceptionInterface as ClientException;
 use Vanta\Integration\EsiaGateway\Struct\UserInfo;
 
 interface EsiaGatewayClient
@@ -17,14 +18,25 @@ interface EsiaGatewayClient
     public function createAuthorizationUrlBuilder(): AuthorizationUrlBuilder;
 
     /**
+     * @param non-empty-string  $code
      * @param ?non-empty-string $redirectUri
+     *
+     * @throws ClientException
      */
-    public function getAccessTokenByAuthorizationCode(string $code, ?string $redirectUri = null): AccessToken;
+    public function getPairKeyByAuthorizationCode(string $code, ?string $redirectUri = null): PairKey;
 
     /**
+     * @param non-empty-string  $refreshToken
      * @param ?non-empty-string $redirectUri
+     *
+     * @throws ClientException
      */
-    public function getAccessTokenByRefreshToken(AccessToken|string $refreshToken, ?string $redirectUri = null): AccessToken;
+    public function getPairKeyByRefreshToken(string $refreshToken, ?string $redirectUri = null): PairKey;
 
-    public function getUserInfo(AccessToken|string $accessToken): UserInfo;
+    /**
+     * @param non-empty-string $accessToken
+     *
+     * @throws ClientException
+     */
+    public function getUserInfo(string $accessToken): UserInfo;
 }

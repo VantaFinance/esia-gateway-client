@@ -33,13 +33,13 @@ return (new PhpCsFixer\Config())
         'array_syntax'                  => [
             'syntax' => 'short',
         ],
+        'nullable_type_declaration_for_default_null_value' => true,
+        'nullable_type_declaration'                        => ['syntax' => 'question_mark'],
         'phpdoc_annotation_without_dot' => false,
         'phpdoc_summary'                => false,
         'logical_operators'             => true,
-        'class_definition'               => false,
+        'class_definition'              => false,
         'binary_operator_spaces'        => ['operators' => ['=>' => 'align_single_space_minimal', '=' => 'align_single_space_minimal']],
-        'nullable_type_declaration_for_default_null_value' => true,
-        'nullable_type_declaration'                        => ['syntax' => 'question_mark'],
         '@PHP74Migration'               => true,
         '@PHP74Migration:risky'         => true,
     ])

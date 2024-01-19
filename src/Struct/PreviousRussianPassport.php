@@ -24,6 +24,6 @@ final class PreviousRussianPassport extends PreviousDocument
         #[SerializedPath('[issueId]')]
         public readonly ?RussianPassportDivisionCode $divisionCode,
     ) {
-        parent::__construct(DocumentType::RUSSIAN_PASSPORT->value);
+        parent::__construct(DocumentType::RUSSIAN_PASSPORT);
     }
 }

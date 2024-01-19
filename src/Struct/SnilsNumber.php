@@ -17,7 +17,7 @@ final class SnilsNumber
     /**
      * @var non-empty-string
      */
-    private readonly string $value;
+    public readonly string $value;
 
     /**
      * @param non-empty-string $value
@@ -28,14 +28,6 @@ final class SnilsNumber
         Assert::regex($value, '/^\d{3}-\d{3}-\d{3} \d{2}$/', 'Неверный формат данных, ожидаемый формат: XXX-XXX-XXX XX');
 
         $this->value = $value;
-    }
-
-    /**
-     * @return non-empty-string
-     */
-    public function getValue(): string
-    {
-        return $this->value;
     }
 
     /**

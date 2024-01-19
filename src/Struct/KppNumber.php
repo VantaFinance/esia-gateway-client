@@ -17,7 +17,7 @@ final class KppNumber
     /**
      * @var numeric-string
      */
-    private readonly string $value;
+    public readonly string $value;
 
     /**
      * @param numeric-string $value
@@ -28,14 +28,6 @@ final class KppNumber
         Assert::regex($value, '/^\d{9}$/', 'КПП должен состоять из 9 цифр');
 
         $this->value = $value;
-    }
-
-    /**
-     * @return numeric-string
-     */
-    public function getValue(): string
-    {
-        return $this->value;
     }
 
     /**

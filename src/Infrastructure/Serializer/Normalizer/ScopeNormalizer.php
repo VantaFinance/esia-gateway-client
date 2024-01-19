@@ -10,14 +10,13 @@ declare(strict_types=1);
 
 namespace Vanta\Integration\EsiaGateway\Infrastructure\Serializer\Normalizer;
 
-use InvalidArgumentException;
 use Symfony\Component\PropertyInfo\Type;
 use Symfony\Component\Serializer\Exception\NotNormalizableValueException;
 use Symfony\Component\Serializer\Exception\UnexpectedValueException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface as Denormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface as Normalizer;
 use Vanta\Integration\EsiaGateway\Client\Scope;
-use Webmozart\Assert\Assert;
+use Vanta\Integration\EsiaGateway\Client\ScopePermission;
 
 final class ScopeNormalizer implements Normalizer, Denormalizer
 {
@@ -38,19 +37,21 @@ final class ScopeNormalizer implements Normalizer, Denormalizer
      */
     public function denormalize($data, string $type, ?string $format = null, array $context = []): Scope
     {
-        try {
-            Assert::string($data);
-
-            return new Scope($data);
-        } catch (InvalidArgumentException $e) {
-            throw NotNormalizableValueException::createForUnexpectedDataType(
-                $e->getMessage(),
-                $data,
-                [Type::BUILTIN_TYPE_INT, Type::BUILTIN_TYPE_STRING],
-                $context['deserialization_path'] ?? null,
-                true
-            );
+        if (is_string($data)) {
+            return Scope::fromRawScope($data);
         }
+
+        if (is_array($data)) {
+            return new Scope(array_map(ScopePermission::from(...), $data));
+        }
+
+        throw NotNormalizableValueException::createForUnexpectedDataType(
+            sprintf('Ожидали массив строк/строку, получили: %s', get_debug_type($data)),
+            $data,
+            [Type::BUILTIN_TYPE_STRING, Type::BUILTIN_TYPE_ARRAY],
+            $context['deserialization_path'] ?? null,
+            true
+        );
     }
 
     /**
@@ -64,12 +65,10 @@ final class ScopeNormalizer implements Normalizer, Denormalizer
     }
 
     /**
-     * @psalm-suppress MoreSpecificImplementedParamType
-     *
      * @param object               $object
      * @param array<string, mixed> $context
      *
-     * @return non-empty-string
+     * @return literal-string
      */
     public function normalize($object, ?string $format = null, array $context = []): string
     {

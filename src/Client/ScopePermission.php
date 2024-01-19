@@ -50,7 +50,7 @@ enum ScopePermission: string
     case BIRTH_CERTIFICATE_DOC = 'birth_cert_doc';
     // свидетельство о перемене имени
     case CHANGE_FULL_NAME_CERTIFICATE_DOC = 'change_fullname_cert_doc';
-    //
+
     case DEATH_CERTIFICATE_DOC = 'death_cert_doc';
     // свидетельство о браке
     case MARRIAGE_CERTIFICATE_DOC = 'marriage_cert_doc';

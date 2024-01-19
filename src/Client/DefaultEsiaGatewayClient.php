@@ -11,7 +11,6 @@ declare(strict_types=1);
 namespace Vanta\Integration\EsiaGateway\Client;
 
 use GuzzleHttp\Psr7\Request;
-use Psr\Http\Client\ClientExceptionInterface;
 use Psr\Http\Client\ClientInterface as HttpClient;
 use Symfony\Component\Serializer\Normalizer\UnwrappingDenormalizer;
 use Symfony\Component\Serializer\SerializerInterface as Serializer;
@@ -43,7 +42,7 @@ final class DefaultEsiaGatewayClient implements EsiaGatewayClient
         );
     }
 
-    public function getAccessTokenByAuthorizationCode(string $code, ?string $redirectUri = null): AccessToken
+    public function getPairKeyByAuthorizationCode(string $code, ?string $redirectUri = null): PairKey
     {
         $queryParams = http_build_query([
             'grant_type'    => 'authorization_code',
@@ -53,22 +52,14 @@ final class DefaultEsiaGatewayClient implements EsiaGatewayClient
             'client_secret' => $this->configuration->getClientSecret(),
         ]);
 
-        $request = new Request(
-            Method::POST,
-            sprintf('/auth/token?%s', $queryParams),
-        );
+        $request = new Request(Method::POST, sprintf('/auth/token?%s', $queryParams));
+        $content = $this->client->sendRequest($request)->getBody()->__toString();
 
-        $response = $this->client->sendRequest($request);
-
-        return $this->serializer->deserialize($response->getBody()->__toString(), AccessToken::class, 'json');
+        return $this->serializer->deserialize($content, PairKey::class, 'json');
     }
 
-    public function getAccessTokenByRefreshToken(AccessToken|string $refreshToken, ?string $redirectUri = null): AccessToken
+    public function getPairKeyByRefreshToken(string $refreshToken, ?string $redirectUri = null): PairKey
     {
-        if ($refreshToken instanceof AccessToken) {
-            $refreshToken = $refreshToken->getRefreshToken();
-        }
-
         $queryParams = http_build_query([
             'grant_type'    => 'refresh_token',
             'redirect_uri'  => $redirectUri ?? $this->configuration->getRedirectUri(),
@@ -77,39 +68,24 @@ final class DefaultEsiaGatewayClient implements EsiaGatewayClient
             'client_secret' => $this->configuration->getClientSecret(),
         ]);
 
-        $request = new Request(
-            Method::POST,
-            sprintf('/auth/token?%s', $queryParams),
-        );
+        $request = new Request(Method::POST, sprintf('/auth/token?%s', $queryParams));
+        $content = $this->client->sendRequest($request)->getBody()->__toString();
 
-        $response = $this->client->sendRequest($request);
-
-        return $this->serializer->deserialize($response->getBody()->__toString(), AccessToken::class, 'json');
+        return $this->serializer->deserialize($content, PairKey::class, 'json');
     }
 
-    /**
-     * @psalm-suppress MixedInferredReturnType, MixedReturnStatement, MixedArgumentTypeCoercion, MixedArrayOffset, UndefinedConstant,
-     *
-     * @throws ClientExceptionInterface
-     */
-    public function getUserInfo(AccessToken|string $accessToken): UserInfo
+    public function getUserInfo(string $accessToken): UserInfo
     {
-        if ($accessToken instanceof AccessToken) {
-            $accessToken = $accessToken->getAccessToken();
-        }
-
         $request = new Request(
             Method::POST,
             '/auth/userinfo',
-            [
-                'Authorization' => sprintf('Bearer %s', $accessToken),
-            ],
+            ['Authorization' => sprintf('Bearer %s', $accessToken)],
         );
 
         $response = $this->client->sendRequest($request);
-        $contents = $response->getBody()->__toString();
+        $content  = $response->getBody()->__toString();
 
-        return $this->serializer->deserialize($contents, UserInfo::class, 'json', [
+        return $this->serializer->deserialize($content, UserInfo::class, 'json', [
             UnwrappingDenormalizer::UNWRAP_PATH => '[info]',
         ]);
     }

@@ -1,5 +1,6 @@
 parameters:
     level: 9
+    tmpDir: var
     paths:
         - src
     excludePaths:
@@ -12,3 +13,7 @@ parameters:
 
     parallel:
         maximumNumberOfProcesses: 4
+    stubFiles:
+        - stubs/Symfony/Serializer/DenormalizerInterface.stub
+        - stubs/Symfony/Serializer/NormalizerInterface.stub
+

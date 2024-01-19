@@ -77,6 +77,6 @@ final class EmailNormalizer implements Normalizer, Denormalizer
             throw new UnexpectedValueException(sprintf('Allowed type: %s', Email::class));
         }
 
-        return $object->getValue();
+        return $object->value;
     }
 }

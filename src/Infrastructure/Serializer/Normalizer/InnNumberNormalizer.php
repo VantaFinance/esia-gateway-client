@@ -78,6 +78,6 @@ final class InnNumberNormalizer implements Normalizer, Denormalizer
             throw new UnexpectedValueException(sprintf('Allowed type: %s', InnNumber::class));
         }
 
-        return $object->getValue();
+        return $object->value;
     }
 }
