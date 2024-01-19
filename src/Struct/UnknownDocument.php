@@ -14,6 +14,6 @@ final class UnknownDocument extends Document
 {
     public function __construct()
     {
-        parent::__construct(DocumentType::UNKNOWN->value);
+        parent::__construct(DocumentType::UNKNOWN);
     }
 }

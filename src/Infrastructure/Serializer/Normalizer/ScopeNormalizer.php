@@ -41,7 +41,7 @@ final class ScopeNormalizer implements Normalizer, Denormalizer
         try {
             Assert::string($data);
 
-            return new Scope($data);
+            return Scope::fromRawScope($data);
         } catch (InvalidArgumentException $e) {
             throw NotNormalizableValueException::createForUnexpectedDataType(
                 $e->getMessage(),
@@ -64,12 +64,10 @@ final class ScopeNormalizer implements Normalizer, Denormalizer
     }
 
     /**
-     * @psalm-suppress MoreSpecificImplementedParamType
-     *
      * @param object               $object
      * @param array<string, mixed> $context
      *
-     * @return non-empty-string
+     * @return literal-string
      */
     public function normalize($object, ?string $format = null, array $context = []): string
     {

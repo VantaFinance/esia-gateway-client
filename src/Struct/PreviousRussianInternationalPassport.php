@@ -22,6 +22,6 @@ final class PreviousRussianInternationalPassport extends PreviousDocument
         public readonly DateTimeImmutable $issuedAt,
         public readonly ?string $issuedBy,
     ) {
-        parent::__construct(DocumentType::RUSSIAN_INTERNATIONAL_PASSPORT->value);
+        parent::__construct(DocumentType::RUSSIAN_INTERNATIONAL_PASSPORT);
     }
 }

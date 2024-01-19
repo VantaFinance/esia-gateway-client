@@ -26,15 +26,10 @@ use Vanta\Integration\EsiaGateway\Infrastructure\Serializer\Attributes\Discrimin
 )]
 abstract class Document
 {
-    protected readonly string $type;
+    public readonly DocumentType $type;
 
-    public function __construct(string $type)
+    public function __construct(DocumentType $type)
     {
         $this->type = $type;
-    }
-
-    final public function getType(): string
-    {
-        return $this->type;
     }
 }

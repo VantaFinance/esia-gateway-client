@@ -17,14 +17,10 @@ use Vanta\Integration\EsiaGateway\Infrastructure\HttpClient\Middleware\PipelineM
 
 final class HttpClient implements PsrHttpClient
 {
-    private PipelineMiddleware $pipeline;
-
-    private ConfigurationClient $configuration;
-
-    public function __construct(ConfigurationClient $configuration, PipelineMiddleware $pipeline)
-    {
-        $this->pipeline      = $pipeline;
-        $this->configuration = $configuration;
+    public function __construct(
+        private readonly ConfigurationClient $configuration,
+        private readonly PipelineMiddleware $pipeline
+    ) {
     }
 
     public function sendRequest(Request $request): Response

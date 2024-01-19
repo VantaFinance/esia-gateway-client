@@ -29,6 +29,6 @@ final class RussianPassport extends Document
         public readonly RussianPassportDivisionCode $divisionCode,
         public readonly ?string $birthPlace,
     ) {
-        parent::__construct(DocumentType::RUSSIAN_PASSPORT->value);
+        parent::__construct(DocumentType::RUSSIAN_PASSPORT);
     }
 }

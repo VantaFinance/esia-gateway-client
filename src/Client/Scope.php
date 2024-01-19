@@ -10,46 +10,32 @@ declare(strict_types=1);
 
 namespace Vanta\Integration\EsiaGateway\Client;
 
-use Webmozart\Assert\Assert;
-
 final class Scope
 {
     /**
      * @var list<ScopePermission>
      */
-    private array $permissions = [];
+    private array $permissions;
 
     /**
-     * @param string|list<ScopePermission>|null $value
+     * @param list<ScopePermission> $permissions
      */
-    public function __construct(string|array|null $value)
+    public function __construct(array $permissions = [])
     {
-        if (is_string($value)) {
-            $this->permissions = array_map(
-                [ScopePermission::class, 'from'],
-                explode(' ', $value)
-            );
-        } elseif (is_array($value)) {
-            Assert::allIsInstanceOf($value, ScopePermission::class);
-            $this->permissions = $value;
-        }
+        $this->permissions = $permissions;
+    }
+
+    public static function fromRawScope(string $value): self
+    {
+        return new self(array_map(ScopePermission::from(...), explode(' ', $value)));
     }
 
     /**
-     * @return non-empty-string
+     * @return literal-string
      */
     public function __toString(): string
     {
-        /** @var non-empty-string $value */
-        $value = implode(
-            ' ',
-            array_map(
-                static fn (ScopePermission $permission): string => $permission->value,
-                $this->permissions
-            ),
-        );
-
-        return $value;
+        return implode(' ', array_column($this->permissions, 'value'));
     }
 
     public function withPermission(ScopePermission $permission): self
@@ -58,10 +44,7 @@ final class Scope
             return $this;
         }
 
-        /** @var list<ScopePermission> $permissions */
-        $permissions = array_merge($this->permissions, [$permission]);
-
-        return new self($permissions);
+        return new self(array_merge($this->permissions, [$permission]));
     }
 
     public function withoutPermission(ScopePermission $permission): self
@@ -70,9 +53,6 @@ final class Scope
             return $this;
         }
 
-        /** @var list<ScopePermission> $permissions */
-        $permissions = array_diff($this->permissions, [$permission]);
-
-        return new self($permissions);
+        return new self(array_diff($this->permissions, [$permission]));
     }
 }

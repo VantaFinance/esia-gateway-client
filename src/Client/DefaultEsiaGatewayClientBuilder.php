@@ -12,8 +12,7 @@ namespace Vanta\Integration\EsiaGateway\Client;
 
 use Doctrine\Common\Annotations\AnnotationReader;
 use Psr\Http\Client\ClientInterface as PsrHttpClient;
-use Symfony\Component\PropertyInfo\Extractor\PhpDocExtractor;
-use Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor;
+use Symfony\Component\PropertyInfo\Extractor\PhpStanExtractor;
 use Symfony\Component\PropertyInfo\PropertyInfoExtractor;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Mapping\ClassDiscriminatorFromClassMetadata;
@@ -70,7 +69,7 @@ final class DefaultEsiaGatewayClientBuilder
     private string $clientSecret;
 
     /**
-     * @var non-empty-list<Middleware>
+     * @var list<Middleware>
      */
     private array $middlewares;
 
@@ -79,38 +78,33 @@ final class DefaultEsiaGatewayClientBuilder
      * @param non-empty-string $clientId
      * @param non-empty-string $clientSecret
      */
-    private function __construct(PsrHttpClient $client, Serializer $serializer, string $clientId, string $clientSecret, array $middlewares = [])
+    private function __construct(PsrHttpClient $client, Serializer $serializer, string $clientId, string $clientSecret, array $middlewares)
     {
         $this->client       = $client;
         $this->serializer   = $serializer;
         $this->clientId     = $clientId;
         $this->clientSecret = $clientSecret;
-        $this->middlewares  = array_merge($middlewares, [
-            new UrlMiddleware(),
-            new ClientErrorMiddleware(),
-            new InternalServerMiddleware(),
-        ]);
+        $this->middlewares  = $middlewares;
     }
 
     /**
-     * @psalm-suppress MixedArgumentTypeCoercion, TooManyArguments, UndefinedClass, MissingDependency, InvalidArgument
-     *
      * @param non-empty-string $clientId
      * @param non-empty-string $clientSecret
      */
     public static function create(PsrHttpClient $client, string $clientId, string $clientSecret): self
     {
         $classMetadataFactory = new ClassMetadataFactory(new AnnotationLoader(new AnnotationReader()));
-
-        $reflectionExtractor   = new ReflectionExtractor();
-        $phpDocExtractor       = new PhpDocExtractor();
-        $propertyTypeExtractor = new PropertyInfoExtractor([$reflectionExtractor], [$phpDocExtractor, $reflectionExtractor], [$phpDocExtractor], [$reflectionExtractor], [$reflectionExtractor]);
-
-        $objectNormalizer = new ObjectNormalizer(
+        $objectNormalizer     = new ObjectNormalizer(
             $classMetadataFactory,
             new MetadataAwareNameConverter($classMetadataFactory),
             null,
-            $propertyTypeExtractor,
+            new PropertyInfoExtractor(
+                [],
+                [new PhpStanExtractor()],
+                [],
+                [],
+                []
+            ),
             new ClassDiscriminatorFromClassMetadata($classMetadataFactory),
         );
 
@@ -137,21 +131,24 @@ final class DefaultEsiaGatewayClientBuilder
             new DateTimeNormalizer([
                 DateTimeNormalizer::FORMAT_KEY => 'd.M.Y',
             ]),
-            new DiscriminatorDefaultNormalizer(
-                $classMetadataFactory,
-                $objectNormalizer,
-            ),
+            new DiscriminatorDefaultNormalizer($classMetadataFactory, $objectNormalizer),
             $objectNormalizer,
             new ArrayDenormalizer(),
         ];
 
-        $encoders = [
-            new JsonEncoder(),
+        $middlewares = [
+            new UrlMiddleware(),
+            new ClientErrorMiddleware(),
+            new InternalServerMiddleware(),
         ];
 
-        $serializer = new SymfonySerializer($normalizers, $encoders);
-
-        return new self($client, $serializer, $clientId, $clientSecret);
+        return new self(
+            $client,
+            new SymfonySerializer($normalizers, [new JsonEncoder()]),
+            $clientId,
+            $clientSecret,
+            $middlewares
+        );
     }
 
     public function addMiddleware(Middleware $middleware): self
@@ -181,12 +178,24 @@ final class DefaultEsiaGatewayClientBuilder
 
     public function withSerializer(Serializer $serializer): self
     {
-        return new self($this->client, $serializer, $this->clientId, $this->clientSecret);
+        return new self(
+            $this->client,
+            $serializer,
+            $this->clientId,
+            $this->clientSecret,
+            $this->middlewares
+        );
     }
 
     public function withClient(PsrHttpClient $client): self
     {
-        return new self($client, $this->serializer, $this->clientId, $this->clientSecret);
+        return new self(
+            $client,
+            $this->serializer,
+            $this->clientId,
+            $this->clientSecret,
+            $this->middlewares
+        );
     }
 
     /**

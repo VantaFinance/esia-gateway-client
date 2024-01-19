@@ -287,14 +287,11 @@ final class AuthorizationUrlBuilder
     public function build(): string
     {
         $permissions = array_map(
-            static fn (ScopePermission $permission) => $permission->value,
+            static fn (ScopePermission $permission): string => $permission->value,
             $this->permissions,
         );
 
-        $purposes = array_map(
-            static fn (Purpose $purpose) => $purpose->value,
-            $this->purposes,
-        );
+        $purposes = array_map(static fn (Purpose $purpose): string => $purpose->value, $this->purposes);
 
         $query = http_build_query([
             'client_id'     => $this->clientId,

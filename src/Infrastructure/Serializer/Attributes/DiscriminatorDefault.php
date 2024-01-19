@@ -15,6 +15,9 @@ use Attribute;
 #[Attribute(Attribute::TARGET_CLASS)]
 final class DiscriminatorDefault
 {
+    /**
+     * @param class-string $class
+     */
     public function __construct(public readonly string $class)
     {
     }
