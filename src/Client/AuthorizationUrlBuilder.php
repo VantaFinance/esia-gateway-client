@@ -143,18 +143,13 @@ final class AuthorizationUrlBuilder
             return $this;
         }
 
-        /**
-         * @var non-empty-list<ScopePermission> $permissions
-         */
-        $permissions = array_merge($this->permissions, [$permission]);
-
         return new self(
             $this->baseUri,
             $this->clientId,
             $this->redirectUri,
             $this->purposes,
             $this->sysname,
-            $permissions,
+            array_merge($this->permissions, [$permission]),
             $this->expire,
             $this->actions,
             $this->state,
@@ -163,8 +158,11 @@ final class AuthorizationUrlBuilder
 
     public function withoutPermission(ScopePermission $permission): self
     {
-        /** @var non-empty-list<ScopePermission> $permissions */
         $permissions = array_diff($this->permissions, [$permission]);
+
+        if ($permissions == []){
+            throw new \LogicException('Список типов согласий должен быть не пустой');
+        }
 
         return new self(
             $this->baseUri,
@@ -185,13 +183,11 @@ final class AuthorizationUrlBuilder
             return $this;
         }
 
-        $purposes = array_merge($this->purposes, [$purpose]);
-
         return new self(
             $this->baseUri,
             $this->clientId,
             $this->redirectUri,
-            $purposes,
+            array_merge($this->purposes, [$purpose]),
             $this->sysname,
             $this->permissions,
             $this->expire,
@@ -202,8 +198,11 @@ final class AuthorizationUrlBuilder
 
     public function withoutPurpose(Purpose $purpose): self
     {
-        /** @var non-empty-list<Purpose> $purposes */
         $purposes = array_diff($this->purposes, [$purpose]);
+
+        if ($purposes == []){
+            throw new \LogicException('Мнемоника целей должна быть не пустой');
+        }
 
         return new self(
             $this->baseUri,
@@ -286,20 +285,13 @@ final class AuthorizationUrlBuilder
      */
     public function build(): string
     {
-        $permissions = array_map(
-            static fn (ScopePermission $permission): string => $permission->value,
-            $this->permissions,
-        );
-
-        $purposes = array_map(static fn (Purpose $purpose): string => $purpose->value, $this->purposes);
-
         $query = http_build_query([
             'client_id'     => $this->clientId,
             'response_type' => $this->responseType,
             'redirect_uri'  => $this->redirectUri,
             'scope'         => ScopePermission::OPEN_ID->value,
-            'permissions'   => implode(' ', $permissions),
-            'purposes'      => implode(' ', $purposes),
+            'permissions'   => implode(' ', array_column($this->permissions, 'value')),
+            'purposes'      => implode(' ', array_column($this->purposes, 'value')),
             'sysname'       => $this->sysname->value,
             'state'         => $this->state->toRfc4122(),
             'expire'        => $this->expire,
