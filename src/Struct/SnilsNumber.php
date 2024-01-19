@@ -17,7 +17,7 @@ final class SnilsNumber
     /**
      * @var non-empty-string
      */
-    private readonly string $value;
+    public readonly string $value;
 
     /**
      * @param non-empty-string $value
@@ -30,13 +30,6 @@ final class SnilsNumber
         $this->value = $value;
     }
 
-    /**
-     * @return non-empty-string
-     */
-    public function getValue(): string
-    {
-        return $this->value;
-    }
 
     /**
      * @return non-empty-string

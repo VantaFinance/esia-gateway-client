@@ -10,36 +10,30 @@ declare(strict_types=1);
 
 namespace Vanta\Integration\EsiaGateway\Struct;
 
-use Webmozart\Assert\Assert;
-
-final class DriverLicenseSeries
+final class DriverLicenseSeries implements \Stringable
 {
     /**
-     * @var numeric-string
+     * @var non-empty-string
      */
-    private readonly string $value;
+    public readonly string $value;
 
     /**
-     * @param numeric-string $value
+     * @param non-empty-string $value
      */
     public function __construct(
         string $value,
     ) {
-        Assert::regex($value, '/^\d{4}$/', 'Неверный формат серии документа, ожидается 4 цифры');
+        if (!preg_match('/^\d{4}$/', $value) && !mb_ereg('\d{2}[а-яА-Я]{2}', $value)){
+            throw new \InvalidArgumentException('Ожидаем 4 цифры или 2 цифры и 2 буквы');
+        }
+
 
         $this->value = $value;
     }
 
-    /**
-     * @return numeric-string
-     */
-    public function getValue(): string
-    {
-        return $this->value;
-    }
 
     /**
-     * @return numeric-string
+     * @return non-empty-string
      */
     public function __toString(): string
     {

@@ -58,7 +58,7 @@ final class DefaultEsiaGatewayClient implements EsiaGatewayClient
         return $this->serializer->deserialize($content, PairKey::class, 'json');
     }
 
-    public function getPairByRefreshToken(string $refreshToken, ?string $redirectUri = null): PairKey
+    public function getPairKeyByRefreshToken(string $refreshToken, ?string $redirectUri = null): PairKey
     {
         $queryParams = http_build_query([
             'grant_type'    => 'refresh_token',

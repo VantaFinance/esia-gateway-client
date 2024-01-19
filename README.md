@@ -47,7 +47,7 @@ $accessToken = $client->getPairKeyByAuthorizationCode($code);
 Обмен токена обновления на токен доступа и новый токен обновления:
 
 ```php
-$accessToken = $client->getPairByRefreshToken($refreshToken);
+$accessToken = $client->getPairKeyByRefreshToken($refreshToken);
 ```
 
 Получение информации о пользователе:

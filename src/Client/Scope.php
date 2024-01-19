@@ -13,16 +13,11 @@ namespace Vanta\Integration\EsiaGateway\Client;
 final class Scope
 {
     /**
-     * @var list<ScopePermission>
-     */
-    private readonly array $permissions;
-
-    /**
      * @param list<ScopePermission> $permissions
      */
-    public function __construct(array $permissions = [])
-    {
-        $this->permissions = $permissions;
+    public function __construct(
+        public readonly array $permissions = []
+    ) {
     }
 
     public static function fromRawScope(string $value): self
