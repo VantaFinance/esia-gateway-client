@@ -15,7 +15,7 @@ final class Scope
     /**
      * @var list<ScopePermission>
      */
-    private array $permissions;
+    private readonly array $permissions;
 
     /**
      * @param list<ScopePermission> $permissions

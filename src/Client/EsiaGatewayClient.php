@@ -23,7 +23,7 @@ interface EsiaGatewayClient
      *
      * @throws ClientException
      */
-    public function getAccessTokenByAuthorizationCode(string $code, ?string $redirectUri = null): AccessToken;
+    public function getPairKeyByAuthorizationCode(string $code, ?string $redirectUri = null): PairKey;
 
     /**
      * @param non-empty-string  $refreshToken
@@ -31,7 +31,7 @@ interface EsiaGatewayClient
      *
      * @throws ClientException
      */
-    public function getAccessTokenByRefreshToken(string $refreshToken, ?string $redirectUri = null): AccessToken;
+    public function getPairByRefreshToken(string $refreshToken, ?string $redirectUri = null): PairKey;
 
     /**
      * @param non-empty-string $accessToken

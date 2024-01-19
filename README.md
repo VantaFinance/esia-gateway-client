@@ -41,13 +41,13 @@ $authorizationUrl = $client->createAuthorizationUrlBuilder()
 Обмен авторизационного кода на токен доступа и токен обновления:
 
 ```php
-$accessToken = $client->getAccessTokenByAuthorizationCode($code);
+$accessToken = $client->getPairKeyByAuthorizationCode($code);
 ```
 
 Обмен токена обновления на токен доступа и новый токен обновления:
 
 ```php
-$accessToken = $client->getAccessTokenByRefreshToken($refreshToken);
+$accessToken = $client->getPairByRefreshToken($refreshToken);
 ```
 
 Получение информации о пользователе:

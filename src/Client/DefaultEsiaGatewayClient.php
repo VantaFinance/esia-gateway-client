@@ -42,7 +42,7 @@ final class DefaultEsiaGatewayClient implements EsiaGatewayClient
         );
     }
 
-    public function getAccessTokenByAuthorizationCode(string $code, ?string $redirectUri = null): AccessToken
+    public function getPairKeyByAuthorizationCode(string $code, ?string $redirectUri = null): PairKey
     {
         $queryParams = http_build_query([
             'grant_type'    => 'authorization_code',
@@ -55,10 +55,10 @@ final class DefaultEsiaGatewayClient implements EsiaGatewayClient
         $request = new Request(Method::POST, sprintf('/auth/token?%s', $queryParams));
         $content = $this->client->sendRequest($request)->getBody()->__toString();
 
-        return $this->serializer->deserialize($content, AccessToken::class, 'json');
+        return $this->serializer->deserialize($content, PairKey::class, 'json');
     }
 
-    public function getAccessTokenByRefreshToken(string $refreshToken, ?string $redirectUri = null): AccessToken
+    public function getPairByRefreshToken(string $refreshToken, ?string $redirectUri = null): PairKey
     {
         $queryParams = http_build_query([
             'grant_type'    => 'refresh_token',
@@ -71,7 +71,7 @@ final class DefaultEsiaGatewayClient implements EsiaGatewayClient
         $request = new Request(Method::POST, sprintf('/auth/token?%s', $queryParams));
         $content = $this->client->sendRequest($request)->getBody()->__toString();
 
-        return $this->serializer->deserialize($content, AccessToken::class, 'json');
+        return $this->serializer->deserialize($content, PairKey::class, 'json');
     }
 
     public function getUserInfo(string $accessToken): UserInfo

@@ -15,7 +15,7 @@ use Symfony\Component\Serializer\Annotation\SerializedPath;
 use Symfony\Component\Serializer\Attribute\Context;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 
-final class AccessToken
+final class PairKey
 {
     /**
      * @var non-empty-string
