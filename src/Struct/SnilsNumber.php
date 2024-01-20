@@ -15,19 +15,12 @@ use Webmozart\Assert\Assert;
 final class SnilsNumber
 {
     /**
-     * @var non-empty-string
-     */
-    public readonly string $value;
-
-    /**
      * @param non-empty-string $value
      */
     public function __construct(
-        string $value,
+        public readonly string $value,
     ) {
         Assert::regex($value, '/^\d{3}-\d{3}-\d{3} \d{2}$/', 'Неверный формат данных, ожидаемый формат: XXX-XXX-XXX XX');
-
-        $this->value = $value;
     }
 
     /**

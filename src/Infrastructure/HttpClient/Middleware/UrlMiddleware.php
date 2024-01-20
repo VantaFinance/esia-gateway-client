@@ -20,7 +20,7 @@ final class UrlMiddleware implements Middleware
     public function process(Request $request, ConfigurationClient $configuration, callable $next): Response
     {
         $request = $request->withUri(
-            Utils::uriFor(sprintf('%s%s', $configuration->getUrl(), $request->getUri()->__toString()))
+            Utils::uriFor(sprintf('%s%s', $configuration->url, $request->getUri()->__toString()))
         );
 
         return $next($request, $configuration);

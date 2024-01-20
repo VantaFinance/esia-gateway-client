@@ -16,21 +16,14 @@ use Stringable;
 final class DriverLicenseSeries implements Stringable
 {
     /**
-     * @var non-empty-string
-     */
-    public readonly string $value;
-
-    /**
      * @param non-empty-string $value
      */
     public function __construct(
-        string $value,
+        public readonly string $value,
     ) {
         if (!preg_match('/^\d{4}$/', $value) && !mb_ereg('\d{2}[а-яА-Я]{2}', $value)) {
             throw new InvalidArgumentException('Ожидаем 4 цифры или 2 цифры и 2 буквы');
         }
-
-        $this->value = $value;
     }
 
     /**
