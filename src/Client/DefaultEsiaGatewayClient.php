@@ -20,9 +20,9 @@ use Yiisoft\Http\Method;
 
 final class DefaultEsiaGatewayClient implements EsiaGatewayClient
 {
-    private Serializer $serializer;
-
     private HttpClient $client;
+
+    private Serializer $serializer;
 
     private ConfigurationClient $configuration;
 
@@ -36,20 +36,20 @@ final class DefaultEsiaGatewayClient implements EsiaGatewayClient
     public function createAuthorizationUrlBuilder(): AuthorizationUrlBuilder
     {
         return new AuthorizationUrlBuilder(
-            $this->configuration->getUrl(),
-            $this->configuration->getClientId(),
-            $this->configuration->getRedirectUri(),
+            $this->configuration->url,
+            $this->configuration->clientId,
+            $this->configuration->redirectUri,
         );
     }
 
     public function getPairKeyByAuthorizationCode(string $code, ?string $redirectUri = null): PairKey
     {
         $queryParams = http_build_query([
-            'grant_type'    => 'authorization_code',
-            'redirect_uri'  => $redirectUri ?? $this->configuration->getRedirectUri(),
-            'client_id'     => $this->configuration->getClientId(),
             'code'          => $code,
-            'client_secret' => $this->configuration->getClientSecret(),
+            'grant_type'    => 'authorization_code',
+            'client_id'     => $this->configuration->clientId,
+            'client_secret' => $this->configuration->clientSecret,
+            'redirect_uri'  => $redirectUri ?? $this->configuration->redirectUri,
         ]);
 
         $request = new Request(Method::POST, sprintf('/auth/token?%s', $queryParams));
@@ -61,11 +61,11 @@ final class DefaultEsiaGatewayClient implements EsiaGatewayClient
     public function getPairKeyByRefreshToken(string $refreshToken, ?string $redirectUri = null): PairKey
     {
         $queryParams = http_build_query([
-            'grant_type'    => 'refresh_token',
-            'redirect_uri'  => $redirectUri ?? $this->configuration->getRedirectUri(),
-            'client_id'     => $this->configuration->getClientId(),
             'refresh_token' => $refreshToken,
-            'client_secret' => $this->configuration->getClientSecret(),
+            'grant_type'    => 'refresh_token',
+            'client_id'     => $this->configuration->clientId,
+            'client_secret' => $this->configuration->clientSecret,
+            'redirect_uri'  => $redirectUri ?? $this->configuration->redirectUri,
         ]);
 
         $request = new Request(Method::POST, sprintf('/auth/token?%s', $queryParams));

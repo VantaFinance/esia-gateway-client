@@ -18,9 +18,9 @@ use Throwable;
 
 abstract class EsiaGatewayException extends Exception implements ClientException
 {
-    private Response $response;
+    public readonly Request $request;
 
-    private Request $request;
+    public readonly Response $response;
 
     final protected function __construct(
         Response $response,
@@ -33,15 +33,5 @@ abstract class EsiaGatewayException extends Exception implements ClientException
         $this->request  = $request;
 
         parent::__construct($message, $code, $previous);
-    }
-
-    final public function getResponse(): Response
-    {
-        return $this->response;
-    }
-
-    final public function getRequest(): Request
-    {
-        return $this->request;
     }
 }
