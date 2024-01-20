@@ -13,7 +13,8 @@
         }
     ],
     "keywords": [
-        "esia"
+        "esia",
+        "esia-gateway"
     ],
     "autoload": {
         "psr-4": {
@@ -34,10 +35,8 @@
         "brick/phonenumber": "^0.4",
         "brick/money": "^0.8.1",
         "brick/date-time": "^0.5.3",
-        "brick/math": "^0.11.0"
-    },
-    "suggest": {
-        "psr/http-client-implementation": "Psr http client implementation"
+        "brick/math": "^0.11.0",
+        "psr/http-client-implementation": "^1.0"
     },
     "require-dev": {
         "symfony/var-dumper": "^5.4|^6.0",
