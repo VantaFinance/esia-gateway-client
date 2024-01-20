@@ -82,8 +82,7 @@ final class DefaultEsiaGatewayClient implements EsiaGatewayClient
             ['Authorization' => sprintf('Bearer %s', $accessToken)],
         );
 
-        $response = $this->client->sendRequest($request);
-        $content  = $response->getBody()->__toString();
+        $content = $this->client->sendRequest($request)->getBody()->__toString();
 
         return $this->serializer->deserialize($content, UserInfo::class, 'json', [
             UnwrappingDenormalizer::UNWRAP_PATH => '[info]',
