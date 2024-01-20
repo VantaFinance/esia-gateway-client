@@ -15,21 +15,14 @@ use InvalidArgumentException;
 final class Email
 {
     /**
-     * @var non-empty-string
-     */
-    public readonly string $value;
-
-    /**
      * @param non-empty-string $value
      */
     public function __construct(
-        string $value,
+        public readonly string $value,
     ) {
         if (!filter_var($value, FILTER_VALIDATE_EMAIL)) {
             throw new InvalidArgumentException(sprintf('Не валидный email: %s', $value));
         }
-
-        $this->value = $value;
     }
 
     /**

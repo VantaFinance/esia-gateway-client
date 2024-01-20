@@ -15,15 +15,10 @@ use InvalidArgumentException;
 final class RussianPassportDivisionCode
 {
     /**
-     * @var non-empty-string
-     */
-    public readonly string $value;
-
-    /**
      * @param non-empty-string $value
      */
     public function __construct(
-        string $value,
+        public readonly string $value,
     ) {
         if (preg_match('/^\d{6}$/', $value)) {
             $value = mb_substr($value, 0, 3) . '-' . mb_substr($value, 3, 3);
@@ -32,8 +27,6 @@ final class RussianPassportDivisionCode
         if (!preg_match('/^\d{3}-\d{3}$/m', $value)) {
             throw new InvalidArgumentException('Неверный формат кода подразделения');
         }
-
-        $this->value = $value;
     }
 
     /**
