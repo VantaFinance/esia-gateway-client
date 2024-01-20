@@ -15,19 +15,12 @@ use Webmozart\Assert\Assert;
 final class InnNumber
 {
     /**
-     * @var numeric-string
-     */
-    public readonly string $value;
-
-    /**
      * @param numeric-string $value
      */
     public function __construct(
-        string $value
+        public readonly string $value,
     ) {
         Assert::regex($value, '/^\d{10}(\d{2})?$/', 'Налоговый номер должен быть длиной 10 или 12 символов');
-
-        $this->value = $value;
     }
 
     /**

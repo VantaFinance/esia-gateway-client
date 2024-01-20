@@ -15,19 +15,12 @@ use Webmozart\Assert\Assert;
 final class RussianInternationalPassportSeries
 {
     /**
-     * @var numeric-string
-     */
-    public readonly string $value;
-
-    /**
      * @param numeric-string $value
      */
     public function __construct(
-        string $value,
+        public readonly string $value,
     ) {
         Assert::regex($value, '/^\d{2}$/', 'Неверный формат серии документа, ожидается 2 цифры');
-
-        $this->value = $value;
     }
 
     /**

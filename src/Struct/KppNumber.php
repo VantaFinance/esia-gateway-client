@@ -15,19 +15,12 @@ use Webmozart\Assert\Assert;
 final class KppNumber
 {
     /**
-     * @var numeric-string
-     */
-    public readonly string $value;
-
-    /**
      * @param numeric-string $value
      */
     public function __construct(
-        string $value
+        public readonly string $value,
     ) {
         Assert::regex($value, '/^\d{9}$/', 'КПП должен состоять из 9 цифр');
-
-        $this->value = $value;
     }
 
     /**
