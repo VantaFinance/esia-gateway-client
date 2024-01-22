@@ -27,6 +27,9 @@ use Symfony\Component\Serializer\Normalizer\UidNormalizer;
 use Symfony\Component\Serializer\Normalizer\UnwrappingDenormalizer;
 use Symfony\Component\Serializer\Serializer as SymfonySerializer;
 use Symfony\Component\Serializer\SerializerInterface as Serializer;
+
+use function Vanta\Integration\EsiaGateway\Infrastructure\Composer\isOldPackage;
+
 use Vanta\Integration\EsiaGateway\Infrastructure\HttpClient\ConfigurationClient;
 use Vanta\Integration\EsiaGateway\Infrastructure\HttpClient\HttpClient;
 use Vanta\Integration\EsiaGateway\Infrastructure\HttpClient\Middleware\ClientErrorMiddleware;
@@ -36,6 +39,7 @@ use Vanta\Integration\EsiaGateway\Infrastructure\HttpClient\Middleware\PipelineM
 use Vanta\Integration\EsiaGateway\Infrastructure\HttpClient\Middleware\UrlMiddleware;
 use Vanta\Integration\EsiaGateway\Infrastructure\Serializer\Normalizer\BigDecimalNormalizer;
 use Vanta\Integration\EsiaGateway\Infrastructure\Serializer\Normalizer\CountryIsoNormalizer;
+use Vanta\Integration\EsiaGateway\Infrastructure\Serializer\Normalizer\DateTimeUnixTimeNormalizer;
 use Vanta\Integration\EsiaGateway\Infrastructure\Serializer\Normalizer\DiscriminatorDefaultNormalizer;
 use Vanta\Integration\EsiaGateway\Infrastructure\Serializer\Normalizer\DriverLicenseNumberNormalizer;
 use Vanta\Integration\EsiaGateway\Infrastructure\Serializer\Normalizer\DriverLicenseSeriesNormalizer;
@@ -108,6 +112,14 @@ final class DefaultEsiaGatewayClientBuilder
             new ClassDiscriminatorFromClassMetadata($classMetadataFactory),
         );
 
+        $datetimeNormalizer = new DateTimeNormalizer([
+            DateTimeNormalizer::FORMAT_KEY => 'd.M.Y',
+        ]);
+
+        if (isOldPackage('symfony/serializer', '6.4')) {
+            $datetimeNormalizer = new DateTimeUnixTimeNormalizer($datetimeNormalizer);
+        }
+
         $normalizers = [
             new UnwrappingDenormalizer(),
             new BackedEnumNormalizer(),
@@ -128,9 +140,7 @@ final class DefaultEsiaGatewayClientBuilder
             new ScopeNormalizer(),
             new YearNormalizer(),
             new BigDecimalNormalizer(),
-            new DateTimeNormalizer([
-                DateTimeNormalizer::FORMAT_KEY => 'd.M.Y',
-            ]),
+            $datetimeNormalizer,
             new DiscriminatorDefaultNormalizer($classMetadataFactory, $objectNormalizer),
             $objectNormalizer,
             new ArrayDenormalizer(),

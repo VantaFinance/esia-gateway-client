@@ -12,6 +12,7 @@ namespace Vanta\Integration\EsiaGateway\Client;
 
 use GuzzleHttp\Psr7\Request;
 use Psr\Http\Client\ClientInterface as HttpClient;
+use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Symfony\Component\Serializer\Normalizer\UnwrappingDenormalizer;
 use Symfony\Component\Serializer\SerializerInterface as Serializer;
 use Vanta\Integration\EsiaGateway\Infrastructure\HttpClient\ConfigurationClient;
@@ -55,7 +56,9 @@ final class DefaultEsiaGatewayClient implements EsiaGatewayClient
         $request = new Request(Method::POST, sprintf('/auth/token?%s', $queryParams));
         $content = $this->client->sendRequest($request)->getBody()->__toString();
 
-        return $this->serializer->deserialize($content, PairKey::class, 'json');
+        return $this->serializer->deserialize($content, PairKey::class, 'json', [
+            DateTimeNormalizer::FORMAT_KEY => 'U',
+        ]);
     }
 
     public function getPairKeyByRefreshToken(string $refreshToken, ?string $redirectUri = null): PairKey
@@ -71,7 +74,9 @@ final class DefaultEsiaGatewayClient implements EsiaGatewayClient
         $request = new Request(Method::POST, sprintf('/auth/token?%s', $queryParams));
         $content = $this->client->sendRequest($request)->getBody()->__toString();
 
-        return $this->serializer->deserialize($content, PairKey::class, 'json');
+        return $this->serializer->deserialize($content, PairKey::class, 'json', [
+            DateTimeNormalizer::FORMAT_KEY => 'U',
+        ]);
     }
 
     public function getUserInfo(string $accessToken): UserInfo

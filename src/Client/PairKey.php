@@ -12,8 +12,6 @@ namespace Vanta\Integration\EsiaGateway\Client;
 
 use DateTimeImmutable;
 use Symfony\Component\Serializer\Annotation\SerializedPath;
-use Symfony\Component\Serializer\Attribute\Context;
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 
 final class PairKey
 {
@@ -50,7 +48,6 @@ final class PairKey
     public readonly int $expiresIn;
 
     #[SerializedPath('[created_at]')]
-    #[Context(context: [DateTimeNormalizer::FORMAT_KEY => 'U'])]
     public readonly DateTimeImmutable $createdAt;
 
     /**

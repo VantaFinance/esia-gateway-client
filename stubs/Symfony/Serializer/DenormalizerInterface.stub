@@ -32,7 +32,7 @@ interface DenormalizerInterface
      * @param mixed                                          $data    Data to restore
      * @param string                                         $type    The expected class to instantiate
      * @param string|null                                    $format  Format the given data was extracted from
-     * @param array{deserialization_path?: non-empty-string} $context Options available to the denormalizer
+     * @param array{deserialization_path?: non-empty-string, datetime_format?:non-empty-string} $context Options available to the denormalizer
      *
      * @return mixed
      *
