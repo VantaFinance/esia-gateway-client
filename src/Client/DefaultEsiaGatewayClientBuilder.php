@@ -36,6 +36,7 @@ use Vanta\Integration\EsiaGateway\Infrastructure\HttpClient\Middleware\PipelineM
 use Vanta\Integration\EsiaGateway\Infrastructure\HttpClient\Middleware\UrlMiddleware;
 use Vanta\Integration\EsiaGateway\Infrastructure\Serializer\Normalizer\BigDecimalNormalizer;
 use Vanta\Integration\EsiaGateway\Infrastructure\Serializer\Normalizer\CountryIsoNormalizer;
+use Vanta\Integration\EsiaGateway\Infrastructure\Serializer\Normalizer\DateTimeUnixTimeNormalizer;
 use Vanta\Integration\EsiaGateway\Infrastructure\Serializer\Normalizer\DiscriminatorDefaultNormalizer;
 use Vanta\Integration\EsiaGateway\Infrastructure\Serializer\Normalizer\DriverLicenseNumberNormalizer;
 use Vanta\Integration\EsiaGateway\Infrastructure\Serializer\Normalizer\DriverLicenseSeriesNormalizer;
@@ -51,6 +52,7 @@ use Vanta\Integration\EsiaGateway\Infrastructure\Serializer\Normalizer\RussianPa
 use Vanta\Integration\EsiaGateway\Infrastructure\Serializer\Normalizer\ScopeNormalizer;
 use Vanta\Integration\EsiaGateway\Infrastructure\Serializer\Normalizer\SnilsNumberNormalizer;
 use Vanta\Integration\EsiaGateway\Infrastructure\Serializer\Normalizer\YearNormalizer;
+use function Vanta\Integration\EsiaGateway\Infrastructure\Composer\isOldPackage;
 
 final class DefaultEsiaGatewayClientBuilder
 {
@@ -108,6 +110,15 @@ final class DefaultEsiaGatewayClientBuilder
             new ClassDiscriminatorFromClassMetadata($classMetadataFactory),
         );
 
+        $datetimeNormalizer = new DateTimeNormalizer([
+            DateTimeNormalizer::FORMAT_KEY => 'd.M.Y',
+        ]);
+
+        if (isOldPackage('symfony/serializer', '6.4')){
+            $datetimeNormalizer = new DateTimeUnixTimeNormalizer($datetimeNormalizer);
+        }
+
+
         $normalizers = [
             new UnwrappingDenormalizer(),
             new BackedEnumNormalizer(),
@@ -128,13 +139,13 @@ final class DefaultEsiaGatewayClientBuilder
             new ScopeNormalizer(),
             new YearNormalizer(),
             new BigDecimalNormalizer(),
-            new DateTimeNormalizer([
-                DateTimeNormalizer::FORMAT_KEY => 'd.M.Y',
-            ]),
+            $datetimeNormalizer,
             new DiscriminatorDefaultNormalizer($classMetadataFactory, $objectNormalizer),
             $objectNormalizer,
             new ArrayDenormalizer(),
         ];
+
+
 
         $middlewares = [
             new UrlMiddleware(),
