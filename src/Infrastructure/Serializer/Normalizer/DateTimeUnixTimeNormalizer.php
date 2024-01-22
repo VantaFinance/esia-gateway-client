@@ -37,9 +37,13 @@ final class DateTimeUnixTimeNormalizer implements Normalizer, Denormalizer, Cach
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): DateTimeInterface
     {
         if (\is_int($data) || \is_float($data)) {
-            switch ($context[DateTimeNormalizer::FORMAT_KEY]  ?? null) {
-                case 'U': $data = sprintf('%d', $data); break;
-                case 'U.u': $data = sprintf('%.6F', $data); break;
+            switch ($context[DateTimeNormalizer::FORMAT_KEY] ?? null) {
+                case 'U': $data = sprintf('%d', $data);
+
+                    break;
+                case 'U.u': $data = sprintf('%.6F', $data);
+
+                    break;
             }
         }
 

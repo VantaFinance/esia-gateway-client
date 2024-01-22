@@ -27,6 +27,9 @@ use Symfony\Component\Serializer\Normalizer\UidNormalizer;
 use Symfony\Component\Serializer\Normalizer\UnwrappingDenormalizer;
 use Symfony\Component\Serializer\Serializer as SymfonySerializer;
 use Symfony\Component\Serializer\SerializerInterface as Serializer;
+
+use function Vanta\Integration\EsiaGateway\Infrastructure\Composer\isOldPackage;
+
 use Vanta\Integration\EsiaGateway\Infrastructure\HttpClient\ConfigurationClient;
 use Vanta\Integration\EsiaGateway\Infrastructure\HttpClient\HttpClient;
 use Vanta\Integration\EsiaGateway\Infrastructure\HttpClient\Middleware\ClientErrorMiddleware;
@@ -52,7 +55,6 @@ use Vanta\Integration\EsiaGateway\Infrastructure\Serializer\Normalizer\RussianPa
 use Vanta\Integration\EsiaGateway\Infrastructure\Serializer\Normalizer\ScopeNormalizer;
 use Vanta\Integration\EsiaGateway\Infrastructure\Serializer\Normalizer\SnilsNumberNormalizer;
 use Vanta\Integration\EsiaGateway\Infrastructure\Serializer\Normalizer\YearNormalizer;
-use function Vanta\Integration\EsiaGateway\Infrastructure\Composer\isOldPackage;
 
 final class DefaultEsiaGatewayClientBuilder
 {
@@ -114,10 +116,9 @@ final class DefaultEsiaGatewayClientBuilder
             DateTimeNormalizer::FORMAT_KEY => 'd.M.Y',
         ]);
 
-        if (isOldPackage('symfony/serializer', '6.4')){
+        if (isOldPackage('symfony/serializer', '6.4')) {
             $datetimeNormalizer = new DateTimeUnixTimeNormalizer($datetimeNormalizer);
         }
-
 
         $normalizers = [
             new UnwrappingDenormalizer(),
@@ -144,8 +145,6 @@ final class DefaultEsiaGatewayClientBuilder
             $objectNormalizer,
             new ArrayDenormalizer(),
         ];
-
-
 
         $middlewares = [
             new UrlMiddleware(),

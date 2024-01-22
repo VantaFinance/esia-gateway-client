@@ -12,6 +12,7 @@ namespace Vanta\Integration\EsiaGateway\Infrastructure\Composer;
 
 use Composer\InstalledVersions;
 use Composer\Semver\Comparator;
+use RuntimeException;
 
 /**
  * @internal
@@ -24,7 +25,7 @@ function isOldPackage(string $package, string $version): bool
     $packageVersion = InstalledVersions::getVersion($package);
 
     if (null == $packageVersion) {
-        throw new \RuntimeException(sprintf('Not found version package: %s', $package));
+        throw new RuntimeException(sprintf('Not found version package: %s', $package));
     }
 
     return Comparator::greaterThan($version, $packageVersion);
