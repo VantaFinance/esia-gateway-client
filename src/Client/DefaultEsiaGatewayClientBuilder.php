@@ -58,24 +58,24 @@ use Vanta\Integration\EsiaGateway\Infrastructure\Serializer\Normalizer\YearNorma
 
 final class DefaultEsiaGatewayClientBuilder
 {
-    private PsrHttpClient $client;
+    public readonly Serializer $serializer;
 
-    private Serializer $serializer;
-
-    /**
-     * @var non-empty-string
-     */
-    private string $clientId;
+    private readonly PsrHttpClient $client;
 
     /**
      * @var non-empty-string
      */
-    private string $clientSecret;
+    private readonly string $clientId;
+
+    /**
+     * @var non-empty-string
+     */
+    private readonly string $clientSecret;
 
     /**
      * @var list<Middleware>
      */
-    private array $middlewares;
+    private readonly array $middlewares;
 
     /**
      * @param list<Middleware> $middlewares
@@ -207,6 +207,7 @@ final class DefaultEsiaGatewayClientBuilder
             $this->middlewares
         );
     }
+
 
     /**
      * @param non-empty-string $url

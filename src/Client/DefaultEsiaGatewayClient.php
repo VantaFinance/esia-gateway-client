@@ -12,6 +12,7 @@ namespace Vanta\Integration\EsiaGateway\Client;
 
 use GuzzleHttp\Psr7\Request;
 use Psr\Http\Client\ClientInterface as HttpClient;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer as Normalizer;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Symfony\Component\Serializer\Normalizer\UnwrappingDenormalizer;
 use Symfony\Component\Serializer\SerializerInterface as Serializer;
@@ -90,7 +91,8 @@ final class DefaultEsiaGatewayClient implements EsiaGatewayClient
         $content = $this->client->sendRequest($request)->getBody()->__toString();
 
         return $this->serializer->deserialize($content, UserInfo::class, 'json', [
-            UnwrappingDenormalizer::UNWRAP_PATH => '[info]',
+            UnwrappingDenormalizer::UNWRAP_PATH       => '[info]',
+            Normalizer::DEFAULT_CONSTRUCTOR_ARGUMENTS => [UserInfo::class => ['rawInfo' => $content]]
         ]);
     }
 }

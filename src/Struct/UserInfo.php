@@ -18,6 +18,7 @@ final class UserInfo
 {
     /**
      * @param numeric-string $uid
+     * @param non-empty-string $rawInfo
      * @param list<Document> $documents
      */
     public function __construct(
@@ -26,6 +27,7 @@ final class UserInfo
         public readonly string $firstName,
         public readonly ?string $middleName,
         public readonly string $lastName,
+        public readonly string $rawInfo,
         public readonly Scope $scope,
         public readonly CountryIso $citizenship,
         public readonly DateTimeImmutable $birthDate,
