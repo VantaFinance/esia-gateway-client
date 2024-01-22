@@ -23,7 +23,7 @@ final class DriverLicense extends Document
         public readonly DriverLicenseSeries $series,
         public readonly DriverLicenseNumber $number,
         #[SerializedPath('[issueDate]')]
-        public readonly DateTimeImmutable $issuedAt,
+        public readonly ?DateTimeImmutable $issuedAt = null,
     ) {
         parent::__construct(DocumentType::DRIVER_LICENSE);
     }
