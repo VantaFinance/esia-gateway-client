@@ -16,13 +16,14 @@ use Symfony\Component\Serializer\NameConverter\NameConverterInterface as NameCon
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface as Denormalizer;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Vanta\Integration\EsiaGateway\Infrastructure\Serializer\Attributes\DiscriminatorDefault;
+use Vanta\Integration\EsiaGateway\Infrastructure\Serializer\NameConverter\NullNameConverter;
 
 final class DiscriminatorDefaultNormalizer implements Denormalizer
 {
     public function __construct(
         private readonly ClassMetadataFactory $metadataFactory,
         private readonly ObjectNormalizer $objectNormalizer,
-        private readonly ?NameConverter $nameConverter = null,
+        private readonly NameConverter $nameConverter = new NullNameConverter(),
     ) {
     }
 
@@ -41,21 +42,19 @@ final class DiscriminatorDefaultNormalizer implements Denormalizer
             return $this->objectNormalizer->denormalize($data, $type, $format, $context);
         }
 
-        if ($this->nameConverter) {
-            $key = $this->nameConverter->normalize($discriminator->getTypeProperty());
-        } else {
-            $key = $discriminator->getTypeProperty();
-        }
+        $key = $this->nameConverter->normalize($discriminator->getTypeProperty());
 
         if (array_key_exists($key, $data) && array_key_exists($data[$key], $discriminator->getTypesMapping())) {
             return $this->objectNormalizer->denormalize($data, $type, $format, $context);
         }
 
         $attributes = $reflectionClass->getAttributes(DiscriminatorDefault::class);
-        /** @var DiscriminatorDefault $default */
-        $default = array_pop($attributes)->newInstance();
 
-        return $this->objectNormalizer->denormalize($data, $default->class, $format, $context);
+        if ([] == $attributes) {
+            return $this->objectNormalizer->denormalize($data, $type, $format, $context);
+        }
+
+        return $this->objectNormalizer->denormalize($data, $attributes[0]->newInstance()->class, $format, $context);
     }
 
     /**
@@ -65,26 +64,20 @@ final class DiscriminatorDefaultNormalizer implements Denormalizer
      */
     public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
+        if (!$this->metadataFactory->hasMetadataFor($type)) {
+            return false;
+        }
+
         try {
-            if (!$this->metadataFactory->hasMetadataFor($type)) {
-                return false;
-            }
-
-            if (!$this->metadataFactory->getMetadataFor($type)->getClassDiscriminatorMapping()) {
-                return false;
-            }
-
-            return $this->hasDefaultAttribute($type);
+            $metadata = $this->metadataFactory->getMetadataFor($type);
         } catch (InvalidArgumentException) {
             return false;
         }
-    }
 
-    private function hasDefaultAttribute(string $class): bool
-    {
-        $reflectionClass = $this->metadataFactory->getMetadataFor($class)->getReflectionClass();
-        $attributes      = $reflectionClass->getAttributes(DiscriminatorDefault::class);
+        if (null == $metadata->getClassDiscriminatorMapping()) {
+            return false;
+        }
 
-        return 0 != count($attributes);
+        return 0 != count($metadata->getReflectionClass()->getAttributes(DiscriminatorDefault::class));
     }
 }
