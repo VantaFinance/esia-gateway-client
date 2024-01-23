@@ -17,9 +17,9 @@ use Vanta\Integration\EsiaGateway\Client\Scope;
 final class UserInfo
 {
     /**
-     * @param numeric-string $uid
+     * @param numeric-string   $uid
      * @param non-empty-string $rawInfo
-     * @param list<Document> $documents
+     * @param list<Document>   $documents
      */
     public function __construct(
         public readonly string $uid,

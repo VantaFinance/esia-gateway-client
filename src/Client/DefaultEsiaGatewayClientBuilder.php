@@ -208,7 +208,6 @@ final class DefaultEsiaGatewayClientBuilder
         );
     }
 
-
     /**
      * @param non-empty-string $url
      * @param non-empty-string $redirectUri
