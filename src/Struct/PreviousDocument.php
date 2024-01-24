@@ -11,7 +11,9 @@ declare(strict_types=1);
 namespace Vanta\Integration\EsiaGateway\Struct;
 
 use Symfony\Component\Serializer\Annotation as Serializer;
+use Vanta\Integration\EsiaGateway\Infrastructure\Serializer\Attributes\DiscriminatorDefault;
 
+#[DiscriminatorDefault(UnknownPreviousDocument::class)]
 #[Serializer\DiscriminatorMap(
     typeProperty: 'passportType',
     mapping: [

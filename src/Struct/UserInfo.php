@@ -12,6 +12,7 @@ namespace Vanta\Integration\EsiaGateway\Struct;
 
 use Brick\PhoneNumber\PhoneNumber;
 use DateTimeImmutable;
+use Psr\Http\Message\StreamInterface as Stream;
 use Vanta\Integration\EsiaGateway\Client\Scope;
 
 final class UserInfo
@@ -26,6 +27,7 @@ final class UserInfo
         public readonly string $firstName,
         public readonly ?string $middleName,
         public readonly string $lastName,
+        public readonly Stream $rawInfo,
         public readonly Scope $scope,
         public readonly CountryIso $citizenship,
         public readonly DateTimeImmutable $birthDate,

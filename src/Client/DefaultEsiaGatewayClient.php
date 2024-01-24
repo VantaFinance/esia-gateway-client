@@ -12,6 +12,7 @@ namespace Vanta\Integration\EsiaGateway\Client;
 
 use GuzzleHttp\Psr7\Request;
 use Psr\Http\Client\ClientInterface as HttpClient;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer as Normalizer;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Symfony\Component\Serializer\Normalizer\UnwrappingDenormalizer;
 use Symfony\Component\Serializer\SerializerInterface as Serializer;
@@ -21,17 +22,11 @@ use Yiisoft\Http\Method;
 
 final class DefaultEsiaGatewayClient implements EsiaGatewayClient
 {
-    private HttpClient $client;
-
-    private Serializer $serializer;
-
-    private ConfigurationClient $configuration;
-
-    public function __construct(Serializer $serializer, HttpClient $client, ConfigurationClient $configuration)
-    {
-        $this->serializer    = $serializer;
-        $this->client        = $client;
-        $this->configuration = $configuration;
+    public function __construct(
+        private readonly Serializer $serializer,
+        private readonly HttpClient $client,
+        private readonly ConfigurationClient $configuration
+    ) {
     }
 
     public function createAuthorizationUrlBuilder(): AuthorizationUrlBuilder
@@ -87,10 +82,11 @@ final class DefaultEsiaGatewayClient implements EsiaGatewayClient
             ['Authorization' => sprintf('Bearer %s', $accessToken)],
         );
 
-        $content = $this->client->sendRequest($request)->getBody()->__toString();
+        $stream = $this->client->sendRequest($request)->getBody();
 
-        return $this->serializer->deserialize($content, UserInfo::class, 'json', [
-            UnwrappingDenormalizer::UNWRAP_PATH => '[info]',
+        return $this->serializer->deserialize($stream->__toString(), UserInfo::class, 'json', [
+            UnwrappingDenormalizer::UNWRAP_PATH       => '[info]',
+            Normalizer::DEFAULT_CONSTRUCTOR_ARGUMENTS => [UserInfo::class => ['rawInfo' => $stream]],
         ]);
     }
 }
