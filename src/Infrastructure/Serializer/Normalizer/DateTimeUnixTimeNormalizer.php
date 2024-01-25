@@ -75,8 +75,6 @@ final class DateTimeUnixTimeNormalizer implements Normalizer, Denormalizer, Cach
     }
 
     /**
-     * @param string|null $format
-     *
      * @return array<non-empty-string>
      */
     public function getSupportedTypes(?string $format): array
