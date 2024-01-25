@@ -39,7 +39,6 @@ final class DriverLicenseSeriesNormalizer implements Normalizer, Denormalizer
     public function denormalize($data, string $type, ?string $format = null, array $context = []): DriverLicenseSeries
     {
         try {
-            Assert::string($data);
             Assert::stringNotEmpty($data);
 
             return new DriverLicenseSeries($data);
@@ -47,7 +46,7 @@ final class DriverLicenseSeriesNormalizer implements Normalizer, Denormalizer
             throw NotNormalizableValueException::createForUnexpectedDataType(
                 $e->getMessage(),
                 $data,
-                [Type::BUILTIN_TYPE_INT, Type::BUILTIN_TYPE_STRING],
+                [Type::BUILTIN_TYPE_STRING],
                 $context['deserialization_path'] ?? null,
                 true
             );

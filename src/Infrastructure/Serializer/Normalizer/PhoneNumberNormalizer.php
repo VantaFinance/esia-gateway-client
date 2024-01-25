@@ -12,9 +12,12 @@ namespace Vanta\Integration\EsiaGateway\Infrastructure\Serializer\Normalizer;
 
 use Brick\PhoneNumber\PhoneNumber;
 use Brick\PhoneNumber\PhoneNumberException;
+use Symfony\Component\PropertyInfo\Type;
+use Symfony\Component\Serializer\Exception\NotNormalizableValueException;
 use Symfony\Component\Serializer\Exception\UnexpectedValueException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface as Denormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface as Normalizer;
+use Webmozart\Assert\Assert;
 
 final class PhoneNumberNormalizer implements Denormalizer, Normalizer
 {
@@ -26,9 +29,17 @@ final class PhoneNumberNormalizer implements Denormalizer, Normalizer
     public function denormalize($data, string $type, ?string $format = null, array $context = []): PhoneNumber
     {
         try {
-            return PhoneNumber::parse($data);
+            Assert::stringNotEmpty($data);
+
+            return PhoneNumber::parse($data, 'RU');
         } catch (PhoneNumberException $e) {
-            throw new UnexpectedValueException($e->getMessage(), 0, $e);
+            throw NotNormalizableValueException::createForUnexpectedDataType(
+                $e->getMessage(),
+                $data,
+                [Type::BUILTIN_TYPE_STRING],
+                $context['deserialization_path'] ?? null,
+                true
+            );
         }
     }
 
@@ -39,17 +50,18 @@ final class PhoneNumberNormalizer implements Denormalizer, Normalizer
      */
     public function supportsDenormalization($data, ?string $type = null, ?string $format = null, array $context = []): bool
     {
-        return PhoneNumber::class === $type && is_string($data);
+        return PhoneNumber::class === $type;
     }
 
     /**
-     * @psalm-suppress MoreSpecificImplementedParamType
-     *
-     * @param PhoneNumber          $object
      * @param array<string, mixed> $context
      */
     public function normalize($object, ?string $format = null, array $context = []): string
     {
+        if (!$object instanceof PhoneNumber) {
+            throw new UnexpectedValueException(sprintf('Allowed type: %s', PhoneNumber::class));
+        }
+
         return $object->jsonSerialize();
     }
 

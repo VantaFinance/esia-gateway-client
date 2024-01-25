@@ -54,8 +54,6 @@ final class EmailNormalizer implements Normalizer, Denormalizer
     }
 
     /**
-     * @psalm-suppress MissingParamType
-     *
      * @param array<string, mixed> $context
      */
     public function supportsNormalization($data, ?string $format = null, array $context = []): bool
@@ -64,8 +62,6 @@ final class EmailNormalizer implements Normalizer, Denormalizer
     }
 
     /**
-     * @psalm-suppress MoreSpecificImplementedParamType
-     *
      * @param object               $object
      * @param array<string, mixed> $context
      *
