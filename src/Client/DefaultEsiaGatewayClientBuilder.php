@@ -27,9 +27,6 @@ use Symfony\Component\Serializer\Normalizer\UidNormalizer;
 use Symfony\Component\Serializer\Normalizer\UnwrappingDenormalizer;
 use Symfony\Component\Serializer\Serializer as SymfonySerializer;
 use Symfony\Component\Serializer\SerializerInterface as Serializer;
-
-use function Vanta\Integration\EsiaGateway\Infrastructure\Composer\isOldPackage;
-
 use Vanta\Integration\EsiaGateway\Infrastructure\HttpClient\ConfigurationClient;
 use Vanta\Integration\EsiaGateway\Infrastructure\HttpClient\HttpClient;
 use Vanta\Integration\EsiaGateway\Infrastructure\HttpClient\Middleware\ClientErrorMiddleware;
@@ -37,6 +34,7 @@ use Vanta\Integration\EsiaGateway\Infrastructure\HttpClient\Middleware\InternalS
 use Vanta\Integration\EsiaGateway\Infrastructure\HttpClient\Middleware\Middleware;
 use Vanta\Integration\EsiaGateway\Infrastructure\HttpClient\Middleware\PipelineMiddleware;
 use Vanta\Integration\EsiaGateway\Infrastructure\HttpClient\Middleware\UrlMiddleware;
+use Vanta\Integration\EsiaGateway\Infrastructure\Serializer\Normalizer\Base64DecodingReadableStreamNormalizer;
 use Vanta\Integration\EsiaGateway\Infrastructure\Serializer\Normalizer\BigDecimalNormalizer;
 use Vanta\Integration\EsiaGateway\Infrastructure\Serializer\Normalizer\CountryIsoNormalizer;
 use Vanta\Integration\EsiaGateway\Infrastructure\Serializer\Normalizer\DateTimeUnixTimeNormalizer;
@@ -112,18 +110,11 @@ final class DefaultEsiaGatewayClientBuilder
             new ClassDiscriminatorFromClassMetadata($classMetadataFactory),
         );
 
-        $datetimeNormalizer = new DateTimeNormalizer([
-            DateTimeNormalizer::FORMAT_KEY => 'd.M.Y',
-        ]);
-
-        if (isOldPackage('symfony/serializer', '6.4')) {
-            $datetimeNormalizer = new DateTimeUnixTimeNormalizer($datetimeNormalizer);
-        }
-
         $normalizers = [
             new UnwrappingDenormalizer(),
             new BackedEnumNormalizer(),
             new UidNormalizer(),
+            new Base64DecodingReadableStreamNormalizer(),
             new RussianPassportNumberNormalizer(),
             new RussianPassportSeriesNormalizer(),
             new RussianPassportDivisionCodeNormalizer(),
@@ -140,7 +131,11 @@ final class DefaultEsiaGatewayClientBuilder
             new ScopeNormalizer(),
             new YearNormalizer(),
             new BigDecimalNormalizer(),
-            $datetimeNormalizer,
+            new DateTimeUnixTimeNormalizer(
+                new DateTimeNormalizer([
+                    DateTimeNormalizer::FORMAT_KEY => 'd.M.Y',
+                ])
+            ),
             new DiscriminatorDefaultNormalizer($classMetadataFactory, $objectNormalizer),
             $objectNormalizer,
             new ArrayDenormalizer(),

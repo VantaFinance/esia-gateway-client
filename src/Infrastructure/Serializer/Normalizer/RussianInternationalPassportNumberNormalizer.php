@@ -47,7 +47,7 @@ final class RussianInternationalPassportNumberNormalizer implements Normalizer, 
             throw NotNormalizableValueException::createForUnexpectedDataType(
                 $e->getMessage(),
                 $data,
-                [Type::BUILTIN_TYPE_INT, Type::BUILTIN_TYPE_STRING],
+                [Type::BUILTIN_TYPE_STRING],
                 $context['deserialization_path'] ?? null,
                 true
             );

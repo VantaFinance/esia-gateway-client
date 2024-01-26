@@ -42,4 +42,39 @@ final class UserInfo
         public readonly ?Address $temporaryAddress = null,
     ) {
     }
+
+    /**
+     * @template T
+     *
+     * @param class-string<T> $type
+     *
+     * @return list<T>
+     */
+    public function getDocumentsByType(string $type): array
+    {
+        return array_filter($this->documents, static fn (Document $e): bool => $e instanceof $type);
+    }
+
+    /**
+     * @return list<IncomeReferenceDateItemIncomeInfo>
+     */
+    public function getLastIncomes(): array
+    {
+        $incomes     = $this->getDocumentsByType(IncomeReference::class);
+        $lastIncomes = [];
+
+        /** @var IncomeReference $income */
+        foreach ($incomes as $income) {
+            if (null == $income->year) {
+                continue;
+            }
+
+            /** @var IncomeReferenceDataItem $reference */
+            foreach (array_merge(...array_column($incomes, 'data')) as $reference) {
+                $lastIncomes[$income->year->getValue()][] = $reference->incomeInfo;
+            }
+        }
+
+        return array_merge(...max($lastIncomes));
+    }
 }

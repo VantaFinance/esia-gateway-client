@@ -11,15 +11,12 @@ declare(strict_types=1);
 
 namespace Vanta\Integration\EsiaGateway\Infrastructure\Serializer\Normalizer;
 
-use DateTimeInterface;
+use DateTimeInterface as Datetime;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface as CacheableSupportsMethod;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface as Denormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface as Normalizer;
 
-/**
- * @method array getSupportedTypes(?string $format)
- */
 final class DateTimeUnixTimeNormalizer implements Normalizer, Denormalizer, CacheableSupportsMethod
 {
     private const SUPPORTED = 'vanta.esia.date_time_unix_time';
@@ -34,7 +31,7 @@ final class DateTimeUnixTimeNormalizer implements Normalizer, Denormalizer, Cach
         return $this->normalizer->hasCacheableSupportsMethod();
     }
 
-    public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): DateTimeInterface
+    public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): Datetime
     {
         if (\is_int($data) || \is_float($data)) {
             switch ($context[DateTimeNormalizer::FORMAT_KEY] ?? null) {
@@ -42,6 +39,12 @@ final class DateTimeUnixTimeNormalizer implements Normalizer, Denormalizer, Cach
 
                     break;
                 case 'U.u': $data = sprintf('%.6F', $data);
+
+                    break;
+
+                case 'U.n':
+                    $data                                    = substr(sprintf('%d', $data), 0, 10);
+                    $context[DateTimeNormalizer::FORMAT_KEY] = 'U';
 
                     break;
             }
@@ -69,5 +72,13 @@ final class DateTimeUnixTimeNormalizer implements Normalizer, Denormalizer, Cach
     public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
         return $this->normalizer->supportsNormalization($data, $format) && !array_key_exists(self::SUPPORTED, $context);
+    }
+
+    /**
+     * @return array<non-empty-string>
+     */
+    public function getSupportedTypes(?string $format): array
+    {
+        return $this->normalizer->getSupportedTypes($format);
     }
 }
