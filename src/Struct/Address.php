@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace Vanta\Integration\EsiaGateway\Struct;
 
 use Symfony\Component\Serializer\Annotation\SerializedPath;
+use Symfony\Component\Uid\NilUuid;
 use Symfony\Component\Uid\Uuid;
 
 final class Address
@@ -31,8 +32,8 @@ final class Address
         public readonly ?string $flat,
         public readonly ?string $room,
         public readonly ?string $zipCode,
-        public readonly ?Uuid $fiasCode,
         public readonly ?string $fiasCodeLevel,
+        public readonly Uuid $fiasCode = new NilUuid(),
     ) {
     }
 }

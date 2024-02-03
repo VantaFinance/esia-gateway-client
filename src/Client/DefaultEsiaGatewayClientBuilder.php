@@ -52,6 +52,7 @@ use Vanta\Integration\EsiaGateway\Infrastructure\Serializer\Normalizer\RussianPa
 use Vanta\Integration\EsiaGateway\Infrastructure\Serializer\Normalizer\RussianPassportSeriesNormalizer;
 use Vanta\Integration\EsiaGateway\Infrastructure\Serializer\Normalizer\ScopeNormalizer;
 use Vanta\Integration\EsiaGateway\Infrastructure\Serializer\Normalizer\SnilsNumberNormalizer;
+use Vanta\Integration\EsiaGateway\Infrastructure\Serializer\Normalizer\UidFailedNormalizer;
 use Vanta\Integration\EsiaGateway\Infrastructure\Serializer\Normalizer\YearNormalizer;
 
 final class DefaultEsiaGatewayClientBuilder
@@ -113,7 +114,7 @@ final class DefaultEsiaGatewayClientBuilder
         $normalizers = [
             new UnwrappingDenormalizer(),
             new BackedEnumNormalizer(),
-            new UidNormalizer(),
+            new UidFailedNormalizer(new UidNormalizer()),
             new Base64DecodingReadableStreamNormalizer(),
             new RussianPassportNumberNormalizer(),
             new RussianPassportSeriesNormalizer(),
