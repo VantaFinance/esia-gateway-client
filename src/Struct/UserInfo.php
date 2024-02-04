@@ -29,7 +29,6 @@ final class UserInfo
         public readonly string $lastName,
         public readonly Stream $rawInfo,
         public readonly Scope $scope,
-        public readonly CountryIso $citizenship,
         public readonly DateTimeImmutable $birthDate,
         public readonly Gender $gender,
         public readonly PhoneNumber $mobilePhone,
@@ -37,9 +36,10 @@ final class UserInfo
         public array $documents,
         public readonly ?Email $email = null,
         public readonly ?InnNumber $inn = null,
-        public readonly ?Address $registrationAddress = null,
+        public readonly ?CountryIso $citizenship = null,
         public readonly ?Address $homeAddress = null,
         public readonly ?Address $temporaryAddress = null,
+        public readonly ?Address $registrationAddress = null,
     ) {
     }
 

@@ -17,7 +17,6 @@ use Symfony\Component\Uid\Uuid;
 final class Address
 {
     /**
-     * @param non-empty-string|null $region
      * @param non-empty-string|null $city
      * @param non-empty-string|null $district
      * @param non-empty-string|null $area
@@ -31,12 +30,14 @@ final class Address
      * @param non-empty-string|null $room
      * @param non-empty-string|null $zipCode
      * @param non-empty-string|null $fiasCodeLevel
-     * @param non-empty-string|null $addressStr
+     * @param non-empty-string $addressStr
+     * @param non-empty-string $region
      */
     public function __construct(
         #[SerializedPath('[countryId]')]
         public readonly CountryIso $countryIso,
-        public readonly ?string $region,
+        public readonly string $addressStr,
+        public readonly string $region,
         public readonly ?string $city,
         public readonly ?string $district,
         public readonly ?string $area,
@@ -50,7 +51,6 @@ final class Address
         public readonly ?string $room,
         public readonly ?string $zipCode,
         public readonly ?string $fiasCodeLevel,
-        public readonly ?string $addressStr,
         public readonly Uuid $fiasCode = new NilUuid(),
     ) {
     }
