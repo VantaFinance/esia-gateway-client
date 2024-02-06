@@ -75,6 +75,10 @@ final class UserInfo
             }
         }
 
+        if ([] == $lastIncomes) {
+            return [];
+        }
+
         return array_merge(...max($lastIncomes));
     }
 }
