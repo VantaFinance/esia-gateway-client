@@ -30,8 +30,8 @@ final class Address
      * @param non-empty-string|null $room
      * @param non-empty-string|null $zipCode
      * @param non-empty-string|null $fiasCodeLevel
-     * @param non-empty-string $addressStr
-     * @param non-empty-string $region
+     * @param non-empty-string      $addressStr
+     * @param non-empty-string      $region
      */
     public function __construct(
         #[SerializedPath('[countryId]')]
