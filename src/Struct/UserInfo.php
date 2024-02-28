@@ -69,8 +69,7 @@ final class UserInfo
                 continue;
             }
 
-            /** @var IncomeReferenceDataItem $reference */
-            foreach (array_merge(...array_column($incomes, 'data')) as $reference) {
+            foreach ($income->data as $reference) {
                 $lastIncomes[$income->year->getValue()][] = $reference->incomeInfo;
             }
         }
