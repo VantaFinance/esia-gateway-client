@@ -18,5 +18,6 @@ enum DocumentType: string
     case DRIVER_LICENSE                 = 'RF_DRIVING_LICENSE';
     case INCOME_REFERENCE               = 'INCOME_REFERENCE';
     case PASSPORT_HISTORY               = 'PASSPORT_HISTORY';
+    case ELECTRONIC_WORKBOOK            = 'ELECTRONIC_WORKBOOK';
     case UNKNOWN                        = 'UNKNOWN';
 }
