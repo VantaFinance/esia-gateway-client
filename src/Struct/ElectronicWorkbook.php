@@ -1,6 +1,6 @@
 <?php
 /**
- * PosCredit MDM
+ * ESIA Gateway Client
  *
  * @author Valentin Nazarov <v.nazarov@pos-credit.ru>
  * @copyright Copyright (c) 2024, The PosCredit
@@ -19,8 +19,8 @@ final class ElectronicWorkbook extends Document
      */
     public function __construct(
         public readonly ?Uuid $id,
-        public int $version,
-        public array $events,
+        public readonly int $version,
+        public readonly array $events,
     ) {
         parent::__construct(DocumentType::ELECTRONIC_WORKBOOK);
     }

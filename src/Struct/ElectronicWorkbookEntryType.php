@@ -1,6 +1,6 @@
 <?php
 /**
- * PosCredit MDM
+ * ESIA Gateway Client
  *
  * @author Valentin Nazarov <v.nazarov@pos-credit.ru>
  * @copyright Copyright (c) 2024, The PosCredit
