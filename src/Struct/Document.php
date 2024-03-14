@@ -17,11 +17,12 @@ use Vanta\Integration\EsiaGateway\Infrastructure\Serializer\Attributes\Discrimin
 #[Serializer\DiscriminatorMap(
     typeProperty: 'type',
     mapping: [
-        'RF_PASSPORT'        => RussianPassport::class,
-        'FRGN_PASS'          => RussianInternationalPassport::class,
-        'RF_DRIVING_LICENSE' => DriverLicense::class,
-        'INCOME_REFERENCE'   => IncomeReference::class,
-        'PASSPORT_HISTORY'   => PassportHistory::class,
+        'RF_PASSPORT'         => RussianPassport::class,
+        'FRGN_PASS'           => RussianInternationalPassport::class,
+        'RF_DRIVING_LICENSE'  => DriverLicense::class,
+        'INCOME_REFERENCE'    => IncomeReference::class,
+        'PASSPORT_HISTORY'    => PassportHistory::class,
+        'ELECTRONIC_WORKBOOK' => ElectronicWorkbook::class,
     ],
 )]
 abstract class Document
