@@ -32,11 +32,11 @@ abstract class ElectronicWorkbookEntry
 
     final public function isHiring(): bool
     {
-        return $this->type == ElectronicWorkbookEntryType::HIRING;
+        return ElectronicWorkbookEntryType::HIRING == $this->type;
     }
 
     final public function isDismissal(): bool
     {
-        return $this->type == ElectronicWorkbookEntryType::DISMISSAL;
+        return ElectronicWorkbookEntryType::DISMISSAL == $this->type;
     }
 }
