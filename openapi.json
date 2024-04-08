@@ -341,17 +341,17 @@
               "PASSPORT_HISTORY",
               "ELECTRONIC_WORKBOOK"
             ]
-          },
-          "discriminator": {
-            "propertyName": "type",
-            "mapping": {
-              "PASSPORT_HISTORY": "#/components/schemas/PassportHistory",
-              "FRGN_PASS": "#/components/schemas/RussianInternationalPassport",
-              "RF_PASSPORT": "#/components/schemas/RussianPassportDocument",
-              "INCOME_REFERENCE": "#/components/schemas/IncomeReference",
-              "ELECTRONIC_WORKBOOK": "#/components/schemas/ElectronicWorkbook",
-              "RF_DRIVING_LICENSE": "#/components/schemas/DriverLicense"
-            }
+          }
+        },
+        "discriminator": {
+          "propertyName": "type",
+          "mapping": {
+            "PASSPORT_HISTORY": "#/components/schemas/PassportHistory",
+            "FRGN_PASS": "#/components/schemas/RussianInternationalPassport",
+            "RF_PASSPORT": "#/components/schemas/RussianPassportDocument",
+            "INCOME_REFERENCE": "#/components/schemas/IncomeReference",
+            "ELECTRONIC_WORKBOOK": "#/components/schemas/ElectronicWorkbook",
+            "RF_DRIVING_LICENSE": "#/components/schemas/DriverLicense"
           }
         }
       },
