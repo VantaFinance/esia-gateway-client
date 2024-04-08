@@ -70,7 +70,10 @@ final class UserInfo
             }
 
             foreach ($income->data as $reference) {
-                $lastIncomes[$income->year->getValue()][] = $reference->incomeInfo;
+                $lastIncomes[$income->year->getValue()] = [
+                    ...($lastIncomes[$income->year->getValue()] ?? []),
+                    ...$reference->incomeInfo
+                ];
             }
         }
 
@@ -78,6 +81,6 @@ final class UserInfo
             return [];
         }
 
-        return array_merge(...max($lastIncomes));
+        return max($lastIncomes);
     }
 }
