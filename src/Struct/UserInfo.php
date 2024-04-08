@@ -72,7 +72,7 @@ final class UserInfo
             foreach ($income->data as $reference) {
                 $lastIncomes[$income->year->getValue()] = [
                     ...($lastIncomes[$income->year->getValue()] ?? []),
-                    ...$reference->incomeInfo
+                    ...$reference->incomeInfo,
                 ];
             }
         }
