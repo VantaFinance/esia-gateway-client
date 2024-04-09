@@ -99,6 +99,24 @@
                 ],
                 "nullable": true
               },
+              "selfEmployed": {
+                "description": "Статус самозанятого",
+                "type": "object",
+                "required": [
+                  "confirmed",
+                  "validationRequestId"
+                ],
+                "properties": {
+                   "confirmed": {
+                     "type": "boolean",
+                     "description": "Подтвержден"
+                   },
+                  "validationRequestId": {
+                    "type": "integer",
+                    "description": "Идентификатор запроса"
+                  }
+                }
+              },
               "citizenship": {
                 "description": "Гражданство",
                 "nullable": true,
