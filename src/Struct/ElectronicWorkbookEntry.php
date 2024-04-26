@@ -45,4 +45,9 @@ abstract class ElectronicWorkbookEntry
     {
         return ElectronicWorkbookEntryType::REASSIGNMENT == $this->type;
     }
+
+    final public function isUnknown(): bool
+    {
+        return ElectronicWorkbookEntryType::UNKNOWN == $this->type;
+    }
 }
