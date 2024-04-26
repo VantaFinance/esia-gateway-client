@@ -12,7 +12,8 @@ namespace Vanta\Integration\EsiaGateway\Struct;
 
 enum ElectronicWorkbookEntryType: string
 {
-    case HIRING    = 'HIRING';
-    case DISMISSAL = 'DISMISSAL';
-    case UNKNOWN   = 'UNKNOWN';
+    case HIRING       = 'HIRING';
+    case DISMISSAL    = 'DISMISSAL';
+    case REASSIGNMENT = 'REASSIGNMENT';
+    case UNKNOWN      = 'UNKNOWN';
 }

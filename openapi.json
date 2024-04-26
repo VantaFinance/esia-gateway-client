@@ -912,6 +912,7 @@
           "propertyName": "type",
           "mapping": {
             "1": "#/components/schemas/ElectronicWorkbookHiringEntry",
+            "2": "#/components/schemas/ElectronicWorkbookReassignmentEntry",
             "5": "#/components/schemas/ElectronicWorkbookDismissalEntry"
           }
         }
@@ -938,6 +939,30 @@
       },
       "ElectronicWorkbookHiringEntry": {
         "description": "Событие принятия на работу",
+        "required": [
+          "id",
+          "date",
+          "isPartTimeJob",
+          "organization"
+        ],
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ElectronicWorkbookEntry"
+          },
+          {
+            "properties": {
+              "position": {
+                "type": "string",
+                "description": "Название позиции",
+                "nullable": true
+              }
+            }
+          }
+        ]
+      },
+      "ElectronicWorkbookReassignmentEntry": {
+        "description": "Событие перевода с одной должности на другую внутри организации",
         "required": [
           "id",
           "date",

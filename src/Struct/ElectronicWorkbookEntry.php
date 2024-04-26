@@ -18,6 +18,7 @@ use Vanta\Integration\EsiaGateway\Infrastructure\Serializer\Attributes\Discrimin
     typeProperty: 'type',
     mapping: [
         1 => ElectronicWorkbookHiringEntry::class,
+        2 => ElectronicWorkbookReassignmentEntry::class,
         5 => ElectronicWorkbookDismissalEntry::class,
     ],
 )]
@@ -38,5 +39,15 @@ abstract class ElectronicWorkbookEntry
     final public function isDismissal(): bool
     {
         return ElectronicWorkbookEntryType::DISMISSAL == $this->type;
+    }
+
+    final public function isReassignment(): bool
+    {
+        return ElectronicWorkbookEntryType::REASSIGNMENT == $this->type;
+    }
+
+    final public function isUnknown(): bool
+    {
+        return ElectronicWorkbookEntryType::UNKNOWN == $this->type;
     }
 }
