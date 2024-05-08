@@ -850,7 +850,7 @@
                 "description": "События трудовой деятельность",
                 "type": "array",
                 "items": {
-                  "$ref": "#/components/schemas/PreviousDocument"
+                  "$ref": "#/components/schemas/ElectronicWorkbookEntry"
                 }
               },
               "xmlFile": {
@@ -898,7 +898,7 @@
           },
           "type": {
             "type": "integer",
-            "description": "Типы событий. Возможные значения: \n\n- `1` - Найм \n\n- `5` - Увольнение",
+            "description": "Типы событий. Возможные значения: \n\n- `1` - Найм \n\n- `2` - Перевод на другую должность/отдел \n\n- `5` - Увольнение",
             "enum": [
               1,
               5
