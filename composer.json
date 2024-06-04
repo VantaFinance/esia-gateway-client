@@ -48,11 +48,5 @@
         "allow-plugins": {
             "php-http/discovery": true
         }
-    },
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "git@github.com:VantaFinance/esia-struct.git"
-        }
-    ]
+    }
 }
