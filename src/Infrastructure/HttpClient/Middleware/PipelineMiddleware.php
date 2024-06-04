@@ -16,22 +16,15 @@ use Psr\Http\Message\RequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 use Vanta\Integration\EsiaGateway\Infrastructure\HttpClient\ConfigurationClient;
 
-final class PipelineMiddleware
+final readonly class PipelineMiddleware
 {
-    /**
-     * @var array<int, Middleware>
-     */
-    private array $middlewares;
-
-    private PsrHttpClient $client;
-
     /**
      * @param array<int, Middleware> $middlewares
      */
-    public function __construct(array $middlewares, PsrHttpClient $client)
-    {
-        $this->middlewares = $middlewares;
-        $this->client      = $client;
+    public function __construct(
+        private array $middlewares,
+        private PsrHttpClient $client
+    ) {
     }
 
     /**

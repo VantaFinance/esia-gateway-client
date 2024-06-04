@@ -12,14 +12,18 @@ namespace Vanta\Integration\EsiaGateway\Infrastructure\Serializer\Normalizer;
 
 use Symfony\Component\PropertyInfo\Type;
 use Symfony\Component\Serializer\Exception\NotNormalizableValueException;
-use Symfony\Component\Serializer\Exception\UnexpectedValueException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface as Denormalizer;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface as Normalizer;
-use Vanta\Integration\EsiaGateway\Client\Scope;
-use Vanta\Integration\EsiaGateway\Client\ScopePermission;
+use Vanta\Integration\Esia\Struct\Permission;
 
-final class ScopeNormalizer implements Normalizer, Denormalizer
+final readonly class ScopeNormalizer implements Denormalizer
 {
+    public function getSupportedTypes(?string $format): array
+    {
+        return [
+            Permission::class . '[]' => true,
+        ];
+    }
+
     /**
      * @psalm-suppress MissingParamType
      *
@@ -27,22 +31,26 @@ final class ScopeNormalizer implements Normalizer, Denormalizer
      */
     public function supportsDenormalization($data, string $type, ?string $format = null, array $context = []): bool
     {
-        return Scope::class == $type;
+        dump(Permission::class . '[]' == $type);
+
+        return Permission::class . '[]' == $type;
     }
 
     /**
      * @psalm-suppress MissingParamType
      *
      * @param array{deserialization_path?: non-empty-string} $context
+     *
+     * @return array<Permission>
      */
-    public function denormalize($data, string $type, ?string $format = null, array $context = []): Scope
+    public function denormalize($data, string $type, ?string $format = null, array $context = []): array
     {
         if (is_string($data)) {
-            return Scope::fromRawScope($data);
+            return array_map(Permission::from(...), explode(' ', $data));
         }
 
         if (is_array($data)) {
-            return new Scope(array_map(ScopePermission::from(...), $data));
+            return array_map(Permission::from(...), $data);
         }
 
         throw NotNormalizableValueException::createForUnexpectedDataType(
@@ -52,30 +60,5 @@ final class ScopeNormalizer implements Normalizer, Denormalizer
             $context['deserialization_path'] ?? null,
             true
         );
-    }
-
-    /**
-     * @psalm-suppress MissingParamType
-     *
-     * @param array<string, mixed> $context
-     */
-    public function supportsNormalization($data, ?string $format = null, array $context = []): bool
-    {
-        return $data instanceof Scope;
-    }
-
-    /**
-     * @param object               $object
-     * @param array<string, mixed> $context
-     *
-     * @return literal-string
-     */
-    public function normalize($object, ?string $format = null, array $context = []): string
-    {
-        if (!$object instanceof Scope) {
-            throw new UnexpectedValueException(sprintf('Allowed type: %s', Scope::class));
-        }
-
-        return $object->__toString();
     }
 }

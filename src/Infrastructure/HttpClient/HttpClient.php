@@ -15,11 +15,11 @@ use Psr\Http\Message\RequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 use Vanta\Integration\EsiaGateway\Infrastructure\HttpClient\Middleware\PipelineMiddleware;
 
-final class HttpClient implements PsrHttpClient
+final readonly class HttpClient implements PsrHttpClient
 {
     public function __construct(
-        private readonly ConfigurationClient $configuration,
-        private readonly PipelineMiddleware $pipeline
+        private ConfigurationClient $configuration,
+        private PipelineMiddleware $pipeline
     ) {
     }
 

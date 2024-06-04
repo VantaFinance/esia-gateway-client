@@ -16,7 +16,7 @@ use Vanta\Integration\EsiaGateway\Infrastructure\HttpClient\ConfigurationClient;
 use Vanta\Integration\EsiaGateway\Infrastructure\HttpClient\Exception\InternalServerErrorException;
 use Yiisoft\Http\Status;
 
-final class InternalServerMiddleware implements Middleware
+final readonly class InternalServerMiddleware implements Middleware
 {
     public function process(Request $request, ConfigurationClient $configuration, callable $next): Response
     {

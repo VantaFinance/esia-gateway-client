@@ -17,12 +17,17 @@
 use GuzzleHttp\Psr7\HttpFactory;
 use Symfony\Component\HttpClient\CurlHttpClient;
 use Symfony\Component\HttpClient\Psr18Client;
-use Vanta\Integration\EsiaGateway\Client\DefaultEsiaGatewayClientBuilder;
+use Vanta\Integration\EsiaGateway\RestClientBuilder;
+use Vanta\Integration\EsiaGateway\Infrastructure\HttpClient\ConfigurationClient;
 
-$builder = DefaultEsiaGatewayClientBuilder::create(
+$builder = RestClientBuilder::create(
     new Psr18Client(new CurlHttpClient(), new HttpFactory(), new HttpFactory()),
-    'YOUR_CLIENT_ID',
-    'YOUT_CLIENT_SECRET',
+    new ConfigurationClient(
+        clientId: 'YOUR_CLIENT_ID',
+        clientSecret: 'YOUR_CLIENT_SECRET',
+        url: 'YOUR_URL_GATEWAY',
+        redirectUri: 'https://auth.vanta.ru'
+    )
 );
 
 $client = $builder->createEsiaGatewayClient('https://demo.gate.esia.pro', 'https://pos-credit.ru');
@@ -31,7 +36,7 @@ $client = $builder->createEsiaGatewayClient('https://demo.gate.esia.pro', 'https
 Генерация URL для авторизации пользователя:
 
 ```php
-$authorizationUrl = $client->createAuthorizationUrlBuilder()
+$authorizationUrl = $builder->createAuthorizationUrlBuilder()
     ->withPermission(ScopePermission::DRIVERS_LICENSE_DOC)
     ->withoutPermission(ScopePermission::MOBILE)
     ->build()

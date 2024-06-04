@@ -8,6 +8,10 @@
             "email": "v.nazarov@pos-credit.ru"
         },
         {
+            "name": "Vlad Shashkov",
+            "email": "v.shashkov@pos-credit.ru"
+        },
+        {
             "name": "Vanta Team",
             "homepage": "https://vanta.ru"
         }
@@ -22,25 +26,19 @@
         }
     },
     "require": {
-        "php": "^8.1",
+        "php": "^8.2",
         "yiisoft/http": "^1.2",
         "psr/http-client": "^1.0",
         "guzzlehttp/psr7": "^2.0",
-        "symfony/uid": "^5.4|^6.0",
-        "symfony/serializer": "^5.4|^6.0",
-        "symfony/property-access": "^5.4|^6.0",
+        "symfony/serializer": "^6.4|^7.0",
+        "symfony/property-access": "^6.4|^7.0",
         "phpstan/phpdoc-parser": "^1.0",
         "phpdocumentor/reflection-docblock": "^5.0",
-        "doctrine/annotations": "^1.0|^2.0",
-        "brick/phonenumber": "^0.4",
-        "brick/money": "^0.8.1",
-        "brick/date-time": "^0.5.3",
-        "brick/math": "^0.11.0",
         "psr/http-client-implementation": "^1.0",
-        "amphp/byte-stream": "^2.1"
+        "vanta/esia-struct": "@dev"
     },
     "require-dev": {
-        "symfony/var-dumper": "^5.4|^6.0",
+        "symfony/var-dumper": "^6.4|^7.0",
         "friendsofphp/php-cs-fixer": "^3.17",
         "guzzlehttp/guzzle": "^7.7",
         "symfony/http-client": "5.4|^6.0",
@@ -50,5 +48,11 @@
         "allow-plugins": {
             "php-http/discovery": true
         }
-    }
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "git@github.com:VantaFinance/esia-struct.git"
+        }
+    ]
 }
