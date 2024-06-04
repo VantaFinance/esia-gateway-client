@@ -15,7 +15,7 @@ use Psr\Http\Message\RequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 use Vanta\Integration\EsiaGateway\Infrastructure\HttpClient\ConfigurationClient;
 
-final class UrlMiddleware implements Middleware
+final readonly class UrlMiddleware implements Middleware
 {
     public function process(Request $request, ConfigurationClient $configuration, callable $next): Response
     {

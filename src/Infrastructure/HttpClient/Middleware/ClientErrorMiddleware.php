@@ -19,7 +19,7 @@ use Vanta\Integration\EsiaGateway\Infrastructure\HttpClient\Exception\NotFoundEx
 use Vanta\Integration\EsiaGateway\Infrastructure\HttpClient\Exception\UnauthorizedException;
 use Yiisoft\Http\Status;
 
-final class ClientErrorMiddleware implements Middleware
+final readonly class ClientErrorMiddleware implements Middleware
 {
     public function process(Request $request, ConfigurationClient $configuration, callable $next): Response
     {

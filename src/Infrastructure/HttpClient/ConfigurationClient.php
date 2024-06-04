@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace Vanta\Integration\EsiaGateway\Infrastructure\HttpClient;
 
-final class ConfigurationClient
+final readonly class ConfigurationClient
 {
     /**
      * @param non-empty-string $clientId
@@ -19,10 +19,62 @@ final class ConfigurationClient
      * @param non-empty-string $redirectUri
      */
     public function __construct(
-        public readonly string $clientId,
-        public readonly string $clientSecret,
-        public readonly string $url,
-        public readonly string $redirectUri
+        public string $clientId,
+        public string $clientSecret,
+        public string $url,
+        public string $redirectUri
     ) {
+    }
+
+    /**
+     * @param non-empty-string $clientId
+     */
+    public function withClientId(string $clientId): self
+    {
+        return new self(
+            clientId: $clientId,
+            clientSecret: $this->clientSecret,
+            url: $this->url,
+            redirectUri: $this->redirectUri,
+        );
+    }
+
+    /**
+     * @param non-empty-string $clientSecret
+     */
+    public function withClientSecret(string $clientSecret): self
+    {
+        return new self(
+            clientId: $this->clientId,
+            clientSecret: $clientSecret,
+            url: $this->url,
+            redirectUri: $this->redirectUri,
+        );
+    }
+
+    /**
+     * @param non-empty-string $url
+     */
+    public function withUrl(string $url): self
+    {
+        return new self(
+            clientId: $this->clientId,
+            clientSecret: $this->clientSecret,
+            url: $url,
+            redirectUri: $this->redirectUri,
+        );
+    }
+
+    /**
+     * @param non-empty-string $redirectUri
+     */
+    public function withRedirectUri(string $redirectUri): self
+    {
+        return new self(
+            clientId: $this->clientId,
+            clientSecret: $this->clientSecret,
+            url: $this->url,
+            redirectUri: $redirectUri,
+        );
     }
 }
