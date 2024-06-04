@@ -31,8 +31,6 @@ final readonly class ScopeNormalizer implements Denormalizer
      */
     public function supportsDenormalization($data, string $type, ?string $format = null, array $context = []): bool
     {
-        dump(Permission::class . '[]' == $type);
-
         return Permission::class . '[]' == $type;
     }
 
