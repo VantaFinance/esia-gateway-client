@@ -24,8 +24,14 @@ use Vanta\Integration\EsiaGateway\Request\Provider;
 
 final class CpgAuthorizationUrlBuilder
 {
+    /**
+     * @var non-empty-string
+     */
     private string $baseUri;
 
+    /**
+     * @var non-empty-string
+     */
     private string $clientId;
 
     /**
@@ -57,9 +63,11 @@ final class CpgAuthorizationUrlBuilder
     private Uuid $state;
 
     /**
+     * @param non-empty-string           $baseUri
+     * @param non-empty-string           $clientId
+     * @param non-empty-string           $redirectUri
      * @param non-empty-list<Sysname>    $purposes
      * @param non-empty-list<Permission> $permissions
-     * @param non-empty-string           $redirectUri
      * @param non-empty-list<Action>     $actions
      */
     public function __construct(
@@ -93,13 +101,15 @@ final class CpgAuthorizationUrlBuilder
     }
 
     /**
+     * @param non-empty-string           $baseUri
+     * @param non-empty-string           $clientId
+     * @param non-empty-string           $redirectUri
      * @param non-empty-list<Sysname>    $purposes
      * @param non-empty-list<Permission> $permissions
-     * @param non-empty-string           $redirectUri
      * @param non-empty-list<Action>     $actions
      */
     public static function create(
-        string $gatewayHostname,
+        string $baseUri,
         string $clientId,
         string $redirectUri,
         array $purposes = [
@@ -118,7 +128,7 @@ final class CpgAuthorizationUrlBuilder
         Uuid $state = new UuidV7(),
     ): self {
         return new self(
-            baseUri: $gatewayHostname,
+            baseUri: $baseUri,
             clientId: $clientId,
             redirectUri: $redirectUri,
             purposes: $purposes,

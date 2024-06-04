@@ -11,7 +11,6 @@ declare(strict_types=1);
 namespace Vanta\Integration\EsiaGateway\Transport;
 
 use GuzzleHttp\Psr7\Request;
-use GuzzleHttp\Psr7\Utils;
 use Psr\Http\Client\ClientInterface as HttpClient;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer as Normalizer;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
@@ -69,7 +68,7 @@ final readonly class RestEsiaGatewayClient implements EsiaGatewayClient
             ['Authorization' => sprintf('Bearer %s', $accessToken)],
         );
 
-        $stream = Utils::streamFor(file_get_contents('esia_data_1.json'));
+        $stream = $this->client->sendRequest($request)->getBody();
 
         return $this->serializer->deserialize($stream->__toString(), UserInfo::class, 'json', [
             UnwrappingDenormalizer::UNWRAP_PATH       => '[info]',
