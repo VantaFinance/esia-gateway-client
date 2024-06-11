@@ -93,6 +93,6 @@ final readonly class UserInfo
             return [];
         }
 
-        return max($lastIncomes);
+        return $lastIncomes[max(array_keys($lastIncomes))] ?? [];
     }
 }
