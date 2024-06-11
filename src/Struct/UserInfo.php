@@ -13,8 +13,6 @@ namespace Vanta\Integration\EsiaGateway\Struct;
 use Brick\PhoneNumber\PhoneNumber;
 use DateTimeImmutable;
 use Psr\Http\Message\StreamInterface as Stream;
-use Vanta\Integration\Esia\Struct\Document\Income\IncomeReference;
-use Vanta\Integration\Esia\Struct\Document\Income\IncomeReferenceDateItemIncomeInfo;
 use Vanta\Integration\EsiaGateway\Client\Scope;
 
 final class UserInfo
