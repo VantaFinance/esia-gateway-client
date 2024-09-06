@@ -31,6 +31,9 @@ final readonly class UserInfo
      * @param numeric-string             $oid
      * @param list<Document>             $documents
      * @param non-empty-list<Permission> $scope
+     * @param non-empty-string           $firstName
+     * @param non-empty-string           $lastName
+     * @param non-empty-string|null      $middleName
      */
     public function __construct(
         public string $uid,
@@ -92,6 +95,7 @@ final readonly class UserInfo
         if ([] == $lastIncomes) {
             return [];
         }
+
 
         return $lastIncomes[max(array_keys($lastIncomes))] ?? [];
     }
