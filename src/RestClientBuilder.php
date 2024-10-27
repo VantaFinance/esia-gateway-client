@@ -159,7 +159,7 @@ final readonly class RestClientBuilder
     {
         return new self(
             client: $this->client,
-            serializer: $this->serializer,
+            serializer: $serializer,
             configuration: $this->configuration,
             middlewares: $this->middlewares
         );
